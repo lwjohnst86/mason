@@ -2,9 +2,17 @@
 % Please edit documentation in R/lay_base.R
 \name{lay_base}
 \alias{lay_base}
+\alias{lay_base.cor_df}
+\alias{lay_base.gee_df}
 \title{Lay the foundation for the mason project}
 \usage{
 lay_base(data, ...)
+
+\method{lay_base}{gee_df}(data, id, y, x, covars = NULL, intvar = NULL,
+  na.rm = TRUE)
+
+\method{lay_base}{cor_df}(data, x = names(data$data), y = NULL,
+  group = NULL)
 }
 \arguments{
 \item{data}{Output from the \code{\link{design}} phase.}
@@ -28,6 +36,13 @@ designs.}
 \item{na.rm}{Remove missing values.}
 
 \item{group}{In development.}
+
+\item{y}{The outcome/dependent variable(s) for regression type designs, or a
+list of variables to compare with \code{x} for correlation designs.}
+
+\item{x}{The predictor/exposure/independent variable(s) for regression type
+designs, or a list of variables to compare with \code{y} for correlation
+designs (or just a dataframe).}
 }
 \value{
 Creates a prepared list of the data and specifications for further
@@ -42,6 +57,7 @@ ds <- data.frame(state.region, state.x77)
 ## GEE
 design(ds, 'gee', family = gaussian, corstr = 'exchangeable') \%>\%
     lay_base(id = 'state.region', c('Income', 'Frost'), c('Population', 'Murder'), 'Life.Exp')
+ds <- data.frame(state.region, state.x77)
 ## Correlation
 design(ds, 'cor') \%>\%
     lay_base(c('Income', 'Frost'), c('Population', 'Murder'))

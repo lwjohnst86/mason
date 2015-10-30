@@ -2,9 +2,16 @@
 % Please edit documentation in R/polish.R
 \name{polish}
 \alias{polish}
+\alias{polish.cor_df}
+\alias{polish.gee_df}
 \title{Polish the built structure}
 \usage{
 polish(data, ...)
+
+\method{polish}{gee_df}(data, sift.pattern = "*", adjust.p = FALSE,
+  transform.beta.funs = function(x) x, rename.vars.funs = function(x) x)
+
+\method{polish}{cor_df}(data, rename.vars.funs = function(x) x)
 }
 \arguments{
 \item{data}{The data object output from the mason chain (after
@@ -41,6 +48,7 @@ design(ds, 'gee', family = gaussian, corstr = 'exchangeable') \%>\%
     build() \%>\%
     polish('Xterm$', TRUE, transform.beta.funs = function(x) exp(x),
          rename.vars.funs = function(x) gsub('Frost', 'f', x))
+ds <- data.frame(state.region, state.x77)
 ## Correlation
 design(ds, 'cor') \%>\%
     lay_base(c('Income', 'Frost'), c('Population', 'Murder')) \%>\%
