@@ -6,17 +6,21 @@
 #' coefficients if needed.
 #' @param data The data object output from the mason chain (after
 #'   \code{\link{build}}).
+#' @param ... Additional arguments
+#'
+#' @return Outputs a single dataframe
+#' @export
+#'
+polish <- function(data, ...) {
+    UseMethod('polish', data)
+}
+
 #' @param sift.pattern The pattern to keep from the \code{terms} column of the
 #'   mason dataframe.
 #' @param adjust.p Adjust the p-value using the builtin \code{\link{p.adjust}}.
 #' @param transform.beta.funs A function to transform the \code{estimate},
 #'   \code{conf.low}, and \code{conf.high}.
-#' @param rename.vars.funs Rename character variables and/or values using a
-#'   function. Best combined with \code{\link{gsub}} to find and replace
-#'   patterns or text.
-#' @param ... Additional arguments
-#'
-#' @return Outputs a single dataframe
+#' @rdname polish
 #' @export
 #'
 #' @examples
@@ -28,16 +32,6 @@
 #'     build() %>%
 #'     polish('Xterm$', TRUE, transform.beta.funs = function(x) exp(x),
 #'          rename.vars.funs = function(x) gsub('Frost', 'f', x))
-#' ## Correlation
-#' design(ds, 'cor') %>%
-#'     lay_base(c('Income', 'Frost'), c('Population', 'Murder')) %>%
-#'     build() %>%
-#'     polish()
-polish <- function(data, ...) {
-    UseMethod('polish', data)
-}
-
-#' @export
 #'
 polish.gee_df <- function(data,
                           sift.pattern = '*',
@@ -47,7 +41,7 @@ polish.gee_df <- function(data,
     ds <- data$results %>%
         dplyr::filter(grepl(sift.pattern, term)) %>%
         dplyr::mutate_each(funs(transform.beta.funs),
-                           matches('estimate|conf\\.low|conf\\.high')) %>%
+                           matches('estimate|std\\.error|conf\\.low|conf\\.high')) %>%
         dplyr::mutate_each(funs(rename.vars.funs), Yterms, Xterms)
 
     if (adjust.p) ds <- dplyr::mutate(ds, p.value = p.adjust(p.value, 'BH'))
@@ -56,7 +50,20 @@ polish.gee_df <- function(data,
     return(ds)
 }
 
+#' @param rename.vars.funs Rename character variables and/or values using a
+#'   function. Best combined with \code{\link{gsub}} to find and replace
+#'   patterns or text.
+#' @rdname polish
 #' @export
+#'
+#' @examples
+#'
+#' ds <- data.frame(state.region, state.x77)
+#' ## Correlation
+#' design(ds, 'cor') %>%
+#'     lay_base(c('Income', 'Frost'), c('Population', 'Murder')) %>%
+#'     build() %>%
+#'     polish()
 #'
 polish.cor_df <- function(data,
                           rename.vars.funs = function(x) x) {

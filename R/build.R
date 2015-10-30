@@ -1,12 +1,21 @@
 #' Build a mason structure
 #'
 #'
-#' @param data The data from the mason chain (last chain is
+#' @param data The data from the mason chain (previous chain is
 #'   \code{\link{lay_base}}.
 #' @param ... Additional parameters appropriate for the \code{\link{design}}
 #'
 #' @return Outputs a list structure with the data, results, and additional
 #'   design specifications for the analysis.
+#' @export
+#'
+build <- function(data, ...) {
+    UseMethod('build', data)
+}
+
+#' @param conf.int Whether to include the confidence interval
+#' @param conf.level Range for the confidence interval
+#' @rdname build
 #' @export
 #'
 #' @examples
@@ -19,12 +28,6 @@
 #' design(ds, 'cor') %>%
 #'     lay_base(c('Income', 'Frost'), c('Population', 'Murder')) %>%
 #'     build()
-build <- function(data, ...) {
-    UseMethod('build', data)
-}
-
-#' @export
-#'
 build.gee_df <- function(data, conf.int = TRUE, conf.level = 0.95) {
     gee_formula <- reformulate(c(data$x, data$covars, data$intvar),
                                response = paste(data$y))
@@ -43,12 +46,17 @@ build.gee_df <- function(data, conf.int = TRUE, conf.level = 0.95) {
         dplyr::tbl_df()
 
     return(data)
-
-
 }
 
+#' @rdname build
 #' @export
 #'
+#' @examples
+#' ds <- data.frame(state.region, state.x77)
+#' ## Correlation
+#' design(ds, 'cor') %>%
+#'     lay_base(c('Income', 'Frost'), c('Population', 'Murder')) %>%
+#'     build()
 build.cor_df <- function(data) {
     if (is.null(data$y)) {
         yvars <- NULL
