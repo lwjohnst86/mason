@@ -2,7 +2,7 @@
 #'
 #' Put the finishing touches to the finished structure. Used at the end of a
 #' 'mason' project (ie. at the end of a mason pipe chain). Adjust p-values for
-#' multiple comparisons, sift the results you want, and transform the beta
+#' multiple comparisons, filter the results you want, and transform the beta
 #' coefficients if needed.
 #' @param data The data object output from the mason chain (after
 #'   \code{\link{build}}).
@@ -10,19 +10,17 @@
 #'
 #' @return Outputs a single dataframe
 #' @export
-#'
 polish <- function(data, ...) {
     UseMethod('polish', data)
 }
 
-#' @param sift.pattern The pattern to keep from the \code{terms} column of the
+#' @param keep.pattern The pattern to keep from the \code{terms} column of the
 #'   mason dataframe.
 #' @param adjust.p Adjust the p-value using the builtin \code{\link{p.adjust}}.
 #' @param transform.beta.funs A function to transform the \code{estimate},
 #'   \code{conf.low}, and \code{conf.high}.
 #' @rdname polish
 #' @export
-#'
 #' @examples
 #'
 #' ds <- data.frame(state.region, state.x77)
@@ -34,12 +32,12 @@ polish <- function(data, ...) {
 #'          rename.vars.funs = function(x) gsub('Frost', 'f', x))
 #'
 polish.gee_df <- function(data,
-                          sift.pattern = '*',
+                          keep.pattern = '*',
                           adjust.p = FALSE,
                           transform.beta.funs = function(x) x,
                           rename.vars.funs = function(x) x) {
     ds <- data$results %>%
-        dplyr::filter(grepl(sift.pattern, term)) %>%
+        dplyr::filter(grepl(keep.pattern, term)) %>%
         dplyr::mutate_each(funs(transform.beta.funs),
                            matches('estimate|std\\.error|conf\\.low|conf\\.high')) %>%
         dplyr::mutate_each(funs(rename.vars.funs), Yterms, Xterms)
@@ -55,7 +53,6 @@ polish.gee_df <- function(data,
 #'   patterns or text.
 #' @rdname polish
 #' @export
-#'
 #' @examples
 #'
 #' ds <- data.frame(state.region, state.x77)
@@ -68,9 +65,15 @@ polish.gee_df <- function(data,
 polish.cor_df <- function(data,
                           rename.vars.funs = function(x) x) {
     ds <- data$results %>%
-        tidyr::gather(Variables, Value, -.rownames) %>%
-        dplyr::mutate_each(funs(rename.vars.funs), Variables, .rownames) %>%
-        tidyr::spread(Variables, Value)
+        dplyr::rename_('Xvar' = '.rownames') %>%
+        reshape2::melt(id.vars = 'Xvar',
+                       measure.vars = which(!names(.) %in% 'Xvar', arr.ind = TRUE),
+                       variable.name = 'Yvar',
+                       value.name = 'Value') %>%
+        dplyr::mutate(Xvar = rename.vars.funs(Xvar),
+                      Yvar = rename.vars.funs(Yvar)) %>%
+        dplyr::filter(Xvar != Yvar) %>%
+        na.omit()
 
     class(ds) <- c(class(data), class(ds))
     return(ds)

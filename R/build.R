@@ -8,7 +8,6 @@
 #' @return Outputs a list structure with the data, results, and additional
 #'   design specifications for the analysis.
 #' @export
-#'
 build <- function(data, ...) {
     UseMethod('build', data)
 }
@@ -17,7 +16,6 @@ build <- function(data, ...) {
 #' @param conf.level Range for the confidence interval
 #' @rdname build
 #' @export
-#'
 #' @examples
 #' ds <- data.frame(state.region, state.x77)
 #' ## GEE
@@ -50,7 +48,6 @@ build.gee_df <- function(data, conf.int = TRUE, conf.level = 0.95) {
 
 #' @rdname build
 #' @export
-#'
 #' @examples
 #' ds <- data.frame(state.region, state.x77)
 #' ## Correlation
@@ -61,9 +58,30 @@ build.cor_df <- function(data) {
     if (is.null(data$y)) {
         yvars <- NULL
         xvars <- data$data
+        .prep_cor_tidy <- function(cor_data) {
+            cor_data[upper.tri(cor_data)] <- NA
+            return(cor_data)
+        }
     } else {
         yvars <- data$data[data$y]
         xvars <- data$data[data$x]
+        .prep_cor_tidy <- function(cor_data) {
+            return(cor_data)
+        }
+    }
+
+    if (is.null(yvars)) {
+        .cor_order <- function(cor_data) {
+            # Taken from
+            # http://www.sthda.com/english/wiki/ggplot2-quick-correlation-matrix-heatmap-r-software-and-data-visualization
+            ord <-
+                as.dist((1 - cor_data) / 2) %>%
+                hclust()
+            cor_data[ord$order, ord$order]
+        }
+    } else {
+        .cor_order <- function(cor_data)
+            cor_data
     }
 
     data$results <-
@@ -71,6 +89,8 @@ build.cor_df <- function(data) {
         dplyr::do(cor(xvars, yvars,
                       use = data$use,
                       method = data$method) %>%
+                      .cor_order() %>%
+                      .prep_cor_tidy() %>%
                       broom::tidy()) %>%
         dplyr::tbl_df()
 

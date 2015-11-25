@@ -10,7 +10,6 @@
 #' @return Outputs a list with the raw data and specifications for use later in
 #'   the masonry chain.
 #' @export
-#'
 design <- function(data,
                    test.type,
                    ...) {
@@ -19,7 +18,6 @@ design <- function(data,
 }
 
 #' @export
-#'
 .fetch_design <- function(data,
                           test.type,
                           ...) {
@@ -30,7 +28,6 @@ design <- function(data,
 #' @param corstr Correlation structure to use for \code{\link[geepack]{geeglm}}.
 #' @rdname design
 #' @export
-#'
 #' @examples
 #'
 #' ds <- data.frame(state.region, state.x77)
@@ -54,7 +51,6 @@ design <- function(data,
 #' @param use How to handle missing values in correlation.
 #' @rdname design
 #' @export
-#'
 #' @examples
 #'
 #' ds <- data.frame(state.region, state.x77)

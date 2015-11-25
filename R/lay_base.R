@@ -8,7 +8,6 @@
 #' @return Creates a prepared list of the data and specifications for further
 #'   analysis
 #' @export
-#'
 lay_base <- function(data, ...) {
     UseMethod('lay_base', data)
 }
@@ -25,7 +24,6 @@ lay_base <- function(data, ...) {
 #' @param na.rm Remove missing values.
 #' @rdname lay_base
 #' @export
-#'
 #' @examples
 #'
 #' ds <- data.frame(state.region, state.x77)
@@ -66,7 +64,6 @@ lay_base.gee_df <- function(data,
 #' @param group In development.
 #' @rdname lay_base
 #' @export
-#'
 #' @examples
 #'
 #' ds <- data.frame(state.region, state.x77)
