@@ -4,6 +4,7 @@
 \alias{lay_base}
 \alias{lay_base.cor_df}
 \alias{lay_base.gee_df}
+\alias{lay_base.lm_df}
 \title{Lay the foundation for the mason project}
 \usage{
 lay_base(data, ...)
@@ -13,6 +14,9 @@ lay_base(data, ...)
 
 \method{lay_base}{cor_df}(data, x = names(data$data), y = NULL,
   group = NULL)
+
+\method{lay_base}{lm_df}(data, y, x, covars = NULL, intvar = NULL,
+  na.rm = TRUE)
 }
 \arguments{
 \item{data}{Output from the \code{\link{design}} phase.}
@@ -43,6 +47,20 @@ list of variables to compare with \code{x} for correlation designs.}
 \item{x}{The predictor/exposure/independent variable(s) for regression type
 designs, or a list of variables to compare with \code{y} for correlation
 designs (or just a dataframe).}
+
+\item{y}{The outcome/dependent variable(s) for regression type designs, or a
+list of variables to compare with \code{x} for correlation designs.}
+
+\item{x}{The predictor/exposure/independent variable(s) for regression type
+designs, or a list of variables to compare with \code{y} for correlation
+designs (or just a dataframe).}
+
+\item{covars}{Covariates to control for in regression designs.}
+
+\item{intvar}{Interaction variable (only one) to include in regression
+designs.}
+
+\item{na.rm}{Remove missing values.}
 }
 \value{
 Creates a prepared list of the data and specifications for further
@@ -63,5 +81,16 @@ ds <- data.frame(state.region, state.x77)
 ## Correlation
 design(ds, 'cor') \%>\%
     lay_base(c('Income', 'Frost'), c('Population', 'Murder'))
+
+
+## lm
+ds <- data.frame(state.region, state.x77)
+design(ds, 'lm') \%>\%
+   lay_base(c('Income', 'Frost'), c('Population', 'Murder'), covars = 'Life.Exp')
+
+design(ds, 'lm') \%>\%
+   lay_base(c('Income', 'Frost'), c('Population', 'Murder'), covars = 'Life.Exp',
+            intvar = 'Life.Exp')
+
 }
 

@@ -4,6 +4,7 @@
 \alias{polish}
 \alias{polish.cor_df}
 \alias{polish.gee_df}
+\alias{polish.lm_df}
 \title{Polish the built structure}
 \usage{
 polish(data, ...)
@@ -12,6 +13,9 @@ polish(data, ...)
   transform.beta.funs = function(x) x, rename.vars.funs = function(x) x)
 
 \method{polish}{cor_df}(data, rename.vars.funs = function(x) x)
+
+\method{polish}{lm_df}(data, keep.pattern = "*", adjust.p = FALSE,
+  transform.beta.funs = function(x) x, rename.vars.funs = function(x) x)
 }
 \arguments{
 \item{data}{The data object output from the mason chain (after
@@ -57,6 +61,20 @@ design(ds, 'cor') \%>\%
     lay_base(c('Income', 'Frost'), c('Population', 'Murder')) \%>\%
     build() \%>\%
     polish()
+
+
+## lm
+ds <- data.frame(state.region, state.x77)
+design(ds, 'lm') \%>\%
+   lay_base(c('Income', 'Frost'), c('Population', 'Murder'), covars = 'Life.Exp') \%>\%
+   build() \%>\%
+   polish('Xterm$', TRUE, function(x) exp(x),
+          function(x) gsub('Frost', 'f', x))
+design(ds, 'lm') \%>\%
+   lay_base(c('Income', 'Frost'), c('Population', 'Murder'), covars = 'Life.Exp',
+            intvar = 'Life.Exp') \%>\%
+   build() \%>\%
+   polish(':')
 
 }
 

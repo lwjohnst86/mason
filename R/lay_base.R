@@ -92,3 +92,48 @@ lay_base.cor_df <- function(data,
 
     return(data)
 }
+
+#' @param y The outcome/dependent variable(s) for regression type designs, or a
+#'   list of variables to compare with \code{x} for correlation designs.
+#' @param x The predictor/exposure/independent variable(s) for regression type
+#'   designs, or a list of variables to compare with \code{y} for correlation
+#'   designs (or just a dataframe).
+#' @param covars Covariates to control for in regression designs.
+#' @param intvar Interaction variable (only one) to include in regression
+#'   designs.
+#' @param na.rm Remove missing values.
+#' @rdname lay_base
+#' @export
+#' @examples
+#'
+#'
+#'## lm
+#'ds <- data.frame(state.region, state.x77)
+#'design(ds, 'lm') %>%
+#'    lay_base(c('Income', 'Frost'), c('Population', 'Murder'), covars = 'Life.Exp')
+#'
+#'design(ds, 'lm') %>%
+#'    lay_base(c('Income', 'Frost'), c('Population', 'Murder'), covars = 'Life.Exp',
+#'             intvar = 'Life.Exp')
+#'
+lay_base.lm_df <- function(data, y, x,
+                           covars = NULL,
+                           intvar = NULL,
+                           na.rm = TRUE) {
+
+    data$data <-
+        data$data %>%
+        dplyr::select_(.dots = c(y, x, covars, intvar)) %>%
+        tidyr::gather_('Yterms', 'Yterm', y) %>%
+        tidyr::gather_('Xterms', 'Xterm', x)
+
+    if (na.rm) data$data <- na.omit(data$data)
+
+    # Set specifications for use later in the mason chain.
+    data$y <- 'Yterm'
+    data$x <- 'Xterm'
+    data$covars <- covars
+    if (!is.null(intvar)) data$intvar <- paste0('Xterm:', intvar)
+
+    return(data)
+}

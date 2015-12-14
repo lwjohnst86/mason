@@ -3,6 +3,7 @@
 \name{design}
 \alias{.fetch_design.cor}
 \alias{.fetch_design.gee}
+\alias{.fetch_design.lm}
 \alias{design}
 \title{Design the masonry project}
 \usage{
@@ -14,6 +15,8 @@ design(data, test.type, ...)
 \method{.fetch_design}{cor}(data, test.type, method = c("pearson", "kendall",
   "spearman"), use = c("complete.obs", "all.obs", "pairwise.complete.obs",
   "everything", "na.or.complete"))
+
+\method{.fetch_design}{lm}(data, test.type)
 }
 \arguments{
 \item{data}{Raw data to process for analysis.}
@@ -48,5 +51,10 @@ design(ds, 'gee', family = gaussian, corstr = 'exchangeable')
 ds <- data.frame(state.region, state.x77)
 ## Correlation
 design(ds, 'cor', method = 'spearman')
+
+## lm
+ds <- data.frame(state.region, state.x77)
+design(ds, 'lm')
+
 }
 

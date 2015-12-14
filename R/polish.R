@@ -78,3 +78,23 @@ polish.cor_df <- function(data,
     class(ds) <- c(class(data), class(ds))
     return(ds)
 }
+
+#' @rdname polish
+#' @export
+#' @examples
+#'
+#'## lm
+#'ds <- data.frame(state.region, state.x77)
+#'design(ds, 'lm') %>%
+#'    lay_base(c('Income', 'Frost'), c('Population', 'Murder'), covars = 'Life.Exp') %>%
+#'    build() %>%
+#'    polish('Xterm$', TRUE, function(x) exp(x),
+#'           function(x) gsub('Frost', 'f', x))
+
+#'design(ds, 'lm') %>%
+#'    lay_base(c('Income', 'Frost'), c('Population', 'Murder'), covars = 'Life.Exp',
+#'             intvar = 'Life.Exp') %>%
+#'    build() %>%
+#'    polish(':')
+#'
+polish.lm_df <- polish.gee_df

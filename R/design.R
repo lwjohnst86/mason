@@ -13,7 +13,7 @@
 design <- function(data,
                    test.type,
                    ...) {
-    class(test.type) <- match.arg(test.type, c('gee', 'cor'))
+    class(test.type) <- match.arg(test.type, c('gee', 'cor', 'lm'))
     .fetch_design(data, test.type, ...)
 }
 
@@ -74,3 +74,19 @@ design <- function(data,
     return(data)
 }
 
+#' @rdname design
+#' @export
+#' @examples
+#'
+#'## lm
+#'ds <- data.frame(state.region, state.x77)
+#'design(ds, 'lm')
+#'
+.fetch_design.lm <- function(data, test.type) {
+    data <-
+        structure(list(
+            data = dplyr::tbl_df(data)
+        ),
+        class = 'lm_df')
+    return(data)
+}

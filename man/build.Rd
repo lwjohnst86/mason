@@ -4,6 +4,7 @@
 \alias{build}
 \alias{build.cor_df}
 \alias{build.gee_df}
+\alias{build.lm_df}
 \title{Build a mason structure}
 \usage{
 build(data, ...)
@@ -11,6 +12,8 @@ build(data, ...)
 \method{build}{gee_df}(data, conf.int = TRUE, conf.level = 0.95)
 
 \method{build}{cor_df}(data)
+
+\method{build}{lm_df}(data, conf.int = TRUE, conf.level = 0.95, ...)
 }
 \arguments{
 \item{data}{The data from the mason chain (previous chain is
@@ -21,6 +24,12 @@ build(data, ...)
 \item{conf.int}{Whether to include the confidence interval}
 
 \item{conf.level}{Range for the confidence interval}
+
+\item{conf.int}{Whether to include the confidence interval}
+
+\item{conf.level}{Range for the confidence interval}
+
+\item{...}{Additional arguments to \code{\link[stats]{lm}}}
 }
 \value{
 Outputs a list structure with the data, results, and additional
@@ -35,14 +44,21 @@ ds <- data.frame(state.region, state.x77)
 design(ds, 'gee', family = gaussian, corstr = 'exchangeable') \%>\%
     lay_base(id = 'state.region', c('Income', 'Frost'), c('Population', 'Murder'), 'Life.Exp') \%>\%
     build()
-## Correlation
-design(ds, 'cor') \%>\%
-    lay_base(c('Income', 'Frost'), c('Population', 'Murder')) \%>\%
-    build()
 ds <- data.frame(state.region, state.x77)
 ## Correlation
 design(ds, 'cor') \%>\%
     lay_base(c('Income', 'Frost'), c('Population', 'Murder')) \%>\%
     build()
+
+## lm
+ds <- data.frame(state.region, state.x77)
+design(ds, 'lm') \%>\%
+   lay_base(c('Income', 'Frost'), c('Population', 'Murder'), covars = 'Life.Exp') \%>\%
+   build()
+design(ds, 'lm') \%>\%
+   lay_base(c('Income', 'Frost'), c('Population', 'Murder'), covars = 'Life.Exp',
+            intvar = 'Life.Exp') \%>\%
+   build()
+
 }
 
