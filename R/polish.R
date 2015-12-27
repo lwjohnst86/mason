@@ -35,12 +35,15 @@ polish.gee_df <- function(data,
                           keep.pattern = '*',
                           adjust.p = FALSE,
                           transform.beta.funs = function(x) x,
-                          rename.vars.funs = function(x) x) {
+                          rename.vars.funs = function(x) x,
+                          rounding = 6) {
     ds <- data$results %>%
         dplyr::filter(grepl(keep.pattern, term)) %>%
         dplyr::mutate_each(funs(transform.beta.funs),
                            matches('estimate|std\\.error|conf\\.low|conf\\.high')) %>%
-        dplyr::mutate_each(funs(rename.vars.funs), Yterms, Xterms)
+        dplyr::mutate_each(funs(rename.vars.funs), Yterms, Xterms) %>%
+        dplyr::mutate(term = ifelse(term == 'Xterm', as.character(Xterms), term)) %>%
+        dplyr::mutate_each(funs(round(., rounding)), -Yterms, -Xterms, -term)
 
     if (adjust.p) ds <- dplyr::mutate(ds, p.value = p.adjust(p.value, 'BH'))
 
@@ -63,7 +66,8 @@ polish.gee_df <- function(data,
 #'     polish()
 #'
 polish.cor_df <- function(data,
-                          rename.vars.funs = function(x) x) {
+                          rename.vars.funs = function(x) x,
+                          rounding = 2) {
     ds <- data$results %>%
         dplyr::rename_('Xvar' = '.rownames') %>%
         reshape2::melt(id.vars = 'Xvar',
@@ -71,7 +75,8 @@ polish.cor_df <- function(data,
                        variable.name = 'Yvar',
                        value.name = 'Value') %>%
         dplyr::mutate(Xvar = rename.vars.funs(Xvar),
-                      Yvar = rename.vars.funs(Yvar)) %>%
+                      Yvar = rename.vars.funs(Yvar),
+                      Value = round(Value, rounding)) %>%
         dplyr::filter(Xvar != Yvar) %>%
         na.omit()
 
