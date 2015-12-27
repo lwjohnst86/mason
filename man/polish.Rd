@@ -10,12 +10,15 @@
 polish(data, ...)
 
 \method{polish}{gee_df}(data, keep.pattern = "*", adjust.p = FALSE,
-  transform.beta.funs = function(x) x, rename.vars.funs = function(x) x)
+  transform.beta.funs = function(x) x, rename.vars.funs = function(x) x,
+  rounding = 6)
 
-\method{polish}{cor_df}(data, rename.vars.funs = function(x) x)
+\method{polish}{cor_df}(data, rename.vars.funs = function(x) x,
+  rounding = 2)
 
 \method{polish}{lm_df}(data, keep.pattern = "*", adjust.p = FALSE,
-  transform.beta.funs = function(x) x, rename.vars.funs = function(x) x)
+  transform.beta.funs = function(x) x, rename.vars.funs = function(x) x,
+  rounding = 6)
 }
 \arguments{
 \item{data}{The data object output from the mason chain (after
