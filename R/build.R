@@ -9,6 +9,7 @@
 #'   design specifications for the analysis.
 #' @export
 build <- function(data, ...) {
+    .Deprecated('construct_analysis', msg = 'Please see the introduction vignette.')
     UseMethod('build', data)
 }
 
