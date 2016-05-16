@@ -15,8 +15,6 @@ test_that("(cor) variables are in data", {
 })
 
 test_that("(cor) variables are the same type", {
-    ds_right <- add_variables(ds, 'xvars', c('Income', 'Population'))
-    expect_success(construct_analysis(ds_right))
     ds_wrong <- add_variables(ds, 'xvars', c('Income', 'Rich'))
     expect_error(construct_analysis(ds_wrong))
 })
