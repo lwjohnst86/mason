@@ -13,6 +13,7 @@
 design <- function(data,
                    test.type,
                    ...) {
+    .Deprecated('design_analysis', msg = 'Please see the introduction vignette.')
     class(test.type) <- match.arg(test.type, c('gee', 'cor', 'lm'))
     .fetch_design(data, test.type, ...)
 }
