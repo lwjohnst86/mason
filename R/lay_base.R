@@ -9,6 +9,7 @@
 #'   analysis
 #' @export
 lay_base <- function(data, ...) {
+    .Deprecated('add_variables', msg = 'Please see the introduction vignette.')
     UseMethod('lay_base', data)
 }
 
