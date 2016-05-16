@@ -11,6 +11,7 @@
 #' @return Outputs a single dataframe
 #' @export
 polish <- function(data, ...) {
+    .Deprecated('scrub', msg = 'Please see the introduction vignette.')
     UseMethod('polish', data)
 }
 
