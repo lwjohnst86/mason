@@ -39,7 +39,7 @@
             var.names <- ifelse(length(var.names) > 4,
                                 paste0(paste(var.names[1:4], collapse = ', '), ', etc'),
                                 paste(var.names, collapse = ', '))
-            if (length(data.types) != 1)
+            if (any(!data.types %in% c('numeric', 'integer')) & length(data.types) != 1)
                 stop(
                     'The variables ',
                     var.names,
