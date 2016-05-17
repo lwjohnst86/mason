@@ -1,9 +1,9 @@
-
 #' Construct the results of the analysis
 #'
 #' @param blueprint The blueprint object
-#' @param na.rm
-#' @param hclust.order
+#' @param na.rm Whether to remove missing values
+#' @param hclust.order Whether to order the correlation data based on the
+#'   \code{\link[stats]{hclust}} algorithm.
 #'
 #' @return Uses the blueprint to construct the results of the statistical
 #'   analysis.
@@ -12,10 +12,11 @@
 #' @examples
 #'
 #' library(magrittr)
-#' design(iris, 'cor') %>%
+#' design_analysis(iris, 'cor') %>%
 #'  add_settings() %>%
 #'  add_variables('xvars', c('Sepal.Length', 'Sepal.Width')) %>%
 #'  construct_analysis()
+#'
 construct_analysis <- function(blueprint, na.rm = TRUE, hclust.order = FALSE) {
     UseMethod("construct_analysis", blueprint)
 }
@@ -88,12 +89,14 @@ construct_analysis.gee_blueprint <- function(blueprint, na.rm = TRUE) {
 #' @export
 construct_analysis.glm_blueprint <- function(blueprint, na.rm = TRUE) {
 
-    .is_logic(na.rm)
+    .is_not_empty(blueprint$yvars)
+    .is_not_empty(blueprint$xvars)
+    .check_vars_in_data(blueprint)
+    .check_xyvars_same_type(blueprint)
+    .check_covars_in_xyvars(blueprint)
 
     y <- blueprint$yvars
     x <- blueprint$xvars
-    .is_not_empty(y)
-    .is_not_empty(x)
     covars <- blueprint$covariates
     int <- blueprint$interaction
 
@@ -108,8 +111,12 @@ construct_analysis.glm_blueprint <- function(blueprint, na.rm = TRUE) {
     if (na.rm)
         data <- na.omit(data)
 
-    if (length(int) != 0)
+    if (length(int) > 1) {
+        stop('Currently, only one interaction can be added.')
+    } else if (length(int) == 1) {
+        .check_int_in_covars(blueprint)
         int <- paste0('XtermValues:', int)
+    }
 
     glm_formula <- reformulate(c('XtermValues', covars, int),
                                response = 'YtermValues')
@@ -123,7 +130,7 @@ construct_analysis.glm_blueprint <- function(blueprint, na.rm = TRUE) {
             ) %>% {
                 tidied.data <- broom::tidy(., conf.int = blueprint$conf.int,
                                            conf.level = blueprint$conf.level)
-                data.frame(tidied.data, sample.size = length(.$fitted.values))
+                data.frame(tidied.data, sample.size = nrow(.$model))
             }
         ) %>%
         dplyr::ungroup() %>%
