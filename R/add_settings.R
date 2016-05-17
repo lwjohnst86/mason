@@ -1,4 +1,3 @@
-
 #' Add analysis settings to the blueprint
 #'
 #' Most statistical techniques need to specify some settings for them to run.
@@ -16,9 +15,12 @@
 #'
 #' @examples
 #'
-#' library(magrittr)
-#' data('dietox', package = 'geepack')
-#' design_analysis(dietox, 'gee')
+#' ds <- design_analysis(iris, 'gee')
+#' ds <- add_settings(family = binomial('logit'), conf.int = FALSE)
+#'
+#' ds <- design_analysis(iris, 'cor')
+#' ds <- add_settings(method = 'spearman')
+#'
 add_settings <-
     function(blueprint,
              family,
@@ -54,27 +56,27 @@ add_settings.cor_blueprint <-
     function(blueprint,
              method = c('pearson', 'kendall', 'spearman'),
              use = c('complete.obs',
-                           'all.obs',
-                           'pairwise.complete.obs',
-                           'everything',
-                           'na.or.complete')) {
-        .make_blueprint(method = match.arg(method),
-                        obs.usage = match.arg(use),
-                        blueprint = blueprint)
+                     'all.obs',
+                     'pairwise.complete.obs',
+                     'everything',
+                     'na.or.complete')) {
+        .make_blueprint(
+            method = match.arg(method),
+            obs.usage = match.arg(use),
+            blueprint = blueprint
+        )
     }
 
 #' @export
-add_settings.glm_blueprint <- function(blueprint,
-                              family = gaussian('identity'),
-                              conf.int = TRUE,
-                              conf.level = 0.95) {
-    .is_logic(conf.int)
-    .is_numeric(conf.level)
-    .is_length(conf.level, 1)
-
-    blueprint$family <- family
-    blueprint$conf.int <- conf.int
-    blueprint$conf.level <- conf.level
-
-    return(blueprint)
-}
+add_settings.glm_blueprint <-
+    function(blueprint,
+             family = gaussian('identity'),
+             conf.int = TRUE,
+             conf.level = 0.95) {
+        .make_blueprint(
+            family = family,
+            conf.int = conf.int,
+            conf.level = conf.level,
+            blueprint = blueprint
+        )
+    }
