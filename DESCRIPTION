@@ -1,21 +1,28 @@
 Package: mason
 Type: Package
 Title: Build Common Analysis Dataframe Structures
-Version: 0.1.3.9000
+Version: 0.2.0.9000
 Date: 2015-10-13
 Authors@R: person("Luke", "Johnston", email = "lwjohnst@gmail.com",
     role = c("aut", "cre"))
-Description: Use standardized commands to create data structures of common
+Description: Use a consistent syntax to create data structures of common
     statistical techniques that can be continued in a magrittr pipe chain.
-    Design the analysis, lay the foundation, build the results, and polish
-    the final structure. Rinse and repeat for any number of statistical
-    techniques (in development still).
-License: MIT
+    Design the analysis, add settings and variables, construct the results, and
+    polish the final structure. Rinse and repeat for any number of statistical
+    techniques.
+License: MIT + file LICENSE
 LazyData: TRUE
 Imports:
     dplyr,
     tidyr,
-    geepack,
     broom,
-    reshape2
+    reshape2,
+    assertive
 RoxygenNote: 5.0.1
+Suggests: knitr,
+    geepack,
+    rmarkdown,
+    testthat
+VignetteBuilder: knitr
+BugReport: https://github.com/lwjohnst86/mason/issues
+URL: https://github.com/lwjohnst86/mason
