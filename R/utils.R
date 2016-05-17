@@ -52,10 +52,10 @@ as_blueprint <- function(x) {
 print.blueprint <- function(x, ...) {
     if (is.null(x$results)) {
         cat("Analysis under construction, showing data right now:\n")
-        print(head(x$data, 5))
+        print(x$data)
     } else if (!is.null(x$results)) {
         cat('Analysis constructed, here are the results:\n')
-        print(head(x$results, 5))
+        print(x$results)
     } else {
         cat('Nothing to show yet, is something wrong maybe?')
     }
