@@ -7,7 +7,7 @@ context("GEE output")
 
 ds <- design_analysis(testdata, 'gee')
 ds <- add_settings(ds, cluster.id = 'state.region')
-test_that("(for gee) construct_analysis needs yvar or xvar", {
+test_that("(for gee) construct_analysis needs cluster.id and function for family", {
     ds_wrong <- add_settings(ds, 'state.region', family = 'gaussian')
     expect_error(contruct_analysis(ds_wrong))
     ds_wrong <- add_settings(ds, 'doesntexist')
@@ -29,7 +29,6 @@ test_that("(for gee) construct_analysis yvar and xvar are in the data", {
     ds_wrong <- add_variables(ds, 'xvars', 'doesntexist')
     expect_error(construct_analysis(ds_wrong))
 })
-
 
 test_that("(for gee) construct_analysis yvar and xvar are same data type", {
     ds_wrong <- add_variables(ds, 'yvars', c('Income', 'Rich'))
@@ -120,4 +119,3 @@ ds <- construct_analysis(ds)
 test_that("(for gee) scrub converts to tbl_df", {
     expect_is(scrub(ds), 'tbl_df')
 })
-
