@@ -1,6 +1,5 @@
 context("Correlation output")
 
-
 # construct_table ---------------------------------------------------------
 
 ds <- design_analysis(testdata, 'cor')
@@ -9,6 +8,7 @@ test_that("(cor) needs at least xvar, maybe yvar", {
     ds_wrong <- add_variables(ds, 'yvars', 'Income')
     expect_error(construct_analysis(ds_wrong))
 })
+
 test_that("(cor) variables are in data", {
     ds_wrong <- add_variables(ds, 'xvars', c('Income', 'Population', 'doesntexist'))
     expect_error(construct_analysis(ds_wrong))
@@ -21,6 +21,12 @@ test_that("(cor) variables are the same type", {
 
 # comparing to real results -----------------------------------------------
 
+
+ds <- design_analysis(testdata, 'cor')
+ds <- add_settings(ds)
+vars <- c('Income', 'Population', 'Frost', 'Area')
+ds <- add_variables(ds, 'xvars', vars)
+
 test_that("(cor) results compare to real results", {
     cor_function <- function(x, y = NULL) {
         cor_data <- cor(x, y,
@@ -31,10 +37,6 @@ test_that("(cor) results compare to real results", {
         cor_data
     }
 
-    ds <- design_analysis(testdata, 'cor')
-    ds <- add_settings(ds)
-    vars <- c('Income', 'Population', 'Frost', 'Area')
-    ds <- add_variables(ds, 'xvars', vars)
     test_results <- construct_analysis(ds)$results
     real_results <- cor_function(testdata[vars])
     expect_equal(test_results[-1], real_results)
@@ -44,4 +46,11 @@ test_that("(cor) results compare to real results", {
     test_results <- construct_analysis(ds)$results
     real_results <- cor_function(testdata[vars], testdata[yvars])
     expect_equal(test_results[-1], real_results)
+})
+
+# scrub and polish --------------------------------------------------------
+
+ds <- construct_analysis(ds)
+test_that("(for cor) scrub converts to tbl_df", {
+    expect_is(scrub(ds), 'tbl_df')
 })
