@@ -8,9 +8,7 @@ Using a standard interface, create common data results structures, such as from 
 
 One of the main goals of `mason` is to be able to easily implement other analyses to this infrastructure. Since, I'd argue, most statistical methods follow a similar pattern (what are the variables, what options to use for the method, what to select from the results), this can be easily encapsulated into a 'blueprint -&gt; construction -&gt; scrubbing and polishing' workflow.
 
-`mason` was designed to be best used with the `magrittr` `%>%` pipes, though it doesn't need to be. It was also designed to follow the [tidy data philosophy](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html), specifically that everything should result in a data frame, within limits. This makes it easier to do further analysis, visualization, and inclusion into report formats.
-
-This project is still in development.
+`mason` was designed to be best used with the `magrittr` `%>%` pipes, though it doesn't need to be. It was also designed to follow the [tidy data philosophy](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html), specifically that everything should result in a data frame, within limits. This makes it easier to do further analysis, visualization, and inclusion into report formats. This flow was deliberately chosen so it works well with `dplyr`, `tidyr`, `ggplot2`, and many other excellent packages out there that help make analyses easier.
 
 Installation
 ============
@@ -43,18 +41,18 @@ design(iris, 'glm') %>%
     polish_adjust_pvalue()
 #> Source: local data frame [8 x 11]
 #> 
-#>         Yterms       Xterms         term   estimate  std.error statistic
-#>          (chr)        (chr)        (chr)      (dbl)      (dbl)     (dbl)
-#> 1 Sepal.Length Petal.Length  (Intercept)  4.3066034 0.07838896 54.938900
-#> 2 Sepal.Length Petal.Length Petal.Length  0.4089223 0.01889134 21.646019
-#> 3 Sepal.Length  Petal.Width  (Intercept)  4.7776294 0.07293476 65.505517
-#> 4 Sepal.Length  Petal.Width  Petal.Width  0.8885803 0.05137355 17.296454
-#> 5  Sepal.Width Petal.Length  (Intercept)  3.4548745 0.07609540 45.401882
-#> 6  Sepal.Width Petal.Length Petal.Length -0.1057853 0.01833860 -5.768449
-#> 7  Sepal.Width  Petal.Width  (Intercept)  3.3084256 0.06209746 53.277950
-#> 8  Sepal.Width  Petal.Width  Petal.Width -0.2093598 0.04374001 -4.786461
-#> Variables not shown: p.value (dbl), conf.low (dbl), conf.high (dbl),
-#>   sample.size (int), adj.p.value (dbl)
+#>         Yterms       Xterms        term   estimate  std.error statistic
+#>          <chr>        <chr>       <chr>      <dbl>      <dbl>     <dbl>
+#> 1 Sepal.Length Petal.Length (Intercept)  4.3066034 0.07838896 54.938900
+#> 2 Sepal.Length Petal.Length     <-Xterm  0.4089223 0.01889134 21.646019
+#> 3 Sepal.Length  Petal.Width (Intercept)  4.7776294 0.07293476 65.505517
+#> 4 Sepal.Length  Petal.Width     <-Xterm  0.8885803 0.05137355 17.296454
+#> 5  Sepal.Width Petal.Length (Intercept)  3.4548745 0.07609540 45.401882
+#> 6  Sepal.Width Petal.Length     <-Xterm -0.1057853 0.01833860 -5.768449
+#> 7  Sepal.Width  Petal.Width (Intercept)  3.3084256 0.06209746 53.277950
+#> 8  Sepal.Width  Petal.Width     <-Xterm -0.2093598 0.04374001 -4.786461
+#> Variables not shown: p.value <dbl>, conf.low <dbl>, conf.high <dbl>,
+#>   sample.size <int>, adj.p.value <dbl>.
 ```
 
 Depending on the statistical method being used, each function may have slightly different arguments.
