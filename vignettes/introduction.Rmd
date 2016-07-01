@@ -1,0 +1,119 @@
+---
+title: "Introduction to mason"
+author: "Vignette Author"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to mason}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Basic command flow
+
+The general command flow for using `mason` is:
+
+1. Start the design of a blueprint for the analysis by specifying which
+statistical technique to use in your analysis (`design()`).
+2. Add settings/options to the blueprint for the methods of the statistics
+(`add_settings()`).
+3. Add the variables you want to run the statistics on (`add_variables()`).
+These variables include the $y$ variables (outcomes), the $x$ variables
+(predictors), covariates, and interaction variables.
+4. Using the blueprint, construct the 'mason project' (stats analysis) so that
+the results are generated (`construct()`).
+5. Sometimes analyses are too big for one first pass, from blueprint to
+construction, and needs to add more to the blueprint. Use `add_variables()` or
+`add_settings()` after the `construct()` to add to the existing
+results.
+6. When you are ready, make the 'mason project' cleaned up by scrubbing it down
+and polishing it up (`scrub()` and `polish_*()` commands). The results are now
+ready for further presentation in a figure or table!
+
+### Example usage
+
+Let's go over an example analysis. We'll use `glm` for a simple linear
+regression. Let's use the built-in `swiss` dataset. A quick peek at it shows:
+
+```{r peekSwiss}
+head(swiss)
+```
+
+Ok, let's say we want to several models. We are interested in `Fertility` and
+`Infant.Mortality` as outcomes and `Education` and `Agriculture` as potential
+predictors. We also want to control for `Catholic`. This setup means we have
+four potential models to analyze. With `mason` this is relatively easy. Analyses
+in `mason` are essentially separated into a blueprint phase and a construction
+phase. Since any structure or building always needs a blueprint, let's get that
+started.
+
+```{r blueprintDesign}
+library(mason)
+design(swiss, 'glm')
+```
+
+So far, all we've done is created a blueprint of the analysis, but it doesn't
+contain much. Let's add some settings to the blueprint. `mason` was designed to
+make use of the `%>%` pipes from the package `magrittr` (also found in `dplyr`),
+so let's load up `magrittr`!
+
+```{r settings}
+library(magrittr)
+dp <- design(swiss, 'glm') %>% 
+    add_settings(family = gaussian('identity'))
+```
+
+You'll notice that each time, the only thing that is printed to the console is
+the dataset. That's because we haven't constructed the analysis yet! We are
+still in the blueprint phase, so nothing new has been added! Since we have two
+outcomes and two predictors, we have a total of four models to analysis.
+Normally we would need to run each of the models separately. However, if simply
+list the outcomes and the predictors in `mason`, it will 'loop' through each
+combination and run all four models! Let's add the variables.
+
+```{r variables}
+dp <- dp %>% 
+    add_variables('yvars', c('Fertility', 'Infant.Mortality')) %>% 
+    add_variables('xvars', c('Education', 'Agriculture'))
+```
+
+Alright, still nothing has happened. However, we are now at the phase that we
+can construct the analysis using `construct()`.
+
+```{r construct}
+dp <- construct(dp)
+dp
+```
+
+Cool! This is the unadjusted model, without any covariates. We said we wanted to
+adjust for `Catholic`. But let's say we want to keep the unadjusted analysis
+too. Since we have 'finished' the analysis by cleaning it up, we can still add
+to the blueprint.
+
+```{r constructCovar}
+dp <- dp %>%
+    add_variables('covariates', 'Catholic') %>% 
+    construct()
+dp
+```
+
+We now have two models in the results. We're happy with the results, so let's
+clean it up using the `scrub()` function.
+
+```{r scrub}
+dp <- dp %>% 
+    scrub()
+```
+
+```{r oneGo}
+swiss %>% 
+    design('glm') %>% 
+    add_settings() %>% 
+    add_variables('yvars', c('Fertility', 'Infant.Mortality')) %>% 
+    add_variables('xvars', c('Education', 'Agriculture')) %>% 
+    construct() %>% 
+    add_variables('covariates', 'Catholic') %>% 
+    construct() %>% 
+    scrub()
+```
+

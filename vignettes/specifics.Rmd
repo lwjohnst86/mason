@@ -1,0 +1,160 @@
+---
+title: "Specific flows for each statistical method"
+author: "Vignette Author"
+date: "`r Sys.Date()`"
+output: 
+    rmarkdown::html_vignette:
+        toc: true
+vignette: >
+  %\VignetteIndexEntry{Specific flows for each statistical method}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+This vignette goes over typical 'constuction' projects for each of the analysis
+designs.
+
+## T-tests
+
+```{r ttests}
+
+swiss %>% 
+    design
+
+swiss %>% 
+    tidyr::gather(Measure, Value) %>% 
+    {pairwise.t.test(.$Value, .$Measure)} %>% 
+    broom::tidy()
+broom::tidy(pairwise.t.test(iris$Sepal.Length, iris$Species, paired = TRUE))
+
+broom::tidy(aov(iris$Sepal.Length ~ iris$Species))
+```
+
+##
+
+```{r redesignedPackage, purl = FALSE, eval = FALSE}
+
+library(dplyr)
+
+design(ds, 'gee') %>% 
+    add_settings(cluster.id = 'state.region') %>% 
+    add_variables('yvars', c('Income', 'Frost')) %>% 
+    add_variables('xvars', c('Population', 'Murder')) %>% 
+    add_variables('covariates', 'Life.Exp') %>% 
+    #add_variables('interaction', 'Area') %>% 
+    construct() %>% 
+    add_variables('xvars', c('Illiteracy', 'Area')) %>%
+    construct() %>%
+    scrub() %>% 
+    polish_renaming(function(x) gsub('Frost', 'F', x)) %>%
+    polish_transform_estimates(function(x) (exp(x) - 1) * 100) %>% 
+    polish_adjust_pvalue() %>% 
+    polish_filter('Xterm$', 'term') %>% 
+    polish_round(2)
+
+design(ds, 'glm') %>% 
+    add_settings() %>% 
+    add_variables('yvars', c('Income', 'Frost')) %>% 
+    add_variables('xvars', c('Population', 'Murder')) %>% 
+    add_variables('covariates', 'Life.Exp') %>% 
+    add_variables('interaction', 'Area') %>% 
+    construct() %>% 
+    scrub() %>% 
+    polish_round(2)
+
+library(magrittr)
+design(testdata, 'cor') %>% 
+    add_settings() %>% 
+    add_variables('xvars', c('Income', 'Frost', 'Murder')) %>% 
+    construct() %>% 
+    scrub() %>% 
+    polish_round(2) %>% 
+    polish_renaming(function(x) gsub('Frost', 'F', x))
+
+library(magrittr)
+state <- geedata
+design(state, 'gee')
+# design(state, 'gee') %>% str
+# design(state, 'gee')$results
+gee_data <- 
+    design(state, 'gee') %>%
+    add_settings(cluster.id = 'state.region') %>% 
+    add_variables('yvars', c('Income', 'Frost')) %>% 
+    add_variables('xvars', c('Population', 'Murder')) %>% 
+    add_variables('covariates', 'Life.Exp') %>% 
+    #add_variables('interaction', 'Area') %>% 
+    construct() %>% 
+    str
+    add_variables('xvars', c('Illiteracy', 'Area')) %>%
+    construct() %>% 
+    scrub() %>% 
+    polish_renaming(function(x) gsub('Frost', 'F', x)) %>%
+    polish_transform_estimates(function(x) (exp(x) - 1) * 100) %>% 
+    polish_adjust_pvalue() %>% 
+    polish_filter('Xterm$', 'term') %>% 
+    polish_round(2)
+    
+## LCMM
+analyze_lcmm <- function(data, lc.var = 'lISI') {
+    data.prep <- data %>%
+        dplyr::select_('SID', lc.var, 'VN') %>%
+        na.omit() %>%
+        dplyr::arrange(SID, VN)
+    lcmm_results <- lcmm::lcmm(
+        lISSI2 ~ VN,
+        mixture = ~ VN, random = ~ VN, subject = 'SID',
+        ng = 3, idiag = TRUE, link = '3-equi-splines',
+        data = data.prep
+    )
+
+    return(lcmm_results)
+}
+
+```
+
+```{r pls, eval = FALSE, purl = FALSE}
+
+data.prep <- ds %>% 
+    dplyr::filter(VN == 0) %>% 
+    dplyr::select(matches('pct_tg\\d+'), lISI) %>% 
+    na.omit()
+Y <- as.matrix(dplyr::select(data.prep, -matches('pct_tg\\d+')))
+X <- as.matrix(dplyr::select(data.prep, matches('pct_tg\\d+')))
+
+fit <- plsr(Y ~ X, scale = TRUE, ncomp = 2)
+# corrplot(fit)
+# loadingplot(fit, scatter = TRUE)
+# scoreplot(fit)
+# scores(fit)
+# pls::explvar(fit)
+# pls::compnames(fit)
+# pls::scores(fit)
+# pls::loadings(fit)
+# pls::prednames(fit)
+# pls::respnames(fit)
+# pls::Yscores(fit)
+# predplot(fit)
+
+plot_pls_x(fit)
+
+str(pls_results)
+predplot(pls_results, ncomp = 1:2)
+plot(predict(pls_results, pls_data), pls_data$lISI)
+measured <- as.matrix(model.response(model.frame(formula(pls_results), data = pls_data)))
+pls::corrplot(pls_results)
+pls::scoreplot(pls_results)
+pls::loadingplot(pls_results)
+pls::coefplot(pls_results)
+# These two do the same thing (`fitted` not good for cross-val though)
+predicted <- fitted(pls_results)
+predicted <- predict(pls_results, pls_data)
+
+dim(measured)
+dim(predicted)
+cor(measured, predicted[, , 1])
+cor(measured, predicted[, , 2])
+cor(fitted(pls_results)[,,2], predicted[,,2])
+formula(pls_results)
+
+```
+
