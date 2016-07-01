@@ -3,10 +3,16 @@
 \name{polish}
 \alias{polish}
 \alias{polish_adjust_pvalue}
+\alias{polish_filter}
 \alias{polish_renaming}
-\title{Polish up.}
+\alias{polish_transform_estimates}
+\title{Do some final polishing of the scrubbed mason analysis data.}
 \usage{
 polish_renaming(data, renaming.fun, columns = NULL)
+
+polish_filter(data, keep.pattern, column)
+
+polish_transform_estimates(data, transform.fun)
 
 polish_adjust_pvalue(data, method = "BH")
 }
@@ -19,21 +25,46 @@ searches and replaces strings.}
 \item{columns}{The columns to apply the renaming function to. Defaults to
 columns that are a factor or character vectors.}
 
+\item{keep.pattern}{Rows to keep based on a regular expression pattern.}
+
+\item{column}{The column to apply the filtering to.}
+
+\item{transform.fun}{A function to modify continuous variable columns.}
+
 \item{method}{correction method.  Can be abbreviated.}
+
+\item{data}{The scrubbed results.}
+
+\item{data}{The scrubbed results.}
 
 \item{data}{The scrubbed results.}
 }
 \description{
-Polish up.
+Do some final polishing of the scrubbed mason analysis data.
 
-Polish up the scrubbed results by renaming X and Y term names.
+\code{polish_filter} is basically a thin wrapper around
+\code{\link[dplyr]{filter}}, but using \code{\link[base]{grepl}} for the
+pattern searching.
 
-A thin wrapper around \code{\link[dplyr]{mutate}} and \code{\link[stats]{p.adjust}}
+\code{polish_transform_estimates} is simply a thin wrapper around
+\code{\link[dplyr]{mutate_each}}.
+
+\code{polish_adjust_pvalue} is a thin wrapper around
+\code{\link[dplyr]{mutate}} and \code{\link[stats]{p.adjust}}
 }
 \examples{
-\dontrun{
-ds <- scrub(ds)
-polish_renaming(ds, function(x) gsub('original string', 'replacement word', x))
-}
+library(magrittr)
+ds <- swiss \%>\%
+ design('glm') \%>\%
+ add_settings() \%>\%
+ add_variables('yvar', c('Fertility', 'Education')) \%>\%
+ add_variables('xvar', c('Agriculture', 'Catholic')) \%>\%
+ add_variables('covariates', 'Examination') \%>\%
+ construct() \%>\%
+ scrub()
+polish_renaming(ds, function(x) gsub('Education', 'Schooling', x))
+polish_filter(ds, 'Xterm', 'term')
+polish_adjust_pvalue(ds)[c('p.value', 'adj.p.value')]
+polish_transform_estimates(ds, function(x) exp(x))
 }
 
