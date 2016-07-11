@@ -5,105 +5,110 @@
 #' method is used at the construction phase.
 #'
 #' @param blueprint The blueprint object
-#' @inheritParams stats::cor
+#' @param hclust.order Whether to order the correlation data based on the
+#'   \code{\link[stats]{hclust}} algorithm.
+#' @param cluster.id Variable that represents the cluster for GEE.
 #' @inheritParams stats::glm
-#' @inheritParams stats::t.test
-#' @param cluster.id Variable that represents the cluster for GEE
 #' @inheritParams broom::tidy.geeglm
+#' @inheritParams stats::cor
+#' @inheritParams stats::t.test
 #'
 #' @return Settings for the analysis are added to the blueprint
 #' @export
 #'
 #' @examples
 #'
-#' ds <- design(iris, 'gee')
-#' ds <- add_settings(family = binomial('logit'), conf.int = FALSE)
+#' design(iris, 'gee') %>%
+#'  add_settings('Species', family = binomial('logit'), conf.int = FALSE)
 #'
 #' ds <- design(iris, 'cor')
-#' ds <- add_settings(method = 'spearman')
+#' ds <- add_settings(ds, method = 'spearman')
 #'
 #' ds <- design(iris, 't.test')
 #' add_settings(ds, paired = TRUE)
 #' add_settings(ds)
 #'
 add_settings <-
-    function(blueprint,
-             family,
-             corstr,
-             cluster.id,
-             conf.int,
-             conf.level,
-             method,
-             paired,
-             use) {
-        UseMethod('add_settings', blueprint)
+    function(data, ...) {
+        UseMethod('add_settings', data)
     }
 
 #' @export
-add_settings.gee_blueprint <-
-    function(blueprint,
+add_settings.gee_bp <-
+    function(data,
              cluster.id,
-             family = gaussian('identity'),
+             family,
              corstr = c('independence', 'exchangeable', 'ar1'),
              conf.int = TRUE,
-             conf.level = 0.95) {
-        .make_blueprint(
+             conf.level = 0.95, ...) {
+
+        if (missing(family))
+            family <- gaussian()
+
+        if (missing(cluster.id)) {
+            stop('Please supply an ID for the cluster.', call. = FALSE)
+        } else {
+            vars_exist(data, cluster.id)
+        }
+
+        make_blueprint(data,
             family = family,
             corstr = match.arg(corstr),
             id = cluster.id,
             conf.int = conf.int,
-            conf.level = conf.level,
-            blueprint = blueprint
+            conf.level = conf.level
         )
     }
 
 #' @export
-add_settings.cor_blueprint <-
-    function(blueprint,
+add_settings.cor_bp <-
+    function(data,
              method = c('pearson', 'kendall', 'spearman'),
              use = c('complete.obs',
                      'all.obs',
                      'pairwise.complete.obs',
                      'everything',
                      'na.or.complete'),
-             hclust.order = FALSE) {
-        .make_blueprint(
+             hclust.order = FALSE,
+             ...) {
+
+        if (hclust.order)
+            message('Note: hclust.order arg is still experimental')
+
+        make_blueprint(data,
             method = match.arg(method),
             obs.usage = match.arg(use),
-            blueprint = blueprint,
             hclust.order = hclust.order
         )
     }
 
 #' @export
-add_settings.glm_blueprint <-
-    function(blueprint,
-             family = gaussian('identity'),
-             conf.int = TRUE,
-             conf.level = 0.95) {
-        .make_blueprint(
+add_settings.glm_bp <-
+    function(data, family, conf.int = TRUE, conf.level = 0.95, ...) {
+
+        if (missing(family))
+            family <- gaussian()
+        make_blueprint(data,
             family = family,
             conf.int = conf.int,
-            conf.level = conf.level,
-            blueprint = blueprint
+            conf.level = conf.level
         )
     }
 
 #' @export
-add_settings.pls_blueprint <-
-    function(blueprint,
+add_settings.pls_bp <-
+    function(data,
              ncomp,
              scale = TRUE,
-             validation = c('none', 'CV', 'LOO')) {
+             validation = c('none', 'CV', 'LOO'),
+             ...) {
 
     }
 
 #' @export
-add_settings.t.test_blueprint <-
-    function(blueprint,
-             paired = FALSE) {
-        .make_blueprint(
-            blueprint = blueprint,
+add_settings.t.test_bp <-
+    function(data, paired = FALSE, ...) {
+        make_blueprint(data,
             paired = paired
         )
     }
