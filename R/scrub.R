@@ -21,32 +21,28 @@ scrub <- function(blueprint) {
 }
 
 #' @export
-scrub.default <- function(blueprint) {
-    results <- blueprint$results %>%
-        dplyr::tbl_df()
-    return(results)
+scrub.default <- function(data) {
+    dplyr::tbl_df(attr(data, 'specs')$results)
 }
 
 #' @export
-scrub.gee_blueprint <- function(blueprint) {
-    blueprint$results %>%
+scrub.gee_bp <- function(data) {
+    attr(data, 'specs')$results %>%
         dplyr::mutate(term = gsub('XtermValues', '<-Xterm', term)) %>%
         dplyr::tbl_df()
 }
 
 #' @export
-scrub.glm_blueprint <- scrub.gee_blueprint
+scrub.glm_bp <- scrub.gee_bp
 
 #' @export
-scrub.cor_blueprint <- function(blueprint) {
-    results <- blueprint$results %>%
-        dplyr::rename_('Vars1' = '.rownames') %>%
+scrub.cor_bp <- function(data) {
+    attr(data, 'specs')$results %>%
+        dplyr::rename_('Vars1' = 'Variables') %>%
         tidyr::gather('Vars2', 'Correlations', -Vars1) %>%
         dplyr::filter(Vars1 != Vars2) %>%
         na.omit() %>%
         dplyr::tbl_df()
-
-    return(results)
 }
 
 # Polish ------------------------------------------------------------------
@@ -78,7 +74,7 @@ NULL
 #' @rdname polish
 #' @export
 polish_renaming <- function(data, renaming.fun, columns = NULL) {
-    .is_function(renaming.fun)
+    assertive::assert_is_function(renaming.fun)
 
     if (is.null(columns)) {
         columns <-
@@ -89,7 +85,7 @@ polish_renaming <- function(data, renaming.fun, columns = NULL) {
             which() %>%
             names()
     } else {
-        .is_character(columns)
+        assertive::assert_is_character(columns)
     }
 
     dplyr::mutate_each_(data, dplyr::funs(renaming.fun), columns)
@@ -116,7 +112,7 @@ polish_filter <- function(data, keep.pattern, column) {
 #' @rdname polish
 #' @export
 polish_transform_estimates <- function(data, transform.fun) {
-    .is_function(transform.fun)
+    assertive::assert_is_function(transform.fun)
     dplyr::mutate_each(
         data,
         dplyr::funs(transform.fun),
