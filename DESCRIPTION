@@ -15,9 +15,12 @@ Imports:
     dplyr,
     tidyr,
     broom,
-    reshape2,
     assertive,
-    magrittr
+    magrittr,
+    stats,
+    utils,
+    lazyeval,
+    assertr
 RoxygenNote: 5.0.1
 Suggests: knitr,
     geepack,
