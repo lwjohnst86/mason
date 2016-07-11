@@ -20,25 +20,28 @@
 #' design(iris, 'glm')
 #' design(iris, 't.test')
 #'
-design <- function(data, test.type = c('gee', 'cor', 'glm', 'pls',
-                                                'plsda', 't.test')) {
-    .is_df(data)
-    type <- match.arg(test.type)
-    .make_blueprint(
+design <- function(data,
+                   statistic = c('gee', 'cor', 'glm', 'pls',
+                                 'plsda', 't.test')) {
+    assertive::assert_is_data.frame(data)
+    type <- match.arg(statistic)
+    make_blueprint(
         data = dplyr::tbl_df(data),
         stat = type,
-        bp.class = paste0(type, '_blueprint')
+        type = paste0(type, '_bp')
     )
 }
 
-.make_blueprint <- function(..., blueprint = NULL, bp.class = NULL) {
-    plans <- list(...)
-    if (!is.null(blueprint)) {
-        blueprint <- modifyList(blueprint, plans)
-    } else {
-        bp.class <- c(bp.class, 'blueprint')
-        blueprint <- structure(c(blueprint, plans),
-                               class = bp.class)
+make_blueprint <- function(data, ..., type = NULL) {
+    specs <- list(...)
+    if (!is.null(attr(data, 'specs'))) {
+        specs <- utils::modifyList(attr(data, 'specs'), specs)
     }
-    return(blueprint)
+
+    if (!'bp' %in% class(data)) {
+        class(data) <- c(type, 'bp', class(data))
+    }
+
+    attr(data, 'specs') <- specs
+    return(data)
 }
