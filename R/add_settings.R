@@ -42,8 +42,11 @@ add_settings.gee_bp <-
              conf.int = TRUE,
              conf.level = 0.95, ...) {
 
-        if (missing(family))
+        if (missing(family)) {
             family <- gaussian()
+        } else {
+            assertive::assert_is_function(family)
+        }
 
         if (missing(cluster.id)) {
             stop('Please supply an ID for the cluster.', call. = FALSE)
@@ -86,8 +89,11 @@ add_settings.cor_bp <-
 add_settings.glm_bp <-
     function(data, family, conf.int = TRUE, conf.level = 0.95, ...) {
 
-        if (missing(family))
+        if (missing(family)) {
             family <- gaussian()
+        } else {
+            assertive::assert_is_function(family)
+        }
         make_blueprint(data,
             family = family,
             conf.int = conf.int,
