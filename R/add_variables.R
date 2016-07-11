@@ -52,7 +52,7 @@ add_variables.default <-
         var.specs <- attr(data, 'specs')$vars
         if (!is.null(var.specs))
             if (type %in% names(var.specs))
-                message(type, 'already exists in the specs, but will be replaced.')
+                message(type, ' already exists in the specs, but will be replaced.')
 
         make_blueprint(data, vars = setNames(list(variables), type))
     }
