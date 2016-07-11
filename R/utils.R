@@ -1,5 +1,20 @@
-.regression_data_prep <- function(data, y, x, covars = NULL,
-                                  int = NULL, id = NULL) {
+construction_base <- function(data, specs, tool, na.rm = FALSE) {
+    data_prep(
+        data = data,
+        y = specs$vars$yvars,
+        x = specs$vars$xvars,
+        covars = specs$vars$covariates,
+        int = specs$vars$interaction,
+        id = specs$id,
+        na.rm = na.rm
+    ) %>%
+        generate_results(tool, specs,
+                         type = grep('bp', class(data), value = TRUE))
+}
+
+data_prep <- function(data, y, x, covars = NULL,
+                      int = NULL, id = NULL, na.rm = TRUE) {
+
     data <- data %>%
         dplyr::select_(.dots = c(id, y, x, covars, int)) %>%
         tidyr::gather_('Yterms', 'YtermValues', y) %>%
@@ -9,38 +24,43 @@
         data <- dplyr::rename_(data, 'id' = id)
 
     data <- data %>%
-        dplyr::group_by(Yterms, Xterms)
+        dplyr::group_by_('Yterms', 'Xterms')
+
+    if (na.rm)
+        data <- na.omit(data)
 
     return(data)
 }
 
-.append_if_results_exist <- function(blueprint, results) {
-    .is_blueprint(blueprint)
-    .is_tbl_df(results)
-
-    if (exists("results", where = blueprint)) {
-        blueprint$results <- dplyr::bind_rows(blueprint$results, results)
+regression_formula <- function(specs) {
+    vars <- specs$vars
+    if (length(vars$interaction) == 1) {
+        int <- paste0('XtermValues:', vars$interaction)
     } else {
-        blueprint$results <- results
+        int <- NULL
     }
 
-    return(blueprint)
+    stats::reformulate(c('XtermValues',
+                         vars$covariates, int),
+                       response = 'YtermValues')
 }
 
-print.blueprint <- function(x, ...) {
-    if (is.null(x$results)) {
-        cat("Analysis under construction, showing data right now:\n",
-            "- statistic method:", x$stat, '\n\n')
+generate_results <- function(data, tool, specs, type) {
 
-        print(x$data)
-    } else if (!is.null(x$results)) {
-        cat('Analysis for', x$stat, 'constructed, here are the results:\n')
-        print(x$results)
-    } else {
-        cat('Nothing to show yet, is something wrong maybe?')
-    }
+    results <- data %>%
+        dplyr::do_(.dots = tool) %>%
+        dplyr::ungroup() %>%
+        dplyr::tbl_df()
+
+    data <- dplyr::ungroup(data)
+    append_results(data, specs, results, type)
 }
 
-#' @importFrom magrittr "%>%"
-#' @export
-magrittr::`%>%`
+append_results <- function(data, specs, results, type) {
+    if (!is.null(attr(data, 'results')))
+        results <- dplyr::bind_rows(attr(data, 'results'), results)
+
+    attr(data, 'specs') <- specs
+    make_blueprint(data, results = results, type = type)
+}
+

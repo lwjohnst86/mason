@@ -1,54 +1,69 @@
-.check_covars_in_xyvars <- function(blueprint) {
-    if (!is.null(blueprint$covariates))
-        if (any(blueprint$covariates %in% c(blueprint$yvars, blueprint$xvars)))
-            stop('A covariate is also listed as a yvar or xvar. It should be in only one or the other.')
-}
+specs_integrity <- function(data, specs, stat = NULL) {
+    vars <- specs$vars
 
-.check_int_in_covars <- function(blueprint) {
-    if (!is.null(blueprint$int))
-        if (!blueprint$int %in% blueprint$covariates)
-            stop('Please include ', blueprint$int, ' in the covars as well.',
-                 call. = FALSE)
-}
+    if (any(vars$xvars %in% vars$yvars))
+        stop('Oops, you have one or more variables that are the same in',
+             ' both xvars and yvars. Please have the xvars and yvars be completely',
+             ' unique.', call. = FALSE)
 
-.check_vars_in_data <-
-    function(blueprint,
-             parts = c('yvars', 'xvars', 'covariates', 'interaction')) {
-        vars.want <- unlist(blueprint[parts])
-        vars.have <- names(blueprint$data)
-        index <- vars.want %in% vars.have
-        if (!any(index)) {
-            vars <- paste(vars.want[which(!vars.want %in% vars.have)], separate = ', ')
+    if (is.null(vars$xvars)) {
+        if (is.null(vars$yvars) & stat == 'cor')
+            stop('Please include at least x variables.', call. = FALSE)
+        if (is.null(vars$xvars) | is.null(vars$yvars))
+            stop('Please include y and x variables.', call. = FALSE)
+    }
+
+    if (!is.null(vars$covariates)) {
+        if (any(vars$covariates %in% c(vars$yvars, vars$xvars))) {
             stop(
-                'The variables ',
-                vars,
-                ' do not exist in the dataset.',
+                'A covariate is also listed as a yvar or xvar. ',
+                'It should be in only one or the other.',
                 call. = FALSE
             )
         }
-    }
-
-.check_xyvars_same_type <-
-    function(blueprint, vars = c('yvars', 'xvars')) {
-
-        for (ind in vars) {
-            var.names <- blueprint[[ind]]
-            if (is.null(var.names))
-                next
-            data.types <- unique(sapply(blueprint$data[var.names], class))
-            var.names <- ifelse(length(var.names) > 4,
-                                paste0(paste(var.names[1:4], collapse = ', '), ', etc'),
-                                paste(var.names, collapse = ', '))
-            if (any(!data.types %in% c('numeric', 'integer')) & length(data.types) != 1)
-                stop(
-                    'The variables ',
-                    var.names,
-                    ' are a mix of data types (',
-                    paste(data.types, collapse = ', '),
-                    '). Use only one type in add_variables. ',
-                    'Other types can be added after running construct',
-                    ' (see the vignette for more information).',
-                    call. = FALSE
-                )
+        if (!is.null(vars$interaction)) {
+            if (length(vars$interaction) > 1)
+                stop('Currently only one interaction can be added at a time.')
+            if (!vars$interaction %in% vars$covariates)
+                stop('Please include ',
+                     vars$interaction,
+                     ' in the covariates as well.',
+                     call. = FALSE)
         }
     }
+}
+
+vars_exist <- function(data, vars) {
+    vars.want <- vars
+    vars.have <- names(data)
+    index <- vars.want %in% vars.have
+    if (!any(index)) {
+        vars <-
+            paste(vars.want[which(!vars.want %in% vars.have)], separate = ', ')
+        stop('The variables ',
+             vars,
+             ' do not exist in the dataset.',
+             call. = FALSE)
+    }
+}
+
+print.bp <- function(x, ...) {
+    specs <- attributes(x)$specs
+    if (is.null(specs$results)) {
+        cat("Analysis under construction, showing data right now:\n",
+            "- statistic method:", specs$stat, '\n\n')
+        print(x)
+    } else if (!is.null(specs$results)) {
+        cat(
+            'Analysis for', specs$stat, 'constructed, but not polished.\n',
+            'Here are a peek at the results:\n'
+        )
+        print(attr(x, 'specs')$results)
+    } else {
+        cat('Nothing to show yet, is something wrong maybe?')
+    }
+}
+
+#' @importFrom magrittr "%>%"
+#' @export
+magrittr::`%>%`
