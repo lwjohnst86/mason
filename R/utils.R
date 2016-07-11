@@ -1,66 +1,69 @@
-construction_base <- function(data, specs, tool, na.rm = FALSE) {
-    data_prep(
-        data = data,
-        y = specs$vars$yvars,
-        x = specs$vars$xvars,
-        covars = specs$vars$covariates,
-        int = specs$vars$interaction,
-        id = specs$id,
-        na.rm = na.rm
-    ) %>%
-        generate_results(tool, specs,
-                         type = grep('bp', class(data), value = TRUE))
-}
-
-data_prep <- function(data, y, x, covars = NULL,
-                      int = NULL, id = NULL, na.rm = TRUE) {
-
-    data <- data %>%
-        dplyr::select_(.dots = c(id, y, x, covars, int)) %>%
-        tidyr::gather_('Yterms', 'YtermValues', y) %>%
-        tidyr::gather_('Xterms', 'XtermValues', x)
-
-    if (!is.null(id))
-        data <- dplyr::rename_(data, 'id' = id)
-
-    data <- data %>%
-        dplyr::group_by_('Yterms', 'Xterms')
-
-    if (na.rm)
-        data <- na.omit(data)
-
-    return(data)
-}
-
-regression_formula <- function(specs) {
+specs_integrity <- function(data, specs, stat = NULL) {
     vars <- specs$vars
-    if (length(vars$interaction) == 1) {
-        int <- paste0('XtermValues:', vars$interaction)
-    } else {
-        int <- NULL
+
+    if (any(vars$xvars %in% vars$yvars))
+        stop('Oops, you have one or more variables that are the same in',
+             ' both xvars and yvars. Please have the xvars and yvars be completely',
+             ' unique.', call. = FALSE)
+
+    if (is.null(vars$xvars)) {
+        if (is.null(vars$yvars) & stat == 'cor')
+            stop('Please include at least x variables.', call. = FALSE)
+        if (is.null(vars$xvars) | is.null(vars$yvars))
+            stop('Please include y and x variables.', call. = FALSE)
     }
 
-    stats::reformulate(c('XtermValues',
-                         vars$covariates, int),
-                       response = 'YtermValues')
+    if (!is.null(vars$covariates)) {
+        if (any(vars$covariates %in% c(vars$yvars, vars$xvars))) {
+            stop(
+                'A covariate is also listed as a yvar or xvar. ',
+                'It should be in only one or the other.',
+                call. = FALSE
+            )
+        }
+        if (!is.null(vars$interaction)) {
+            if (length(vars$interaction) > 1)
+                stop('Currently only one interaction can be added at a time.')
+            if (!vars$interaction %in% vars$covariates)
+                stop('Please include ',
+                     vars$interaction,
+                     ' in the covariates as well.',
+                     call. = FALSE)
+        }
+    }
 }
 
-generate_results <- function(data, tool, specs, type) {
-
-    results <- data %>%
-        dplyr::do_(.dots = tool) %>%
-        dplyr::ungroup() %>%
-        dplyr::tbl_df()
-
-    data <- dplyr::ungroup(data)
-    append_results(data, specs, results, type)
+vars_exist <- function(data, vars) {
+    vars.want <- vars
+    vars.have <- names(data)
+    index <- vars.want %in% vars.have
+    if (!any(index)) {
+        vars <-
+            paste(vars.want[which(!vars.want %in% vars.have)], separate = ', ')
+        stop('The variables ',
+             vars,
+             ' do not exist in the dataset.',
+             call. = FALSE)
+    }
 }
 
-append_results <- function(data, specs, results, type) {
-    if (!is.null(attr(data, 'results')))
-        results <- dplyr::bind_rows(attr(data, 'results'), results)
-
-    attr(data, 'specs') <- specs
-    make_blueprint(data, results = results, type = type)
+print.bp <- function(x, ...) {
+    specs <- attributes(x)$specs
+    if (is.null(specs$results)) {
+        cat("Analysis under construction, showing data right now:\n",
+            "- statistic method:", specs$stat, '\n\n')
+        print(x)
+    } else if (!is.null(specs$results)) {
+        cat(
+            'Analysis for', specs$stat, 'constructed, but not polished.\n',
+            'Here are a peek at the results:\n'
+        )
+        print(attr(x, 'specs')$results)
+    } else {
+        cat('Nothing to show yet, is something wrong maybe?')
+    }
 }
 
+#' @importFrom magrittr "%>%"
+#' @export
+magrittr::`%>%`
