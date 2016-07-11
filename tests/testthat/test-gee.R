@@ -3,17 +3,10 @@ context("GEE output")
 ## TODO: Tests to maintain class after doing something else to it outside of mason (?)
 ## TODO: Use multiple datasets (state, dietox + respiratory + sitka89 (geepack))
 
-# construct_table ---------------------------------------------------------
+# construct ---------------------------------------------------------------
 
 ds <- design(testdata, 'gee')
 ds <- add_settings(ds, cluster.id = 'state.region')
-test_that("(for gee) construct needs cluster.id and function for family", {
-    ds_wrong <- add_settings(ds, 'state.region', family = 'gaussian')
-    expect_error(contruct_analysis(ds_wrong))
-    ds_wrong <- add_settings(ds, 'doesntexist')
-    expect_error(contruct_analysis(ds_wrong))
-})
-
 test_that("(for gee) construct needs yvar or xvar", {
     ds_wrong <- add_variables(ds, 'xvars', c('Population', 'Murder'))
     expect_error(contruct_analysis(ds_wrong))
@@ -22,27 +15,17 @@ test_that("(for gee) construct needs yvar or xvar", {
     expect_error(contruct_analysis(ds_wrong))
 })
 
-test_that("(for gee) construct yvar and xvar are in the data", {
-    ds_wrong <- add_variables(ds, 'yvars', 'doesntexist')
-    expect_error(construct(ds_wrong))
-
-    ds_wrong <- add_variables(ds, 'xvars', 'doesntexist')
-    expect_error(construct(ds_wrong))
-})
-
-test_that("(for gee) construct yvar and xvar are same data type", {
-    ds_wrong <- add_variables(ds, 'yvars', c('Income', 'Rich'))
-    expect_error(construct(ds_wrong))
-
-    ds_wrong <- add_variables(ds, 'xvars', c('Income', 'Rich'))
+test_that("(for gee) construct same var in both yvar and xvar", {
+    ds_wrong <- add_variables(ds, 'yvars', c('Income', 'Area'))
+    ds_wrong <- add_variables(ds_wrong, 'xvars', c('Income', 'Population'))
     expect_error(construct(ds_wrong))
 })
 
 ds <- add_variables(ds, 'yvars', c('Income', 'Life.Exp'))
 ds <- add_variables(ds, 'xvars', c('Population', 'Murder'))
 test_that("(for gee) construct interaction is a covar", {
-    ds <- add_variables(ds, 'covariates', c('Frost'))
-    ds_wrong <- add_variables(ds, 'interaction', c('Area'))
+    ds_wrong <- add_variables(ds, 'covariates', c('Frost'))
+    ds_wrong <- add_variables(ds_wrong, 'interaction', c('Area'))
     expect_error(construct(ds_wrong))
 })
 
@@ -79,7 +62,7 @@ gee_function <- function(formula, data = testdata) {
 ds <- add_settings(ds, cluster.id = 'state.region', corstr = 'ar1')
 
 test_that("(for gee) construct creates the right results (no covars)", {
-    ds_lone <- construct(ds)$results[-1:-3]
+    ds_lone <- scrub(construct(ds))[-1:-3]
     real_results <- rbind(
         gee_function(Income ~ Murder),
         gee_function(Income ~ Population),
@@ -93,7 +76,7 @@ test_that("(for gee) construct creates the right results (no covars)", {
 
 ds <- add_variables(ds, 'covariates', c('Frost', 'Area'))
 test_that("(for gee) construct creates the right results (with covars)", {
-    ds_lone <- construct(ds)$results[-1:-3]
+    ds_lone <- scrub(construct(ds))[-1:-3]
     real_results <- rbind(
         gee_function(Income ~ Murder + Frost + Area),
         gee_function(Income ~ Population + Frost + Area),
@@ -107,7 +90,7 @@ test_that("(for gee) construct creates the right results (with covars)", {
 
 test_that("(for gee) construct creates the right results (with covars + int)", {
     ds <- add_variables(ds, 'interaction', c('Frost'))
-    ds_lone <- construct(ds)$results[-1:-3]
+    ds_lone <- scrub(construct(ds))[-1:-3]
     real_results <- rbind(
         gee_function(Income ~ Murder + Frost + Area + Murder:Frost),
         gee_function(Income ~ Population + Frost + Area + Population:Frost),
@@ -124,4 +107,5 @@ test_that("(for gee) construct creates the right results (with covars + int)", {
 ds <- construct(ds)
 test_that("(for gee) scrub converts to tbl_df", {
     expect_is(scrub(ds), 'tbl_df')
+    expect_null(attr(scrub(ds), 'specs'))
 })
