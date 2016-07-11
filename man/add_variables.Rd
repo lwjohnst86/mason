@@ -4,16 +4,16 @@
 \alias{add_variables}
 \title{Add variables to the analysis}
 \usage{
-add_variables(blueprint, type = c("yvars", "xvars", "covariates",
-  "interaction"), variables)
+add_variables(data, type = c("yvars", "xvars", "covariates", "interaction"),
+  variables)
 }
 \arguments{
-\item{blueprint}{The blueprint object}
-
 \item{type}{The variable type, i.e. where it is located on the equation (y
 position, x, as a covariate, etc.)}
 
 \item{variables}{Variables to use for the type specified}
+
+\item{blueprint}{The blueprint object}
 }
 \value{
 Adds variables to the blueprint
@@ -25,9 +25,11 @@ They can further be classified as covariates and as an interaction term.
 }
 \examples{
 
-ds <- design(iris, 'cor')
-ds <- add_variables(ds, 'xvar', 'Sepal.Length')
-ds <- add_variables(ds, 'yvar', 'Petal.Length')
+library(magrittr)
+ds <- design(iris, 'cor') \%>\%
+ add_settings()
+add_variables(ds, 'xvar', 'Sepal.Length')
+add_variables(ds, 'yvar', 'Petal.Length')
 
 ds <- design(iris, 't.test')
 ds <- add_variables(ds, 'yvar', c('Sepal.Length', 'Sepal.Width'))

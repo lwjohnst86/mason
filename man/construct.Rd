@@ -4,15 +4,12 @@
 \alias{construct}
 \title{Construct the results of the analysis}
 \usage{
-construct(blueprint, na.rm = TRUE, hclust.order = FALSE)
+construct(data, ...)
 }
 \arguments{
 \item{blueprint}{The blueprint object}
 
-\item{na.rm}{Whether to remove missing values}
-
-\item{hclust.order}{Whether to order the correlation data based on the
-\code{\link[stats]{hclust}} algorithm.}
+\item{na.rm}{Whether to remove missing values.}
 }
 \value{
 Uses the blueprint to construct the results of the statistical
@@ -31,6 +28,18 @@ design(iris, 'cor') \%>\%
 
 design(iris, 't.test') \%>\%
  add_settings() \%>\%
+ add_variables('yvars', c('Sepal.Length', 'Sepal.Width')) \%>\%
+ add_variables('xvars', c('Petal.Length', 'Petal.Width')) \%>\%
+ construct()
+
+design(iris, 'glm') \%>\%
+ add_settings() \%>\%
+ add_variables('yvars', c('Sepal.Length', 'Sepal.Width')) \%>\%
+ add_variables('xvars', c('Petal.Length', 'Petal.Width')) \%>\%
+ construct()
+
+design(iris, 'gee') \%>\%
+ add_settings('Species') \%>\%
  add_variables('yvars', c('Sepal.Length', 'Sepal.Width')) \%>\%
  add_variables('xvars', c('Petal.Length', 'Petal.Width')) \%>\%
  construct()

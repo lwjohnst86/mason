@@ -4,38 +4,28 @@
 \alias{add_settings}
 \title{Add analysis settings to the blueprint}
 \usage{
-add_settings(blueprint, family, corstr, cluster.id, conf.int, conf.level,
-  method, paired, use)
+add_settings(data, ...)
 }
 \arguments{
+\item{data}{an optional data frame, list or environment (or object
+    coercible by \code{\link{as.data.frame}} to a data frame) containing
+    the variables in the model.  If not found in \code{data}, the
+    variables are taken from \code{environment(formula)},
+    typically the environment from which \code{glm} is called.}
+
+\item{...}{
+    For \code{glm}: arguments to be used to form the default
+    \code{control} argument if it is not supplied directly.
+
+    For \code{weights}: further arguments passed to or from other methods.
+  }
+
 \item{blueprint}{The blueprint object}
 
-\item{family}{a description of the error distribution and link
-    function to be used in the model.  For \code{glm} this can be a
-    character string naming a family function, a family function or the
-    result of a call to a family function.  For \code{glm.fit} only the
-    third option is supported.  (See \code{\link{family}} for details of
-    family functions.)}
+\item{hclust.order}{Whether to order the correlation data based on the
+\code{\link[stats]{hclust}} algorithm.}
 
-\item{cluster.id}{Variable that represents the cluster for GEE}
-
-\item{conf.int}{whether to include a confidence interval}
-
-\item{conf.level}{confidence level of the interval.}
-
-\item{method}{a character string indicating which correlation
-    coefficient (or covariance) is to be computed.  One of
-    \code{"pearson"} (default), \code{"kendall"}, or \code{"spearman"}:
-    can be abbreviated.}
-
-\item{paired}{a logical indicating whether you want a paired
-    t-test.}
-
-\item{use}{an optional character string giving a
-    method for computing covariances in the presence
-    of missing values.  This must be (an abbreviation of) one of the strings
-    \code{"everything"}, \code{"all.obs"}, \code{"complete.obs"},
-    \code{"na.or.complete"}, or \code{"pairwise.complete.obs"}.}
+\item{cluster.id}{Variable that represents the cluster for GEE.}
 }
 \value{
 Settings for the analysis are added to the blueprint
@@ -47,11 +37,11 @@ method is used at the construction phase.
 }
 \examples{
 
-ds <- design(iris, 'gee')
-ds <- add_settings(family = binomial('logit'), conf.int = FALSE)
+design(iris, 'gee') \%>\%
+ add_settings('Species', family = binomial('logit'), conf.int = FALSE)
 
 ds <- design(iris, 'cor')
-ds <- add_settings(method = 'spearman')
+ds <- add_settings(ds, method = 'spearman')
 
 ds <- design(iris, 't.test')
 add_settings(ds, paired = TRUE)
