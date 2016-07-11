@@ -39,6 +39,19 @@ test_that("add_setting is of correct class and has specs attribute", {
     expect_output(str(attr(ds, 'specs')), 'List of')
 })
 
+test_that("add_setting asserting works", {
+    ds <- design(testdata, 'gee')
+    expect_error(add_settings(ds))
+    expect_error(add_settings(ds, 'doesnt_exist'))
+    expect_error(add_settings(ds, 'state.region', family = 'gaussian'))
+
+    ds <- design(testdata, 'cor')
+    expect_message(add_settings(ds, hclust.order = TRUE))
+
+    ds <- design(testdata, 'glm')
+    expect_error(add_settings(ds, family = 'gaussian'))
+})
+
 # add_variables -----------------------------------------------------------
 
 test_that("add_variables is correct class and has correct number of specs", {
