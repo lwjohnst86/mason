@@ -105,7 +105,7 @@ test_that("(for gee) construct creates the right results (with covars + int)", {
 # scrub and polish --------------------------------------------------------
 
 ds <- construct(ds)
-test_that("(for gee) scrub converts to tbl_df", {
+test_that("(for gee) scrub converts to tbl_df and removes specs", {
     expect_is(scrub(ds), 'tbl_df')
     expect_null(attr(scrub(ds), 'specs'))
 })

@@ -1,35 +1,20 @@
 context("GLM output")
 
-# construct_table ---------------------------------------------------------
+# construct ---------------------------------------------------------------
 
 ds <- design(testdata, 'glm')
 ds <- add_settings(ds)
-test_that("(for glm) construct family needs to be function/family", {
-    ds_wrong <- add_settings(ds, family = 'gaussian')
-    expect_error(contruct_analysis(ds_wrong))
-})
-
 test_that("(for glm) construct needs yvar or xvar", {
     ds_wrong <- add_variables(ds, 'xvars', c('Population', 'Murder'))
-    expect_error(contruct_analysis(ds_wrong))
+    expect_error(contruct(ds_wrong))
 
     ds_wrong <- add_variables(ds, 'yvars', c('Population', 'Murder'))
-    expect_error(contruct_analysis(ds_wrong))
+    expect_error(contruct(ds_wrong))
 })
 
-test_that("(for glm) construct yvar and xvar are in the data", {
-    ds_wrong <- add_variables(ds, 'yvars', 'doesntexist')
-    expect_error(construct(ds_wrong))
-
-    ds_wrong <- add_variables(ds, 'xvars', 'doesntexist')
-    expect_error(construct(ds_wrong))
-})
-
-test_that("(for glm) construct yvar and xvar are same data type", {
-    ds_wrong <- add_variables(ds, 'yvars', c('Income', 'Rich'))
-    expect_error(construct(ds_wrong))
-
-    ds_wrong <- add_variables(ds, 'xvars', c('Income', 'Rich'))
+test_that("(for glm) construct variables the same in yvar and xvar", {
+    ds_wrong <- add_variables(ds, 'yvars', c('Income', 'Area'))
+    ds_wrong <- add_variables(ds_wrong, 'xvars', c('Income', 'Population'))
     expect_error(construct(ds_wrong))
 })
 
@@ -62,7 +47,7 @@ ds <- add_variables(ds, 'yvars', c('Income', 'Population'))
 ds <- add_variables(ds, 'xvars', c('Frost', 'Area'))
 
 test_that("(for glm) results are equal to real results (no covar)", {
-    test_results <- construct(ds)$results
+    test_results <- scrub(construct(ds))
     real_results <- rbind(
         glm_function(Income ~ Area),
         glm_function(Income ~ Frost),
@@ -76,7 +61,7 @@ test_that("(for glm) results are equal to real results (no covar)", {
 
 test_that("(for glm) results are equal to real results (with covar)", {
     ds <- add_variables(ds, 'covariates', 'Murder')
-    test_results <- construct(ds)$results
+    test_results <- scrub(construct(ds))
     real_results <- rbind(
         glm_function(Income ~ Area + Murder),
         glm_function(Income ~ Frost + Murder),
@@ -91,7 +76,7 @@ test_that("(for glm) results are equal to real results (with covar)", {
 test_that("(for glm) results are equal to real results (with covar + int)", {
     ds <- add_variables(ds, 'covariates', 'Murder')
     ds <- add_variables(ds, 'interaction', 'Murder')
-    test_results <- construct(ds)$results
+    test_results <- scrub(construct(ds))
     real_results <- rbind(
         glm_function(Income ~ Area + Murder + Area:Murder),
         glm_function(Income ~ Frost + Murder + Frost:Murder),
@@ -106,6 +91,7 @@ test_that("(for glm) results are equal to real results (with covar + int)", {
 # scrub and polish --------------------------------------------------------
 
 ds <- construct(ds)
-test_that("(for glm) scrub converts to tbl_df", {
+test_that("(for glm) scrub converts to tbl_df and removes specs", {
     expect_is(scrub(ds), 'tbl_df')
+    expect_null(attr(scrub(ds), 'specs'))
 })
