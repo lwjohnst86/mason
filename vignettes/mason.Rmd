@@ -1,6 +1,6 @@
 ---
 title: "Introduction to mason"
-author: "Vignette Author"
+author: "Luke W. Johnston"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -8,6 +8,18 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+> **Brief note**: I created this package to make my analyses easier. So some
+statistics that have been implemented were chosen because that's what I've done.
+If you would like a particular statistical method included, please fill out an
+[Issue](https://github.com/lwjohnst86/mason/issues) and I will try to implement it!
 
 ## Basic command flow
 
@@ -42,8 +54,8 @@ head(swiss)
 Ok, let's say we want to several models. We are interested in `Fertility` and
 `Infant.Mortality` as outcomes and `Education` and `Agriculture` as potential
 predictors. We also want to control for `Catholic`. This setup means we have
-four potential models to analyze. With `mason` this is relatively easy. Analyses
-in `mason` are essentially separated into a blueprint phase and a construction
+four potential models to analyze. With mason this is relatively easy. Analyses
+in mason are essentially separated into a blueprint phase and a construction
 phase. Since any structure or building always needs a blueprint, let's get that
 started.
 
@@ -53,14 +65,14 @@ design(swiss, 'glm')
 ```
 
 So far, all we've done is created a blueprint of the analysis, but it doesn't
-contain much. Let's add some settings to the blueprint. `mason` was designed to
+contain much. Let's add some settings to the blueprint. mason was designed to
 make use of the `%>%` pipes from the package `magrittr` (also found in `dplyr`),
 so let's load up `magrittr`!
 
 ```{r settings}
 library(magrittr)
 dp <- design(swiss, 'glm') %>% 
-    add_settings(family = gaussian('identity'))
+    add_settings(family = gaussian())
 ```
 
 You'll notice that each time, the only thing that is printed to the console is
@@ -68,7 +80,7 @@ the dataset. That's because we haven't constructed the analysis yet! We are
 still in the blueprint phase, so nothing new has been added! Since we have two
 outcomes and two predictors, we have a total of four models to analysis.
 Normally we would need to run each of the models separately. However, if simply
-list the outcomes and the predictors in `mason`, it will 'loop' through each
+list the outcomes and the predictors in mason, it will 'loop' through each
 combination and run all four models! Let's add the variables.
 
 ```{r variables}
@@ -91,19 +103,34 @@ too. Since we have 'finished' the analysis by cleaning it up, we can still add
 to the blueprint.
 
 ```{r constructCovar}
-dp <- dp %>%
+dp2 <- dp %>%
     add_variables('covariates', 'Catholic') %>% 
     construct()
-dp
+head(dp2)
 ```
 
-We now have two models in the results. We're happy with the results, so let's
-clean it up using the `scrub()` function.
+We now have two models in the results. We're happy with them, so let's clean it
+up using the `scrub()` function. 
 
 ```{r scrub}
-dp <- dp %>% 
+dp_clean <- dp2 %>% 
     scrub()
 ```
+
+All `scrub()` does is removes any extra specs in the attributes and sets the
+results as the main dataset. You can see this by looking at it's details and
+comparing to the unscrubbed version.
+
+```{r scrubDetails}
+colnames(dp2)
+colnames(dp_clean)
+names(attributes(dp2))
+names(attributes(dp_clean))
+class(dp2)
+class(dp_clean)
+```
+
+And all as a single pipe chain:
 
 ```{r oneGo}
 swiss %>% 
@@ -117,3 +144,6 @@ swiss %>%
     scrub()
 ```
 
+There are also additional `polish_*` type commands that are more or less simply
+wrappers around commands that you may do on the results dataset, like filtering
+or renaming. The list of polish commands can be found in `?mason::polish`.
