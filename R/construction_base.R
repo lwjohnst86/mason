@@ -15,21 +15,21 @@ construction_base <- function(data, specs, tool, na.rm = FALSE) {
 data_prep <- function(data, y, x, covars = NULL,
                       int = NULL, id = NULL, na.rm = TRUE) {
 
-    data <- data %>%
+    prep <- data %>%
         dplyr::select_(.dots = c(id, y, x, covars, int)) %>%
         tidyr::gather_('Yterms', 'YtermValues', y) %>%
         tidyr::gather_('Xterms', 'XtermValues', x)
 
     if (!is.null(id))
-        data <- dplyr::rename_(data, 'id' = id)
+        prep <- dplyr::rename_(prep, 'id' = id)
 
-    data <- data %>%
+    prep <- prep %>%
         dplyr::group_by_('Yterms', 'Xterms')
 
     if (na.rm)
-        data <- na.omit(data)
+        prep <- stats::na.omit(prep)
 
-    return(data)
+    make_blueprint(data, prepared = prep)
 }
 
 regression_formula <- function(specs) {
@@ -47,20 +47,21 @@ regression_formula <- function(specs) {
 
 generate_results <- function(data, tool, specs, type) {
 
-    results <- data %>%
+    results <- attr(data, 'specs')$prepared %>%
         dplyr::do_(.dots = tool) %>%
         dplyr::ungroup() %>%
         dplyr::tbl_df()
 
-    data <- dplyr::ungroup(data)
+    # Remove in case prepared data already existed.
+    attr(data, 'specs')$prepared <- NULL
     append_results(data, specs, results, type)
 }
 
 append_results <- function(data, specs, results, type) {
-    if (!is.null(attr(data, 'results')))
-        results <- dplyr::bind_rows(attr(data, 'results'), results)
+    if (!is.null(attr(data, 'specs')$results))
+        results <- dplyr::bind_rows(attr(data, 'specs')$results, results)
 
-    attr(data, 'specs') <- specs
+    attr(data, 'specs')$results <- NULL
     make_blueprint(data, results = results, type = type)
 }
 
