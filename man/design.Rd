@@ -9,7 +9,7 @@ design(data, statistic = c("gee", "cor", "glm", "pls", "plsda", "t.test"))
 \arguments{
 \item{data}{The dataset you want to analyze}
 
-\item{test.type}{The type of statistical test to use}
+\item{statistic}{The type of statistical test to use}
 }
 \value{
 Creates a blueprint object that will be used to construct the

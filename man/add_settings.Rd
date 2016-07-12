@@ -2,30 +2,70 @@
 % Please edit documentation in R/add_settings.R
 \name{add_settings}
 \alias{add_settings}
+\alias{add_settings.cor_bp}
+\alias{add_settings.gee_bp}
+\alias{add_settings.glm_bp}
+\alias{add_settings.t.test_bp}
 \title{Add analysis settings to the blueprint}
 \usage{
 add_settings(data, ...)
+
+\method{add_settings}{gee_bp}(data, cluster.id, family,
+  corstr = c("independence", "exchangeable", "ar1"), conf.int = TRUE,
+  conf.level = 0.95, ...)
+
+\method{add_settings}{cor_bp}(data, method = c("pearson", "kendall",
+  "spearman"), use = c("complete.obs", "all.obs", "pairwise.complete.obs",
+  "everything", "na.or.complete"), hclust.order = FALSE, ...)
+
+\method{add_settings}{glm_bp}(data, family, conf.int = TRUE,
+  conf.level = 0.95, ...)
+
+\method{add_settings}{t.test_bp}(data, paired = FALSE, ...)
 }
 \arguments{
-\item{data}{an optional data frame, list or environment (or object
-    coercible by \code{\link{as.data.frame}} to a data frame) containing
-    the variables in the model.  If not found in \code{data}, the
-    variables are taken from \code{environment(formula)},
-    typically the environment from which \code{glm} is called.}
+\item{data}{The blueprint data object.}
 
-\item{...}{
-    For \code{glm}: arguments to be used to form the default
-    \code{control} argument if it is not supplied directly.
+\item{...}{Additional args.}
 
-    For \code{weights}: further arguments passed to or from other methods.
+\item{cluster.id}{Variable that represents the cluster for GEE.}
+
+\item{family}{a description of the error distribution and link
+    function to be used in the model.  For \code{glm} this can be a
+    character string naming a family function, a family function or the
+    result of a call to a family function.  For \code{glm.fit} only the
+    third option is supported.  (See \code{\link{family}} for details of
+    family functions.)}
+
+\item{corstr}{The correlation structure. See \code{\link[geepack]{geeglm}}.}
+
+\item{conf.int}{whether to include a confidence interval}
+
+\item{conf.level}{confidence level of the interval, used only if
+\code{conf.int=TRUE}}
+
+\item{method}{the method to be used in fitting the model.  The default
+    method \code{"glm.fit"} uses iteratively reweighted least squares
+    (IWLS): the alternative \code{"model.frame"} returns the model frame
+    and does no fitting.
+
+    User-supplied fitting functions can be supplied either as a function
+    or a character string naming a function, with a function which takes
+    the same arguments as \code{glm.fit}.  If specified as a character
+    string it is looked up from within the \pkg{stats} namespace.
   }
 
-\item{blueprint}{The blueprint object}
+\item{use}{an optional character string giving a
+    method for computing covariances in the presence
+    of missing values.  This must be (an abbreviation of) one of the strings
+    \code{"everything"}, \code{"all.obs"}, \code{"complete.obs"},
+    \code{"na.or.complete"}, or \code{"pairwise.complete.obs"}.}
 
 \item{hclust.order}{Whether to order the correlation data based on the
 \code{\link[stats]{hclust}} algorithm.}
 
-\item{cluster.id}{Variable that represents the cluster for GEE.}
+\item{paired}{a logical indicating whether you want a paired
+    t-test.}
 }
 \value{
 Settings for the analysis are added to the blueprint

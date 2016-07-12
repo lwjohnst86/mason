@@ -4,10 +4,10 @@
 \alias{scrub}
 \title{Scrub down and polish up the constructed analysis results.}
 \usage{
-scrub(blueprint)
+scrub(data)
 }
 \arguments{
-\item{blueprint}{The blueprint object.}
+\item{data}{The blueprint data object.}
 }
 \value{
 Outputs a cleaned up version of the constructed analysis.

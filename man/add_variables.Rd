@@ -8,12 +8,12 @@ add_variables(data, type = c("yvars", "xvars", "covariates", "interaction"),
   variables)
 }
 \arguments{
+\item{data}{The blueprint data object.}
+
 \item{type}{The variable type, i.e. where it is located on the equation (y
 position, x, as a covariate, etc.)}
 
 \item{variables}{Variables to use for the type specified}
-
-\item{blueprint}{The blueprint object}
 }
 \value{
 Adds variables to the blueprint

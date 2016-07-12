@@ -4,10 +4,12 @@
 \alias{construct}
 \title{Construct the results of the analysis}
 \usage{
-construct(data, ...)
+construct(data, ..., na.rm = TRUE)
 }
 \arguments{
-\item{blueprint}{The blueprint object}
+\item{data}{The blueprint data object.}
+
+\item{...}{Additional args.}
 
 \item{na.rm}{Whether to remove missing values.}
 }

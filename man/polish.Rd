@@ -31,27 +31,28 @@ columns that are a factor or character vectors.}
 
 \item{transform.fun}{A function to modify continuous variable columns.}
 
-\item{method}{correction method.  Can be abbreviated.}
-
-\item{data}{The scrubbed results.}
-
-\item{data}{The scrubbed results.}
-
-\item{data}{The scrubbed results.}
+\item{method}{Correction method for the p-value adjustment
+(\code{\link[stats]{p.adjust}}).}
 }
 \description{
 Do some final polishing of the scrubbed mason analysis data.
+}
+\section{Functions}{
+\itemize{
+\item \code{polish_renaming}: \code{polish_renaming} simply takes a function, most
+likely one that uses \code{\link[base]{gsub}}, and uses that to search and
+replace words, etc, in the specified columns.
 
-\code{polish_filter} is basically a thin wrapper around
+\item \code{polish_filter}: \code{polish_filter} is basically a thin wrapper around
 \code{\link[dplyr]{filter}}, but using \code{\link[base]{grepl}} for the
 pattern searching.
 
-\code{polish_transform_estimates} is simply a thin wrapper around
-\code{\link[dplyr]{mutate_each}}.
+\item \code{polish_transform_estimates}: \code{polish_transform_estimates} is simply a thin wrapper
+around \code{\link[dplyr]{mutate_each}}.
 
-\code{polish_adjust_pvalue} is a thin wrapper around
+\item \code{polish_adjust_pvalue}: \code{polish_adjust_pvalue} is a thin wrapper around
 \code{\link[dplyr]{mutate}} and \code{\link[stats]{p.adjust}}
-}
+}}
 \examples{
 library(magrittr)
 ds <- swiss \%>\%
