@@ -50,17 +50,19 @@ vars_exist <- function(data, vars) {
 print.bp <- function(x, ...) {
     specs <- attributes(x)$specs
     if (is.null(specs$results)) {
-        cat("Analysis under construction, showing data right now:\n",
-            "- statistic method:", specs$stat, '\n\n')
-        print(x)
+        cat("# Analysis for ", specs$stat, " is still under construction.",
+            "\nShowing data right now:\n\n")
+        print(dplyr::tbl_df(unclass(x)))
+        invisible(x)
     } else if (!is.null(specs$results)) {
         cat(
-            'Analysis for', specs$stat, 'constructed, but not polished.\n',
-            'Here are a peek at the results:\n'
+            'Analysis for', specs$stat, 'constructed but has not been scrubbed.',
+            '\nHere is a peek at the results:\n'
         )
-        print(attr(x, 'specs')$results)
+        print(dplyr::tbl_df(attr(x, 'specs')$results))
+        invisible(x)
     } else {
-        cat('Nothing to show yet, is something wrong maybe?')
+        warning('Nothing to show yet, is something wrong maybe?')
     }
 }
 
