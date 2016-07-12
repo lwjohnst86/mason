@@ -1,9 +1,8 @@
-
 # Scrub -------------------------------------------------------------------
 
 #' Scrub down and polish up the constructed analysis results.
 #'
-#' @param blueprint The blueprint object.
+#' @param data The blueprint data object.
 #'
 #' @return Outputs a cleaned up version of the constructed analysis.
 #' @export
@@ -16,8 +15,8 @@
 #' ds <- construct(ds)
 #' scrub(ds)
 #'
-scrub <- function(blueprint) {
-    UseMethod('scrub', blueprint)
+scrub <- function(data) {
+    UseMethod('scrub', data)
 }
 
 #' @export
@@ -27,8 +26,10 @@ scrub.default <- function(data) {
 
 #' @export
 scrub.gee_bp <- function(data) {
-    attr(data, 'specs')$results %>%
-        dplyr::mutate(term = gsub('XtermValues', '<-Xterm', term)) %>%
+    results <- attr(data, 'specs')$results
+    mutate_tool <- lazyeval::interp("gsub('XtermValues', '<-Xterm', term)")
+    results %>%
+        dplyr::mutate_(.dots = stats::setNames(mutate_tool, 'term')) %>%
         dplyr::tbl_df()
 }
 
@@ -37,11 +38,15 @@ scrub.glm_bp <- scrub.gee_bp
 
 #' @export
 scrub.cor_bp <- function(data) {
-    attr(data, 'specs')$results %>%
-        dplyr::rename_('Vars1' = 'Variables') %>%
-        tidyr::gather('Vars2', 'Correlations', -Vars1) %>%
-        dplyr::filter(Vars1 != Vars2) %>%
-        na.omit() %>%
+    results <- attr(data, 'specs')$results %>%
+        dplyr::rename_('Vars1' = 'Variables')
+    vars <- names(results)
+    vars <- setdiff(vars, 'Vars1')
+
+    results %>%
+        tidyr::gather_('Vars2', 'Correlations', vars) %>%
+        dplyr::filter_(.dots = lazyeval::interp("Vars1 != Vars2")) %>%
+        stats::na.omit() %>%
         dplyr::tbl_df()
 }
 
@@ -50,6 +55,7 @@ scrub.cor_bp <- function(data) {
 #' Do some final polishing of the scrubbed mason analysis data.
 #'
 #' @name polish
+#' @param data The scrubbed object.
 #' @examples
 #' library(magrittr)
 #' ds <- swiss %>%
@@ -66,12 +72,13 @@ scrub.cor_bp <- function(data) {
 #' polish_transform_estimates(ds, function(x) exp(x))
 NULL
 
-#' @param data The scrubbed object.
+#' @describeIn polish \code{polish_renaming} simply takes a function, most
+#'   likely one that uses \code{\link[base]{gsub}}, and uses that to search and
+#'   replace words, etc, in the specified columns.
 #' @param renaming.fun A function, typically with \code{\link[base]{gsub}}, that
 #'   searches and replaces strings.
 #' @param columns The columns to apply the renaming function to. Defaults to
 #'   columns that are a factor or character vectors.
-#' @rdname polish
 #' @export
 polish_renaming <- function(data, renaming.fun, columns = NULL) {
     assertive::assert_is_function(renaming.fun)
@@ -91,42 +98,39 @@ polish_renaming <- function(data, renaming.fun, columns = NULL) {
     dplyr::mutate_each_(data, dplyr::funs(renaming.fun), columns)
 }
 
-#' \code{polish_filter} is basically a thin wrapper around
+#' @describeIn polish \code{polish_filter} is basically a thin wrapper around
 #' \code{\link[dplyr]{filter}}, but using \code{\link[base]{grepl}} for the
 #' pattern searching.
 #'
-#' @param data The scrubbed results.
 #' @param keep.pattern Rows to keep based on a regular expression pattern.
 #' @param column The column to apply the filtering to.
-#' @rdname polish
 #' @export
 polish_filter <- function(data, keep.pattern, column) {
     dplyr::filter(data, grepl(keep.pattern, data[[column]], ignore.case = TRUE))
 }
 
-#' \code{polish_transform_estimates} is simply a thin wrapper around
-#' \code{\link[dplyr]{mutate_each}}.
+#' @describeIn polish \code{polish_transform_estimates} is simply a thin wrapper
+#'   around \code{\link[dplyr]{mutate_each}}.
 #'
-#' @param data The scrubbed results.
 #' @param transform.fun A function to modify continuous variable columns.
-#' @rdname polish
 #' @export
 polish_transform_estimates <- function(data, transform.fun) {
     assertive::assert_is_function(transform.fun)
     dplyr::mutate_each(
         data,
         dplyr::funs(transform.fun),
-        matches('estimate|std\\.error|conf\\.low|conf\\.high')
+        dplyr::matches('estimate|std\\.error|conf\\.low|conf\\.high')
     )
 }
 
-#' \code{polish_adjust_pvalue} is a thin wrapper around
-#' \code{\link[dplyr]{mutate}} and \code{\link[stats]{p.adjust}}
+#' @describeIn polish \code{polish_adjust_pvalue} is a thin wrapper around
+#'   \code{\link[dplyr]{mutate}} and \code{\link[stats]{p.adjust}}
 #'
-#' @param data The scrubbed results.
-#' @inheritParams stats::p.adjust
-#' @rdname polish
+#' @param method Correction method for the p-value adjustment
+#'   (\code{\link[stats]{p.adjust}}).
 #' @export
 polish_adjust_pvalue <- function(data, method = 'BH') {
-    dplyr::mutate(data, adj.p.value = p.adjust(p.value, method))
+    mutate_tool <- lazyeval::interp('stats::p.adjust(p.value, method)',
+                                    method = method)
+    dplyr::mutate_(data, .dots = stats::setNames(mutate_tool, 'adj.p.value'))
 }
