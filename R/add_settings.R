@@ -4,14 +4,8 @@
 #' This function sets those settings in the blueprint, before the statistical
 #' method is used at the construction phase.
 #'
-#' @param blueprint The blueprint object
-#' @param hclust.order Whether to order the correlation data based on the
-#'   \code{\link[stats]{hclust}} algorithm.
-#' @param cluster.id Variable that represents the cluster for GEE.
-#' @inheritParams stats::glm
-#' @inheritParams broom::tidy.geeglm
-#' @inheritParams stats::cor
-#' @inheritParams stats::t.test
+#' @param data The blueprint data object.
+#' @param ... Additional args.
 #'
 #' @return Settings for the analysis are added to the blueprint
 #' @export
@@ -33,6 +27,11 @@ add_settings <-
         UseMethod('add_settings', data)
     }
 
+#' @rdname add_settings
+#' @param cluster.id Variable that represents the cluster for GEE.
+#' @param corstr The correlation structure. See \code{\link[geepack]{geeglm}}.
+#' @inheritParams stats::glm
+#' @inheritParams broom::tidy.geeglm
 #' @export
 add_settings.gee_bp <-
     function(data,
@@ -43,9 +42,10 @@ add_settings.gee_bp <-
              conf.level = 0.95, ...) {
 
         if (missing(family)) {
-            family <- gaussian()
+            family <- stats::gaussian()
         } else {
-            assertive::assert_is_function(family)
+            if (class(family) != 'family')
+                stop('Please use a family function (e.g. gaussian()).')
         }
 
         if (missing(cluster.id)) {
@@ -63,6 +63,10 @@ add_settings.gee_bp <-
         )
     }
 
+#' @rdname add_settings
+#' @param hclust.order Whether to order the correlation data based on the
+#'   \code{\link[stats]{hclust}} algorithm.
+#' @inheritParams stats::cor
 #' @export
 add_settings.cor_bp <-
     function(data,
@@ -85,14 +89,16 @@ add_settings.cor_bp <-
         )
     }
 
+#' @rdname add_settings
 #' @export
 add_settings.glm_bp <-
     function(data, family, conf.int = TRUE, conf.level = 0.95, ...) {
 
         if (missing(family)) {
-            family <- gaussian()
+            family <- stats::gaussian()
         } else {
-            assertive::assert_is_function(family)
+            if (class(family) != 'family')
+                stop('Please use a family function (e.g. gaussian()).')
         }
         make_blueprint(data,
             family = family,
@@ -111,6 +117,8 @@ add_settings.pls_bp <-
 
     }
 
+#' @rdname add_settings
+#' @inheritParams stats::t.test
 #' @export
 add_settings.t.test_bp <-
     function(data, paired = FALSE, ...) {
