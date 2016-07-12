@@ -1,11 +1,11 @@
 Package: mason
 Type: Package
-Title: Build Common Analysis Dataframe Structures
+Title: Build Data Structures For Common Statistical Analysis
 Version: 0.2.3.9000
 Authors@R: person("Luke", "Johnston", email = "lwjohnst@gmail.com",
     role = c("aut", "cre"))
 Description: Use a consistent syntax to create data structures of common
-    statistical techniques that can be continued in a magrittr pipe chain.
+    statistical techniques that can be continued in a pipe chain.
     Design the analysis, add settings and variables, construct the results, and
     polish the final structure. Rinse and repeat for any number of statistical
     techniques.
@@ -29,5 +29,5 @@ Suggests: knitr,
     rmarkdown,
     testthat
 VignetteBuilder: knitr
-BugReport: https://github.com/lwjohnst86/mason/issues
+BugReports: https://github.com/lwjohnst86/mason/issues
 URL: https://github.com/lwjohnst86/mason
