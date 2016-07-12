@@ -1,7 +1,8 @@
 #' Construct the results of the analysis
 #'
-#' @param blueprint The blueprint object
+#' @param data The blueprint data object.
 #' @param na.rm Whether to remove missing values.
+#' @param ... Additional args.
 #'
 #' @return Uses the blueprint to construct the results of the statistical
 #'   analysis.
@@ -33,7 +34,7 @@
 #'  add_variables('xvars', c('Petal.Length', 'Petal.Width')) %>%
 #'  construct()
 #'
-construct <- function(data, ...) {
+construct <- function(data, ..., na.rm = TRUE) {
     UseMethod("construct", data)
 }
 
@@ -58,6 +59,7 @@ construct.gee_bp <- function(data, na.rm = TRUE, ...) {
         # explicitly inside its function
         glm <- stats::glm
         model.frame <- stats::model.frame
+        id <- data[['id']]
 
         mod <- geepack::geeglm(
             form,
@@ -94,14 +96,15 @@ construct.glm_bp <- function(data, na.rm = TRUE, ...) {
     specs_integrity(data, specs)
 
     f <- function(data, specs, form) {
-        output <- stats::glm(form,
-                      data = data,
-                      family = specs$family)
+        mod <- stats::glm(form,
+                          data = data,
+                          family = specs$family)
         tidied <-
-            broom::tidy(output,
+            broom::tidy(mod,
                         conf.int = specs$conf.int,
                         conf.level = specs$conf.level)
-        data.frame(tidied, sample.size = nrow(output$model))
+        data.frame(tidied,
+                   sample.size = nrow(mod$model))
     }
     form <- regression_formula(specs)
     tool <- lazyeval::interp("f(., specs = specs, form = form)",
@@ -127,14 +130,14 @@ construct.cor_bp <- function(data, ...) {
     }
 
     results <-
-        cor(x, y,
+        stats::cor(x, y,
             use = specs$obs.usage,
             method = specs$method)
 
     if (specs$hclust.order & is.null(specs$vars$yvar)) {
         # Taken from
         # http://www.sthda.com/english/wiki/ggplot2-quick-correlation-matrix-heatmap-r-software-and-data-visualization
-        ordering <- hclust(as.dist((1 - results) / 2))
+        ordering <- stats::hclust(stats::as.dist((1 - results) / 2))
         results <- results[ordering$order, ordering$order]
     }
 
