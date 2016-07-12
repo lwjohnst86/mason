@@ -5,7 +5,7 @@
 #' can be classified as in the 'y' or 'x' position of a statistical equation.
 #' They can further be classified as covariates and as an interaction term.
 #'
-#' @param blueprint The blueprint object
+#' @param data The blueprint data object.
 #' @param type The variable type, i.e. where it is located on the equation (y
 #'   position, x, as a covariate, etc.)
 #' @param variables Variables to use for the type specified
@@ -43,7 +43,9 @@ add_variables.default <-
         vars_exist(data, variables)
 
         if (any(c('xvars', 'yvars') %in% type)) {
-            var.type <- unique(sapply(data[variables], class))
+            var.type <- sapply(data[variables], class)
+            var.type <- gsub('integer', 'numeric', var.type)
+            var.type <- unique(var.type)
             if (length(var.type) > 1)
                 stop('Please do not mix numeric and character/factor variables',
                      ' in the ', type, '.', call. = FALSE)
@@ -54,6 +56,6 @@ add_variables.default <-
             if (type %in% names(var.specs))
                 message(type, ' already exists in the specs, but will be replaced.')
 
-        make_blueprint(data, vars = setNames(list(variables), type))
+        make_blueprint(data, vars = stats::setNames(list(variables), type))
     }
 
