@@ -7,7 +7,7 @@
 #' blueprint, but does not do any construction (e.g. actually running statistics).
 #'
 #' @param data The dataset you want to analyze
-#' @param test.type The type of statistical test to use
+#' @param statistic The type of statistical test to use
 #'
 #' @return Creates a blueprint object that will be used to construct the
 #'   analysis in a later phase.
