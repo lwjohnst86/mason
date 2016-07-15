@@ -45,12 +45,6 @@ So far this package can only be installed from GitHub, using:
     ## Load it by:
     library(mason)
 
-# Problems?
-
-If there are problems,
-[create an issue](https://github.com/lwjohnst86/mason/issues) and let me know
-what the problem is!
-
 # Typical usage
 
 The typical usage for this package would flow like this:
@@ -70,14 +64,24 @@ design(iris, 'glm') %>%
 Depending on the statistical method being used, each function may have slightly
 different arguments.
 
+# Problems?
+
+If there are problems,
+[create an issue](https://github.com/lwjohnst86/mason/issues) and let me know
+what the problem is!
+
 # Contributing a statistical method
 
 1. Add the method to `design`
 2. Add a new function to the S3 method `add_settings` following the naming
-convention `add_settings.statmethod_blueprint` and include the appropriate
+convention `add_settings.statmethod_bp` and include the appropriate
 settings to the statistical method.
 3. If needed, add another option to the `type` argument in the `add_variables`
 function.
 4. Like the `add_settings` instructions above, do the same for the
 `construct` and `scrub` S3 method.
 5. If needed, add another `polish_` type function.
+
+Also, please note that this project is released with a 
+[Contributor Code of Conduct](CONDUCT.md). By participating in this project you
+agree to abide by its terms.
