@@ -26,7 +26,7 @@ design <- function(data,
     assertive::assert_is_data.frame(data)
     type <- match.arg(statistic)
     make_blueprint(
-        data = dplyr::tbl_df(data),
+        data = data,
         stat = type,
         type = paste0(type, '_bp')
     )

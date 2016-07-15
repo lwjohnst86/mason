@@ -51,13 +51,13 @@ print.bp <- function(x, ...) {
     specs <- attributes(x)$specs
     if (is.null(specs$results)) {
         cat("# Analysis for ", specs$stat, " is still under construction.",
-            "\nShowing data right now:\n\n")
+            "\n# Showing data right now:\n")
         print(dplyr::tbl_df(unclass(x)))
         invisible(x)
     } else if (!is.null(specs$results)) {
         cat(
-            'Analysis for', specs$stat, 'constructed but has not been scrubbed.',
-            '\nHere is a peek at the results:\n'
+            '# Analysis for', specs$stat, 'constructed but has not been scrubbed.',
+            '\n# Here is a peek at the results:\n'
         )
         print(dplyr::tbl_df(attr(x, 'specs')$results))
         invisible(x)
