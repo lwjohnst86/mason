@@ -1,3 +1,7 @@
+## Hotfix
+
+* Changed case of 'For' to 'for' in title.
+
 ## Test environments
 
 * local ubuntu 14.04 install, R 3.3.1
