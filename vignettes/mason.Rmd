@@ -21,6 +21,12 @@ statistics that have been implemented were chosen because that's what I've done.
 If you would like a particular statistical method included, please fill out an
 [Issue](https://github.com/lwjohnst86/mason/issues) and I will try to implement it!
 
+Most analyses follow a similar pattern to how construction/engineering projects
+are developed: design -> add specifications -> construction -> (optional) add to
+the design and specs -> cleaning, scrubbing, and polishing. The `mason` package
+tries to emulate this process to make it easier to do analyses in a consistent
+and 'tidy' format.
+
 ## Basic command flow
 
 The general command flow for using `mason` is:
