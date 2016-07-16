@@ -39,7 +39,7 @@ make_blueprint <- function(data, ..., type = NULL) {
     }
 
     if (!'bp' %in% class(data)) {
-        class(data) <- c(type, 'bp', class(data))
+        class(data) <- c('bp', type, class(data))
     }
 
     attr(data, 'specs') <- specs

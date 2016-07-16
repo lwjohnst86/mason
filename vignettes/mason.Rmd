@@ -112,7 +112,7 @@ to the blueprint.
 dp2 <- dp %>%
     add_variables('covariates', 'Catholic') %>% 
     construct()
-head(dp2)
+dp2
 ```
 
 We now have two models in the results. We're happy with them, so let's clean it

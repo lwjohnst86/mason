@@ -50,20 +50,21 @@ vars_exist <- function(data, vars) {
 print.bp <- function(x, ...) {
     specs <- attributes(x)$specs
     if (is.null(specs$results)) {
-        cat("# Analysis for ", specs$stat, " is still under construction.",
+        cat("# Analysis for", specs$stat, "is still under construction.",
             "\n# Showing data right now:\n")
-        print(dplyr::tbl_df(unclass(x)))
-        invisible(x)
+        obj <- dplyr::tbl_df(unclass(x))
+        print(obj, n = 6)
     } else if (!is.null(specs$results)) {
         cat(
             '# Analysis for', specs$stat, 'constructed but has not been scrubbed.',
             '\n# Here is a peek at the results:\n'
         )
-        print(dplyr::tbl_df(attr(x, 'specs')$results))
-        invisible(x)
+        obj <- dplyr::tbl_df(attr(x, 'specs')$results)
+        print(obj, n = 6)
     } else {
         warning('Nothing to show yet, is something wrong maybe?')
     }
+    invisible(x)
 }
 
 #' @importFrom magrittr "%>%"
