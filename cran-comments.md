@@ -14,6 +14,8 @@
 
 0 errors | 0 warnings | 0 note
 
+* Note: on winbuilder there is 1 NOTE on last update being 3 days ago. Updating to fix the bug.
+
 ## Reverse dependencies
 
 There are no reverse dependencies.
