@@ -7,6 +7,7 @@ output:
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 [![Travis-CI Build Status](https://travis-ci.org/lwjohnst86/mason.svg?branch=master)](https://travis-ci.org/lwjohnst86/mason)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/mason)](https://cran.r-project.org/package=mason)
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
@@ -39,10 +40,12 @@ analyses easier.
 
 # Installation
 
-So far this package can only be installed from GitHub, using:
+The package can be installed from CRAN using:
 
+    install.packages('mason')
+    # Or for the development version:
     devtools::install_github('lwjohnst86/mason')
-    ## Load it by:
+    # Load it by:
     library(mason)
 
 # Typical usage

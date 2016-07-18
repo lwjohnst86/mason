@@ -1,5 +1,5 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Travis-CI Build Status](https://travis-ci.org/lwjohnst86/mason.svg?branch=master)](https://travis-ci.org/lwjohnst86/mason)
+[![Travis-CI Build Status](https://travis-ci.org/lwjohnst86/mason.svg?branch=master)](https://travis-ci.org/lwjohnst86/mason) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/mason)](https://cran.r-project.org/package=mason)
 
 Use masonry, build a (data) structure!
 ======================================
@@ -13,10 +13,12 @@ One of the main goals of `mason` is to be able to easily implement other analyse
 Installation
 ============
 
-So far this package can only be installed from GitHub, using:
+The package can be installed from CRAN using:
 
+    install.packages('mason')
+    # Or for the development version:
     devtools::install_github('lwjohnst86/mason')
-    ## Load it by:
+    # Load it by:
     library(mason)
 
 Typical usage
