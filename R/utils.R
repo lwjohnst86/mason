@@ -47,6 +47,7 @@ vars_exist <- function(data, vars) {
     }
 }
 
+#' @export
 print.bp <- function(x, ...) {
     specs <- attributes(x)$specs
     if (is.null(specs$results)) {
