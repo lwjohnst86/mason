@@ -1,6 +1,7 @@
+
 ## Hotfix
 
-* Changed case of 'For' to 'for' in title.
+* There was a bug that was found after releasing to CRAN. Fixed.
 
 ## Test environments
 
@@ -11,10 +12,8 @@
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
-
-* This is a new release.
+0 errors | 0 warnings | 0 note
 
 ## Reverse dependencies
 
-This is a new release, so there are no reverse dependencies.
+There are no reverse dependencies.
