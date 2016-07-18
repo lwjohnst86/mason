@@ -1,7 +1,7 @@
 Package: mason
 Type: Package
 Title: Build Data Structures for Common Statistical Analysis
-Version: 0.2.4
+Version: 0.2.5
 Authors@R: person("Luke", "Johnston", email = "lwjohnst@gmail.com",
     role = c("aut", "cre"))
 Description: Use a consistent syntax to create data structures of common
