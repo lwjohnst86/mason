@@ -6,6 +6,8 @@ output:
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+# Use masonry, build a (data) structure!
+
 [![Travis-CI Build Status](https://travis-ci.org/lwjohnst86/mason.svg?branch=master)](https://travis-ci.org/lwjohnst86/mason)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/mason)](https://cran.r-project.org/package=mason)
 
@@ -16,8 +18,6 @@ knitr::opts_chunk$set(
   fig.path = "README-"
 )
 ```
-
-# Use masonry, build a (data) structure!
 
 Using a standard interface, create common data results structures, such as from
 a linear regression or correlation. Design the analysis, add settings and variables,

@@ -1,8 +1,8 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Travis-CI Build Status](https://travis-ci.org/lwjohnst86/mason.svg?branch=master)](https://travis-ci.org/lwjohnst86/mason) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/mason)](https://cran.r-project.org/package=mason)
-
 Use masonry, build a (data) structure!
 ======================================
+
+[![Travis-CI Build Status](https://travis-ci.org/lwjohnst86/mason.svg?branch=master)](https://travis-ci.org/lwjohnst86/mason) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/mason)](https://cran.r-project.org/package=mason)
 
 Using a standard interface, create common data results structures, such as from a linear regression or correlation. Design the analysis, add settings and variables, construct the results, and lastly scrub and polish it up.
 
