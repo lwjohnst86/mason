@@ -21,13 +21,13 @@ Imports:
     magrittr,
     stats,
     utils,
-    lazyeval,
-    MASS
+    lazyeval
 RoxygenNote: 5.0.1
 Suggests: knitr,
     geepack,
     rmarkdown,
-    testthat
+    testthat,
+    MASS
 VignetteBuilder: knitr
 BugReports: https://github.com/lwjohnst86/mason/issues
 URL: https://github.com/lwjohnst86/mason
