@@ -2,6 +2,7 @@
 ## Hotfix
 
 * There was a bug that was found after releasing to CRAN. Fixed.
+* Moved MASS to Suggests to fix the NOTES on check_results on CRAN.
 
 ## Test environments
 
