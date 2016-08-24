@@ -100,21 +100,44 @@ add_settings.glm_bp <-
             if (class(family) != 'family')
                 stop('Please use a family function (e.g. gaussian()).')
         }
-        make_blueprint(data,
+        make_blueprint(
+            data,
             family = family,
             conf.int = conf.int,
             conf.level = conf.level
         )
     }
 
+#' @rdname add_settings
+#' @inheritParams pls::plsr
+#' @param cv.data Whether to cross-validate the dataset into training and
+#'   testing sets.
+#' @param cv.seed Seed to set for cv.data.
 #' @export
 add_settings.pls_bp <-
     function(data,
-             ncomp,
+             ncomp = NULL,
              scale = TRUE,
              validation = c('none', 'CV', 'LOO'),
+             cv.data = TRUE,
+             cv.seed = 1234,
              ...) {
 
+        set.seed(cv.seed)
+        n_rows <- nrow(data)
+        if (cv.data) {
+            cv_index <- sample(1:n_rows, size = floor(0.50 * n_rows))
+        } else {
+            cv_index <- NULL
+        }
+
+        make_blueprint(
+            data,
+            ncomp = ncomp,
+            scale = scale,
+            val = validation,
+            cv.index = cv_index
+            )
     }
 
 #' @rdname add_settings
