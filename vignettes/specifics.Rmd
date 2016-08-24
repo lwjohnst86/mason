@@ -77,3 +77,17 @@ data.frame(state.x77, state.region) %>%
     construct() %>%
     scrub()
 ```
+
+## Partial least squares regression
+
+```{r plsr}
+swiss %>% 
+    design('pls') %>% 
+    add_settings(validation = 'CV', cv.data = TRUE) %>% 
+    add_variables('yvars', c('Agriculture')) %>% 
+    add_variables('xvars', c('Examination', 'Education', 'Fertility')) %>% 
+    construct() %>% 
+    scrub() %>% 
+    summary()
+```
+
