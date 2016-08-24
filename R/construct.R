@@ -34,6 +34,12 @@
 #'  add_variables('xvars', c('Petal.Length', 'Petal.Width')) %>%
 #'  construct()
 #'
+#' design(iris, 'pls') %>%
+#'  add_settings() %>%
+#'  add_variables('yvars', c('Sepal.Length', 'Sepal.Width')) %>%
+#'  add_variables('xvars', c('Petal.Length', 'Petal.Width')) %>%
+#'  construct()
+#'
 construct <- function(data, ..., na.rm = TRUE) {
     UseMethod("construct", data)
 }
@@ -171,8 +177,35 @@ construct.t.test_bp <- function(data, na.rm = TRUE, ...) {
     construction_base(data = data, specs = specs, tool = tool, na.rm = na.rm)
 }
 
-    # data.prep <- data
-    # Y <- as.matrix(dplyr::select(data.prep, -matches('^pct_tg\\d+')))
-    # X <- as.matrix(dplyr::select(data.prep, matches('^pct_tg\\d+')))
-    # fit <- pls::plsr(Y ~ X, scale = TRUE, ncomp = 2)
-    # return(fit)
+#' @export
+construct.pls_bp <- function(data) {
+
+    if (!requireNamespace('pls'))
+        stop('pls is needed for this analysis, please install it',
+             call. = FALSE)
+
+    specs <- attributes(data)$specs
+    specs_integrity(data, specs, stat = 'pls')
+
+    if (!is.null(specs$cv.index)) {
+        d <- data[specs$cv.index,]
+        test <- data[-specs$cv.index,]
+    } else if (is.null(specs$cv.index)) {
+        d <- data
+        test <- NULL
+    }
+
+    if (is.null(specs$ncomp))
+        specs$ncomp <- length(specs$vars$xvars)
+
+    Y <- as.matrix(d[, specs$vars$yvars])
+    X <- as.matrix(d[, specs$vars$xvars])
+    results <- pls::plsr(Y ~ X, scale = specs$scale, ncomp = specs$ncomp)
+
+    if (!is.null(test))
+        results$test_data <- test
+
+    type <- grep('bp', class(data), value = TRUE)
+    output <- make_blueprint(data, results = results, type = type)
+    return(output)
+}

@@ -1,6 +1,9 @@
 specs_integrity <- function(data, specs, stat = NULL) {
     vars <- specs$vars
 
+    if (is.null(stat))
+        stat <- ''
+
     if (any(vars$xvars %in% vars$yvars))
         stop('Oops, you have one or more variables that are the same in',
              ' both xvars and yvars. Please have the xvars and yvars be completely',
@@ -29,6 +32,13 @@ specs_integrity <- function(data, specs, stat = NULL) {
                      vars$interaction,
                      ' in the covariates as well.',
                      call. = FALSE)
+        }
+    }
+
+    if (stat == 'pls') {
+        if (!any(sapply(data[c(vars$xvars, vars$yvars)], is.numeric))) {
+            stop('One or more of the variables are not numeric. PLS only takes numeric variables.',
+                 call. = FALSE)
         }
     }
 }
@@ -60,8 +70,12 @@ print.bp <- function(x, ...) {
             '# Analysis for', specs$stat, 'constructed but has not been scrubbed.',
             '\n# Here is a peek at the results:\n'
         )
-        obj <- dplyr::tbl_df(attr(x, 'specs')$results)
-        print(obj, n = 6)
+        if ('pls_bp' %in% class(x)) {
+            print(summary(attr(x, 'specs')$results))
+        } else {
+            obj <- dplyr::tbl_df(attr(x, 'specs')$results)
+            print(obj, n = 6)
+        }
     } else {
         warning('Nothing to show yet, is something wrong maybe?')
     }
