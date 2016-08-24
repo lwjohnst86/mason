@@ -9,7 +9,7 @@ output:
 # Use masonry, build a (data) structure!
 
 [![Travis-CI Build Status](https://travis-ci.org/lwjohnst86/mason.svg?branch=master)](https://travis-ci.org/lwjohnst86/mason)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/mason)](https://cran.r-project.org/package=mason)
+[![CRAN Status](http://www.r-pkg.org/badges/version/mason)](https://cran.r-project.org/package=mason)
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
