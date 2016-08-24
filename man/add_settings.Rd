@@ -5,6 +5,7 @@
 \alias{add_settings.cor_bp}
 \alias{add_settings.gee_bp}
 \alias{add_settings.glm_bp}
+\alias{add_settings.pls_bp}
 \alias{add_settings.t.test_bp}
 \title{Add analysis settings to the blueprint}
 \usage{
@@ -20,6 +21,10 @@ add_settings(data, ...)
 
 \method{add_settings}{glm_bp}(data, family, conf.int = TRUE,
   conf.level = 0.95, ...)
+
+\method{add_settings}{pls_bp}(data, ncomp = NULL, scale = TRUE,
+  validation = c("none", "CV", "LOO"), cv.data = TRUE, cv.seed = 1234,
+  ...)
 
 \method{add_settings}{t.test_bp}(data, paired = FALSE, ...)
 }
@@ -63,6 +68,23 @@ add_settings(data, ...)
 
 \item{hclust.order}{Whether to order the correlation data based on the
 \code{\link[stats]{hclust}} algorithm.}
+
+\item{ncomp}{the number of components to include in the model (see below).}
+
+\item{scale}{numeric vector, or logical.  If numeric vector, \eqn{X}
+    is scaled by dividing each variable with the corresponding element
+    of \code{scale}.  If \code{scale} is \code{TRUE}, \eqn{X} is scaled
+    by dividing each variable by its sample standard deviation.  If
+    cross-validation is selected, scaling by the standard deviation is
+    done for every segment.}
+
+\item{validation}{character.  What kind of (internal) validation to
+    use.  See below.}
+
+\item{cv.data}{Whether to cross-validate the dataset into training and
+testing sets.}
+
+\item{cv.seed}{Seed to set for cv.data.}
 
 \item{paired}{a logical indicating whether you want a paired
     t-test.}

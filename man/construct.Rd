@@ -46,5 +46,11 @@ design(iris, 'gee') \%>\%
  add_variables('xvars', c('Petal.Length', 'Petal.Width')) \%>\%
  construct()
 
+design(iris, 'pls') \%>\%
+ add_settings() \%>\%
+ add_variables('yvars', c('Sepal.Length', 'Sepal.Width')) \%>\%
+ add_variables('xvars', c('Petal.Length', 'Petal.Width')) \%>\%
+ construct()
+
 }
 
