@@ -100,7 +100,7 @@ polish_renaming <- function(data, renaming.fun, columns = NULL) {
         assertive::assert_is_character(columns)
     }
 
-    dplyr::mutate_each_(data, dplyr::funs(renaming.fun), columns)
+    dplyr::mutate_at(data, dplyr::vars(columns), dplyr::funs(renaming.fun))
 }
 
 #' @describeIn polish \code{polish_filter} is basically a thin wrapper around
@@ -115,16 +115,16 @@ polish_filter <- function(data, keep.pattern, column) {
 }
 
 #' @describeIn polish \code{polish_transform_estimates} is simply a thin wrapper
-#'   around \code{\link[dplyr]{mutate_each}}.
+#'   around \code{\link[dplyr]{mutate_at}}.
 #'
 #' @param transform.fun A function to modify continuous variable columns.
 #' @export
 polish_transform_estimates <- function(data, transform.fun) {
     assertive::assert_is_function(transform.fun)
-    dplyr::mutate_each(
+    dplyr::mutate_at(
         data,
-        dplyr::funs(transform.fun),
-        dplyr::matches('estimate|std\\.error|conf\\.low|conf\\.high')
+        dplyr::vars(dplyr::matches('estimate|std\\.error|conf\\.low|conf\\.high')),
+        dplyr::funs(transform.fun)
     )
 }
 

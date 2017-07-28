@@ -4,6 +4,10 @@
 
 - Added a Partial Least Squares design with settings and construction.
 
+## Bug fixes
+
+- Fixed changes to new `mutate` functions from dplyr version update
+
 # mason 0.2.5
 
 ## Hotfixes

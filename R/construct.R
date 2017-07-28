@@ -88,7 +88,7 @@ construct.gee_bp <- function(data, na.rm = TRUE, ...) {
         )
     }
     form <- regression_formula(specs)
-    tool <- lazyeval::interp("f(., specs = specs, form = form)",
+    tool <- lazyeval::interp(~f(., specs = specs, form = form),
                                           f = f,
                                           specs = specs,
                                           form = form)
@@ -113,7 +113,7 @@ construct.glm_bp <- function(data, na.rm = TRUE, ...) {
                    sample.size = nrow(mod$model))
     }
     form <- regression_formula(specs)
-    tool <- lazyeval::interp("f(., specs = specs, form = form)",
+    tool <- lazyeval::interp(~f(., specs = specs, form = form),
                                           f = f,
                                           specs = specs,
                                           form = form)
@@ -170,7 +170,7 @@ construct.t.test_bp <- function(data, na.rm = TRUE, ...) {
         broom::tidy(stats::t.test(data$YtermValues, data$XtermValues,
                                   paired = specs$paired))
     }
-    tool <- lazyeval::interp("f(., specs = specs)",
+    tool <- lazyeval::interp(~f(., specs = specs),
                              f = f,
                              specs = specs)
 
