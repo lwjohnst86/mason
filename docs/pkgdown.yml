@@ -1,0 +1,7 @@
+urls:
+  reference: http://mason.lukewjohnston.com/reference
+  article: http://mason.lukewjohnston.com/articles
+articles:
+  mason: mason.html
+  specifics: specifics.html
+
