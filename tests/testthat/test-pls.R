@@ -1,5 +1,6 @@
 context("pls output")
 
+testdata <- dplyr::mutate(testdata, Rich = as.factor(Rich))
 
 # add_settings ------------------------------------------------------------
 
