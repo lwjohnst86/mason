@@ -2,6 +2,8 @@ context("blueprint phase (design, settings, variables)")
 
 # design ---------------------------------------------------------
 
+testdata <- dplyr::mutate(testdata, Rich = as.factor(Rich))
+
 test_that("design is of correct class and has specs attribute", {
     ds <- design(testdata, 'gee')
     expect_is(ds, 'gee_bp')
