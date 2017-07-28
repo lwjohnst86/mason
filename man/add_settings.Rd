@@ -2,8 +2,8 @@
 % Please edit documentation in R/add_settings.R
 \name{add_settings}
 \alias{add_settings}
-\alias{add_settings.cor_bp}
 \alias{add_settings.gee_bp}
+\alias{add_settings.cor_bp}
 \alias{add_settings.glm_bp}
 \alias{add_settings.pls_bp}
 \alias{add_settings.t.test_bp}
@@ -110,4 +110,3 @@ add_settings(ds, paired = TRUE)
 add_settings(ds)
 
 }
-

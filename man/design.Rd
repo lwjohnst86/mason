@@ -29,4 +29,3 @@ design(iris, 'glm')
 design(iris, 't.test')
 
 }
-

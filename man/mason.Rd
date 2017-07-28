@@ -30,4 +30,3 @@ continues. \code{mason} tries to emulate this pattern.
 For more documentation, see \code{vignette("mason", package = "mason")}
   and \code{vignette("specifics", package = "mason")}.
 }
-

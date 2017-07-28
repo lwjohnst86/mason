@@ -2,10 +2,10 @@
 % Please edit documentation in R/scrub.R
 \name{polish}
 \alias{polish}
-\alias{polish_adjust_pvalue}
-\alias{polish_filter}
 \alias{polish_renaming}
+\alias{polish_filter}
 \alias{polish_transform_estimates}
+\alias{polish_adjust_pvalue}
 \title{Do some final polishing of the scrubbed mason analysis data.}
 \usage{
 polish_renaming(data, renaming.fun, columns = NULL)
@@ -48,11 +48,12 @@ replace words, etc, in the specified columns.
 pattern searching.
 
 \item \code{polish_transform_estimates}: \code{polish_transform_estimates} is simply a thin wrapper
-around \code{\link[dplyr]{mutate_each}}.
+around \code{\link[dplyr]{mutate_at}}.
 
 \item \code{polish_adjust_pvalue}: \code{polish_adjust_pvalue} is a thin wrapper around
 \code{\link[dplyr]{mutate}} and \code{\link[stats]{p.adjust}}
 }}
+
 \examples{
 library(magrittr)
 ds <- swiss \%>\%
@@ -68,4 +69,3 @@ polish_filter(ds, 'Xterm', 'term')
 polish_adjust_pvalue(ds)[c('p.value', 'adj.p.value')]
 polish_transform_estimates(ds, function(x) exp(x))
 }
-

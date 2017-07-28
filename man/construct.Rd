@@ -53,4 +53,3 @@ design(iris, 'pls') \%>\%
  construct()
 
 }
-
