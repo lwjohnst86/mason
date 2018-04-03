@@ -1,0 +1,62 @@
+---
+output: html_document
+---
+
+```{r}
+devtools::load_all()
+library(microbenchmark)
+library(dplyr)
+library(purrr)
+# str(ggplot2::diamonds)
+
+num_vars <- 50
+yvars <- paste0("Y", 1:num_vars)
+xvars <- paste0("X", 1:num_vars)
+covars <- paste0("V", 1:8)
+interaction <- covars[1]
+columns <- c(yvars, xvars, covars)
+random_numbers <- rnorm(1000000, sd = 2)
+sample_size <- 2000
+sim_data <- 
+    matrix(ncol = length(columns), dimnames = list(NULL, columns)) %>% 
+    as.data.frame() %>%
+    imap_dfc(~ sample(random_numbers, sample_size, replace = TRUE)) %>% 
+    mutate(id = rep(1:(sample_size / 3), each = 3))
+    
+
+old_way <- function(num) {
+    design(sim_data, 'glm') %>%
+        add_settings() %>%
+        # add_settings('id') %>%
+        add_variables('yvars', yvars[1:num]) %>%
+        add_variables('xvars', xvars[1:num]) %>%
+        add_variables('covariates', covars[1:4]) %>%
+        construct_old()
+}
+
+new_way <- function(num) {
+    design(sim_data, 'glm') %>%
+        add_settings() %>%
+        # add_settings('id') %>%
+        add_variables('yvars', yvars[1:num]) %>%
+        add_variables('xvars', xvars[1:num]) %>%
+        add_variables('covariates', covars[1:4]) %>%
+        construct()
+}
+
+microbenchmark(
+    old_way(num = 4),
+    new_way(num = 4),
+    old_way(num = 10),
+    new_way(num = 10),
+    old_way(num = 25),
+    new_way(num = 25),
+    old_way(num = 50),
+    new_way(num = 50),
+    times = 5
+)
+
+# new_way(num = 15)
+# old_way(num = 15)
+```
+
