@@ -1,5 +1,5 @@
-construction_base <- function(data, specs, tool, na.rm = FALSE) {
-    data_prep(
+construction_base_old <- function(data, specs, tool, na.rm = FALSE) {
+    data_prep_old(
         data = data,
         y = specs$vars$yvars,
         x = specs$vars$xvars,
@@ -8,11 +8,11 @@ construction_base <- function(data, specs, tool, na.rm = FALSE) {
         id = specs$id,
         na.rm = na.rm
     ) %>%
-        generate_results(tool, specs,
+        generate_results_old(tool, specs,
                          type = grep('bp', class(data), value = TRUE))
 }
 
-data_prep <- function(data, y, x, covars = NULL,
+data_prep_old <- function(data, y, x, covars = NULL,
                       int = NULL, id = NULL, na.rm = TRUE) {
 
     prep <- data %>%
@@ -32,7 +32,7 @@ data_prep <- function(data, y, x, covars = NULL,
     make_blueprint(data, prepared = prep)
 }
 
-regression_formula <- function(specs) {
+regression_formula_old <- function(specs) {
     vars <- specs$vars
     if (length(vars$interaction) == 1) {
         int <- paste0('XtermValues:', vars$interaction)
@@ -45,7 +45,7 @@ regression_formula <- function(specs) {
                        response = 'YtermValues')
 }
 
-generate_results <- function(data, tool, specs, type) {
+generate_results_old <- function(data, tool, specs, type) {
 
     results <- attr(data, 'specs')$prepared %>%
         dplyr::do_(.dots = tool) %>%
@@ -57,11 +57,11 @@ generate_results <- function(data, tool, specs, type) {
     append_results(data, specs, results, type)
 }
 
-append_results <- function(data, specs, results, type) {
-    if (!is.null(attr(data, 'specs')$results))
-        results <- dplyr::bind_rows(attr(data, 'specs')$results, results)
-
-    attr(data, 'specs')$results <- NULL
-    make_blueprint(data, results = results, type = type)
-}
+# append_results <- function(data, specs, results, type) {
+#     if (!is.null(attr(data, 'specs')$results))
+#         results <- dplyr::bind_rows(attr(data, 'specs')$results, results)
+#
+#     attr(data, 'specs')$results <- NULL
+#     make_blueprint(data, results = results, type = type)
+# }
 
