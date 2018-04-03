@@ -25,7 +25,7 @@
 #' design(iris, 'glm') %>%
 #'  add_settings() %>%
 #'  add_variables('yvars', c('Sepal.Length', 'Sepal.Width')) %>%
-#'  add_variables('xvars', c('Petal.Length', 'Petal.Width')) %>%
+#'  #add_variables('xvars', c('Petal.Length', 'Petal.Width')) %>%
 #'  construct()
 #'
 #' design(iris, 'gee') %>%
@@ -44,8 +44,55 @@ construct <- function(data, ..., na.rm = TRUE) {
     UseMethod("construct", data)
 }
 
+construct_old <- function(data, ..., na.rm = TRUE) {
+    UseMethod("construct_old", data)
+}
+
 #' @export
 construct.gee_bp <- function(data, na.rm = TRUE, ...) {
+
+    if (!requireNamespace('geepack'))
+        stop('geepack is needed for this analysis, please install it',
+             call. = FALSE)
+
+    specs <- attributes(data)$specs
+    specs_integrity(data, specs)
+
+    f <- function(data, specs, form) {
+        # Have to add these because I think geeglm doesn't reference them
+        # explicitly inside its function
+        glm <- stats::glm
+        model.frame <- stats::model.frame
+        id <- data[['id']]
+
+        mod <- geepack::geeglm(
+            form,
+            data = data,
+            id = id,
+            corstr = specs$corstr,
+            family = specs$family
+        )
+        tidied <-
+            broom::tidy(mod,
+                        conf.int = specs$conf.int,
+                        conf.level = specs$conf.level)
+        nsize <- summary(mod)$clusz
+
+        data.frame(
+            tidied,
+            sample.total = sum(nsize),
+            sample.max = max(nsize),
+            sample.min = min(nsize)
+        )
+    }
+    form <- regression_formula(specs)
+
+    construction_base(data = data, specs = specs, tool = f,
+                       formulas = form$formulas, na.rm = na.rm)
+}
+
+
+construct_old.gee_bp <- function(data, na.rm = TRUE, ...) {
 
     if (!requireNamespace('geepack'))
         stop('geepack is needed for this analysis, please install it',
@@ -87,13 +134,13 @@ construct.gee_bp <- function(data, na.rm = TRUE, ...) {
             sample.min = min(nsize)
         )
     }
-    form <- regression_formula(specs)
+    form <- regression_formula_old(specs)
     tool <- lazyeval::interp(~f(., specs = specs, form = form),
                                           f = f,
                                           specs = specs,
                                           form = form)
 
-    construction_base(data = data, specs = specs, tool = tool, na.rm = na.rm)
+    construction_base_old(data = data, specs = specs, tool = tool, na.rm = na.rm)
 }
 
 #' @export
@@ -101,7 +148,7 @@ construct.glm_bp <- function(data, na.rm = TRUE, ...) {
     specs <- attributes(data)$specs
     specs_integrity(data, specs)
 
-    f <- function(data, specs, form) {
+    tool <- function(data, specs, form) {
         mod <- stats::glm(form,
                           data = data,
                           family = specs$family)
@@ -113,12 +160,9 @@ construct.glm_bp <- function(data, na.rm = TRUE, ...) {
                    sample.size = nrow(mod$model))
     }
     form <- regression_formula(specs)
-    tool <- lazyeval::interp(~f(., specs = specs, form = form),
-                                          f = f,
-                                          specs = specs,
-                                          form = form)
 
-    construction_base(data = data, specs = specs, tool = tool, na.rm = na.rm)
+    construction_base(data = data, specs = specs, tool = tool,
+                      formulas = form$formulas, na.rm = na.rm)
 }
 
 #' @export
@@ -166,15 +210,23 @@ construct.t.test_bp <- function(data, na.rm = TRUE, ...) {
     specs <- attributes(data)$specs
     specs_integrity(data, specs)
 
-    f <- function(data, specs) {
-        broom::tidy(stats::t.test(data$YtermValues, data$XtermValues,
-                                  paired = specs$paired))
+    tool <- function(data, specs, form) {
+        broom::tidy(
+            stats::t.test(
+                x = form$x,
+                y = form$y,
+                data = data,
+                paired = specs$paired
+            )
+        )
     }
-    tool <- lazyeval::interp(~f(., specs = specs),
-                             f = f,
-                             specs = specs)
+    # tool <- lazyeval::interp(~f(., specs = specs),
+    #                          f = f,
+    #                          specs = specs)
 
-    construction_base(data = data, specs = specs, tool = tool, na.rm = na.rm)
+    form <- regression_formula(specs)
+    construction_base(data = data, specs = specs, tool = tool,
+                      formula = form$variables, na.rm = na.rm)
 }
 
 #' @export
