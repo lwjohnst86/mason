@@ -9,7 +9,7 @@ specs_integrity <- function(data, specs, stat = NULL) {
              ' both xvars and yvars. Please have the xvars and yvars be completely',
              ' unique.', call. = FALSE)
 
-    if (is.null(vars$xvars)) {
+    if (any(is.null(vars$xvars), is.null(vars$yvars))) {
         if (is.null(vars$yvars) & stat == 'cor')
             stop('Please include at least x variables.', call. = FALSE)
         if (is.null(vars$xvars) | is.null(vars$yvars))
