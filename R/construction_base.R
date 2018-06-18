@@ -40,15 +40,19 @@ regression_formula <- function(specs) {
         KEEP.OUT.ATTRS = FALSE
     )
 
-    interactions <- NULL
-    if (length(vars$interaction))
-        interactions <- paste0(variable_list$x, ":", vars$interaction)
 
     formulas <-
         purrr::map2(variable_list$x,
                     variable_list$y,
-                    ~ stats::reformulate(c(.x, vars$covariates, interactions),
-                                         response = .y))
+                    ~ {
+                        interactions <- NULL
+                        if (length(vars$interaction))
+                            interactions <- paste0(.x, ":", vars$interaction)
+
+                        stats::reformulate(c(.x, vars$covariates, interactions),
+                                           response = .y)
+                    })
+
     list(variables = variable_list,
          formulas = formulas)
 }

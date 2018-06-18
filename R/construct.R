@@ -220,6 +220,8 @@ construct.t.test_bp <- function(data, na.rm = TRUE, ...) {
             )
         )
     }
+
+
     # tool <- lazyeval::interp(~f(., specs = specs),
     #                          f = f,
     #                          specs = specs)
