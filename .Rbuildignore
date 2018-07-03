@@ -8,3 +8,5 @@
 ^CONDUCT\.md$
 ^docs$
 ^_pkgdown\.yml$
+^codecov\.yml$
+^appveyor\.yml$
