@@ -150,9 +150,7 @@ construct.cor_bp <- function(data, ...) {
     if (is.null(specs$vars$yvar))
         results[upper.tri(results)] <- NA
 
-    results <- broom::tidy(results) %>%
-        dplyr::rename_('Variables' = '.rownames') %>%
-        dplyr::tbl_df()
+    results <- dplyr::as_tibble(results, rownames = "Variables")
 
     type <- grep('bp', class(data), value = TRUE)
     output <- append_results(data, specs, results, type)
@@ -178,7 +176,7 @@ construct.t.test_bp <- function(data, na.rm = TRUE, ...) {
 }
 
 #' @export
-construct.pls_bp <- function(data) {
+construct.pls_bp <- function(data, ...) {
 
     if (!requireNamespace('pls'))
         stop('pls is needed for this analysis, please install it',
