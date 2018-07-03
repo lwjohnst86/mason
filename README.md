@@ -39,18 +39,18 @@ packages out there that help make analyses easier.
 
 The package can be installed from CRAN using:
 
-    install.packages('mason')
-    # Or for the development version:
-    devtools::install_github('lwjohnst86/mason')
-    # Load it by:
-    library(mason)
+    install.packages("mason")
+
+For the development version, install using:
+
+    # install.packages("remotes")
+    remotes::install_github('lwjohnst86/mason')
 
 # Typical usage
 
 The typical usage for this package would flow like this:
 
 ``` r
-library(magrittr)
 library(mason)
 design(iris, 'glm') %>%
     add_settings() %>%
@@ -97,3 +97,4 @@ the problem is\!
 
 Please note that this project is released with a [Contributor Code of
 Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree
+to abide by its terms.
