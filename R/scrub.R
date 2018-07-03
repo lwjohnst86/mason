@@ -86,7 +86,7 @@ NULL
 #'   columns that are a factor or character vectors.
 #' @export
 polish_renaming <- function(data, renaming.fun, columns = NULL) {
-    assertive::assert_is_function(renaming.fun)
+    stopifnot(is.function(renaming.fun))
 
     if (is.null(columns)) {
         columns <-
@@ -97,7 +97,7 @@ polish_renaming <- function(data, renaming.fun, columns = NULL) {
             which() %>%
             names()
     } else {
-        assertive::assert_is_character(columns)
+        stopifnot(is.character(columns))
     }
 
     dplyr::mutate_at(data, dplyr::vars(columns), dplyr::funs(renaming.fun))
@@ -120,7 +120,7 @@ polish_filter <- function(data, keep.pattern, column) {
 #' @param transform.fun A function to modify continuous variable columns.
 #' @export
 polish_transform_estimates <- function(data, transform.fun) {
-    assertive::assert_is_function(transform.fun)
+    stopifnot(is.function(transform.fun))
     dplyr::mutate_at(
         data,
         dplyr::vars(dplyr::matches('estimate|std\\.error|conf\\.low|conf\\.high')),

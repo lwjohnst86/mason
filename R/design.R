@@ -23,7 +23,7 @@
 design <- function(data,
                    statistic = c('gee', 'cor', 'glm', 'pls',
                                  'plsda', 't.test')) {
-    assertive::assert_is_data.frame(data)
+    stopifnot(is.data.frame(data))
     type <- match.arg(statistic)
     make_blueprint(
         data = data,
