@@ -4,9 +4,10 @@
 
 - Added a Partial Least Squares design with settings and construction.
 
-## Bug fixes
+## Bug fixes and other changes
 
 - Fixed changes to new `mutate` functions from dplyr version update
+- Removed assertive package dependency
 
 # mason 0.2.5
 

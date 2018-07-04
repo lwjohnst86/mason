@@ -12,23 +12,24 @@ Description: Use a consistent syntax to create data structures of common
 License: MIT + file LICENSE
 LazyData: TRUE
 Depends:
-    R (>= 3.1.0)
+    R (>= 3.4.0)
 Imports:
     dplyr,
     tidyr,
     broom,
-    assertive,
     magrittr,
     stats,
     utils,
     lazyeval
 RoxygenNote: 6.0.1
-Suggests: knitr,
+Suggests: 
+    knitr,
     geepack,
     pls,
     rmarkdown,
     testthat,
-    MASS
+    MASS,
+    covr
 VignetteBuilder: knitr
 BugReports: https://github.com/lwjohnst86/mason/issues
 URL: https://github.com/lwjohnst86/mason

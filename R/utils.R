@@ -85,7 +85,3 @@ print.bp <- function(x, ...) {
     }
     invisible(x)
 }
-
-#' @importFrom magrittr "%>%"
-#' @export
-magrittr::`%>%`

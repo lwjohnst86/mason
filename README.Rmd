@@ -7,7 +7,11 @@ output: github_document
 # Use masonry, build a (data) structure!
 
 [![Travis-CI Build Status](https://travis-ci.org/lwjohnst86/mason.svg?branch=master)](https://travis-ci.org/lwjohnst86/mason)
+[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/lwjohnst86/mason?branch=master&svg=true)](https://ci.appveyor.com/project/lwjohnst86/mason)
+[![Coverage status](https://codecov.io/gh/lwjohnst86/mason/branch/master/graph/badge.svg)](https://codecov.io/github/lwjohnst86/mason?branch=master)
 [![CRAN Status](http://www.r-pkg.org/badges/version/mason)](https://cran.r-project.org/package=mason)
+[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(
@@ -40,18 +44,18 @@ analyses easier.
 
 The package can be installed from CRAN using:
 
-    install.packages('mason')
-    # Or for the development version:
-    devtools::install_github('lwjohnst86/mason')
-    # Load it by:
-    library(mason)
+    install.packages("mason")
+    
+For the development version, install using:
+
+    # install.packages("remotes")
+    remotes::install_github('lwjohnst86/mason')
 
 # Typical usage
 
 The typical usage for this package would flow like this:
 
 ```{r example}
-library(magrittr)
 library(mason)
 design(iris, 'glm') %>%
     add_settings() %>%
@@ -83,6 +87,5 @@ function.
 `construct` and `scrub` S3 method.
 5. If needed, add another `polish_` type function.
 
-Also, please note that this project is released with a 
-[Contributor Code of Conduct](CONDUCT.md). By participating in this project you
-agree to abide by its terms.
+Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md).
+By participating in this project you agree to abide by its terms.
