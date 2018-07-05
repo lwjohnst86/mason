@@ -34,12 +34,6 @@
 #'  add_variables('xvars', c('Petal.Length', 'Petal.Width')) %>%
 #'  construct()
 #'
-#' design(iris, 'pls') %>%
-#'  add_settings() %>%
-#'  add_variables('yvars', c('Sepal.Length', 'Sepal.Width')) %>%
-#'  add_variables('xvars', c('Petal.Length', 'Petal.Width')) %>%
-#'  construct()
-#'
 construct <- function(data, ..., na.rm = TRUE) {
     UseMethod("construct", data)
 }
@@ -175,7 +169,6 @@ construct.t.test_bp <- function(data, na.rm = TRUE, ...) {
     construction_base(data = data, specs = specs, tool = tool, na.rm = na.rm)
 }
 
-#' @export
 construct.pls_bp <- function(data, ...) {
 
     if (!requireNamespace('pls'))
