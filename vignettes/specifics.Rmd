@@ -77,7 +77,7 @@ data.frame(state.x77, state.region) %>%
 <!--
 ## Partial least squares regression
 
-```{r plsr}
+```{r plsr, eval=FALSE}
 swiss %>% 
     design('pls') %>% 
     add_settings(validation = 'CV', cv.data = TRUE) %>% 

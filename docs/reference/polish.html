@@ -18,13 +18,27 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Do some final polishing of the scrubbed mason analysis data. — polish" />
+
+<meta property="og:description" content="Do some final polishing of the scrubbed mason analysis data." />
+
+<meta property="og:image" content="http://mason.lukewjohnston.com/logo.png" />
+<meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,18 +61,22 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">mason</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">mason</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.6</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="../articles/mason.html">Get Started</a>
+  <a href="../articles/mason.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -76,7 +94,7 @@
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -88,6 +106,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -95,15 +114,19 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Do some final polishing of the scrubbed mason analysis data.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/lwjohnst86/mason/blob/master/R/scrub.R'><code>R/scrub.R</code></a></small>
+    <div class="hidden name"><code>polish.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Do some final polishing of the scrubbed mason analysis data.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>polish_renaming</span>(<span class='no'>data</span>, <span class='no'>renaming.fun</span>, <span class='kw'>columns</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
@@ -113,7 +136,7 @@
 
 <span class='fu'>polish_adjust_pvalue</span>(<span class='no'>data</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"BH"</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -122,7 +145,7 @@
     </tr>
     <tr>
       <th>renaming.fun</th>
-      <td><p>A function, typically with <code><a href='http://www.rdocumentation.org/packages/base/topics/grep'>gsub</a></code>, that
+      <td><p>A function, typically with <code><a href='http://www.rdocumentation.org/packages/base/topics/grep'>base::gsub()</a></code>, that
 searches and replaces strings.</p></td>
     </tr>
     <tr>
@@ -145,7 +168,7 @@ columns that are a factor or character vectors.</p></td>
     <tr>
       <th>method</th>
       <td><p>Correction method for the p-value adjustment
-(<code><a href='http://www.rdocumentation.org/packages/stats/topics/p.adjust'>p.adjust</a></code>).</p></td>
+(<code><a href='http://www.rdocumentation.org/packages/stats/topics/p.adjust'>stats::p.adjust()</a></code>).</p></td>
     </tr>
     </table>
     
@@ -153,15 +176,15 @@ columns that are a factor or character vectors.</p></td>
 
     <ul>
 <li><p><code>polish_renaming</code>: <code>polish_renaming</code> simply takes a function, most
-likely one that uses <code><a href='http://www.rdocumentation.org/packages/base/topics/grep'>gsub</a></code>, and uses that to search and
+likely one that uses <code><a href='http://www.rdocumentation.org/packages/base/topics/grep'>base::gsub()</a></code>, and uses that to search and
 replace words, etc, in the specified columns.</p></li>
 <li><p><code>polish_filter</code>: <code>polish_filter</code> is basically a thin wrapper around
-<code><a href='http://dplyr.tidyverse.org/reference/filter.html'>filter</a></code>, but using <code><a href='http://www.rdocumentation.org/packages/base/topics/grep'>grepl</a></code> for the
+<code><a href='http://dplyr.tidyverse.org/reference/filter.html'>dplyr::filter()</a></code>, but using <code><a href='http://www.rdocumentation.org/packages/base/topics/grep'>base::grepl()</a></code> for the
 pattern searching.</p></li>
 <li><p><code>polish_transform_estimates</code>: <code>polish_transform_estimates</code> is simply a thin wrapper
-around <code><a href='http://dplyr.tidyverse.org/reference/summarise_all.html'>mutate_at</a></code>.</p></li>
+around <code><a href='http://dplyr.tidyverse.org/reference/summarise_all.html'>dplyr::mutate_at()</a></code>.</p></li>
 <li><p><code>polish_adjust_pvalue</code>: <code>polish_adjust_pvalue</code> is a thin wrapper around
-<code><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></code> and <code><a href='http://www.rdocumentation.org/packages/stats/topics/p.adjust'>p.adjust</a></code></p></li>
+<code><a href='http://dplyr.tidyverse.org/reference/mutate.html'>dplyr::mutate()</a></code> and <code><a href='http://www.rdocumentation.org/packages/stats/topics/p.adjust'>stats::p.adjust()</a></code></p></li>
 </ul>
     
 
@@ -176,59 +199,57 @@ around <code><a href='http://dplyr.tidyverse.org/reference/summarise_all.html'>m
  <span class='fu'><a href='construct.html'>construct</a></span>() <span class='kw'>%&gt;%</span>
  <span class='fu'><a href='scrub.html'>scrub</a></span>()
 <span class='fu'>polish_renaming</span>(<span class='no'>ds</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>gsub</span>(<span class='st'>'Education'</span>, <span class='st'>'Schooling'</span>, <span class='no'>x</span>))</div><div class='output co'>#&gt; # A tibble: 12 x 10
-#&gt;       Yterms      Xterms        term     estimate  std.error statistic
-#&gt;        &lt;chr&gt;       &lt;chr&gt;       &lt;chr&gt;        &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
-#&gt;  1 Schooling Agriculture (Intercept)   7.72130422 5.44699896  1.417534
-#&gt;  2 Schooling Agriculture     &lt;-Xterm  -0.12816072 0.05978132 -2.143825
-#&gt;  3 Schooling Agriculture Examination   0.59128951 0.17018382  3.474417
-#&gt;  4 Schooling    Catholic (Intercept) -10.54608842 3.29743703 -3.198268
-#&gt;  5 Schooling    Catholic     &lt;-Xterm   0.08445744 0.02754615  3.066035
-#&gt;  6 Schooling    Catholic Examination   1.09463965 0.14399909  7.601712
-#&gt;  7 Fertility Agriculture (Intercept)  94.60968827 7.82710709 12.087440
-#&gt;  8 Fertility Agriculture     &lt;-Xterm  -0.09399751 0.08590323 -1.094226
-#&gt;  9 Fertility Agriculture Examination  -1.19502875 0.24454695 -4.886705
-#&gt; 10 Fertility    Catholic (Intercept)  83.03565524 4.97729702 16.682881
-#&gt; 11 Fertility    Catholic     &lt;-Xterm   0.04179341 0.04157937  1.005148
-#&gt; 12 Fertility    Catholic Examination  -0.88618608 0.21735858 -4.077070
-#&gt; # ... with 4 more variables: p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;,
-#&gt; #   sample.size &lt;int&gt;</div><div class='input'><span class='fu'>polish_filter</span>(<span class='no'>ds</span>, <span class='st'>'Xterm'</span>, <span class='st'>'term'</span>)</div><div class='output co'>#&gt; # A tibble: 4 x 10
-#&gt;      Yterms      Xterms    term    estimate  std.error statistic     p.value
-#&gt;       &lt;chr&gt;       &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;
-#&gt; 1 Education Agriculture &lt;-Xterm -0.12816072 0.05978132 -2.143825 0.037612082
-#&gt; 2 Education    Catholic &lt;-Xterm  0.08445744 0.02754615  3.066035 0.003700765
-#&gt; 3 Fertility Agriculture &lt;-Xterm -0.09399751 0.08590323 -1.094226 0.279810261
-#&gt; 4 Fertility    Catholic &lt;-Xterm  0.04179341 0.04157937  1.005148 0.320321713
-#&gt; # ... with 3 more variables: conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;, sample.size &lt;int&gt;</div><div class='input'><span class='fu'>polish_adjust_pvalue</span>(<span class='no'>ds</span>)[<span class='fu'>c</span>(<span class='st'>'p.value'</span>, <span class='st'>'adj.p.value'</span>)]</div><div class='output co'>#&gt; # A tibble: 12 x 2
-#&gt;         p.value  adj.p.value
-#&gt;           &lt;dbl&gt;        &lt;dbl&gt;
-#&gt;  1 1.633700e-01 1.960439e-01
-#&gt;  2 3.761208e-02 5.014944e-02
-#&gt;  3 1.162350e-03 2.324701e-03
-#&gt;  4 2.563100e-03 4.393885e-03
-#&gt;  5 3.700765e-03 5.551148e-03
-#&gt;  6 1.515559e-09 6.062236e-09
-#&gt;  7 1.413026e-15 8.478156e-15
-#&gt;  8 2.798103e-01 3.052476e-01
-#&gt;  9 1.400471e-05 4.201413e-05
-#&gt; 10 1.207314e-20 1.448777e-19
-#&gt; 11 3.203217e-01 3.203217e-01
-#&gt; 12 1.881458e-04 4.515498e-04</div><div class='input'><span class='fu'>polish_transform_estimates</span>(<span class='no'>ds</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>exp</span>(<span class='no'>x</span>))</div><div class='output co'>#&gt; # A tibble: 12 x 10
-#&gt;       Yterms      Xterms        term     estimate   std.error statistic
-#&gt;        &lt;chr&gt;       &lt;chr&gt;       &lt;chr&gt;        &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt;
-#&gt;  1 Education Agriculture (Intercept) 2.255900e+03  232.060697  1.417534
-#&gt;  2 Education Agriculture     &lt;-Xterm 8.797120e-01    1.061604 -2.143825
-#&gt;  3 Education Agriculture Examination 1.806316e+00    1.185523  3.474417
-#&gt;  4 Education    Catholic (Intercept) 2.629614e-05   27.043239 -3.198268
-#&gt;  5 Education    Catholic     &lt;-Xterm 1.088127e+00    1.027929  3.066035
-#&gt;  6 Education    Catholic Examination 2.988106e+00    1.154883  7.601712
-#&gt;  7 Fertility Agriculture (Intercept) 1.225930e+41 2507.664410 12.087440
-#&gt;  8 Fertility Agriculture     &lt;-Xterm 9.102850e-01    1.089701 -1.094226
-#&gt;  9 Fertility Agriculture Examination 3.026953e-01    1.277043 -4.886705
-#&gt; 10 Fertility    Catholic (Intercept) 1.153259e+36  145.081698 16.682881
-#&gt; 11 Fertility    Catholic     &lt;-Xterm 1.042679e+00    1.042456  1.005148
-#&gt; 12 Fertility    Catholic Examination 4.122250e-01    1.242790 -4.077070
-#&gt; # ... with 4 more variables: p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;,
-#&gt; #   sample.size &lt;int&gt;</div></pre>
+#&gt;    Yterms Xterms term  estimate std.error statistic  p.value conf.low conf.high
+#&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+#&gt;  1 Schoo… Agric… (Int…   7.72      5.45        1.42 1.63e- 1  -2.95     18.4   
+#&gt;  2 Schoo… Agric… &lt;-Xt…  -0.128     0.0598     -2.14 3.76e- 2  -0.245    -0.0110
+#&gt;  3 Schoo… Agric… Exam…   0.591     0.170       3.47 1.16e- 3   0.258     0.925 
+#&gt;  4 Schoo… Catho… (Int… -10.5       3.30       -3.20 2.56e- 3 -17.0      -4.08  
+#&gt;  5 Schoo… Catho… &lt;-Xt…   0.0845    0.0275      3.07 3.70e- 3   0.0305    0.138 
+#&gt;  6 Schoo… Catho… Exam…   1.09      0.144       7.60 1.52e- 9   0.812     1.38  
+#&gt;  7 Ferti… Agric… (Int…  94.6       7.83       12.1  1.41e-15  79.3     110.    
+#&gt;  8 Ferti… Agric… &lt;-Xt…  -0.0940    0.0859     -1.09 2.80e- 1  -0.262     0.0744
+#&gt;  9 Ferti… Agric… Exam…  -1.20      0.245      -4.89 1.40e- 5  -1.67     -0.716 
+#&gt; 10 Ferti… Catho… (Int…  83.0       4.98       16.7  1.21e-20  73.3      92.8   
+#&gt; 11 Ferti… Catho… &lt;-Xt…   0.0418    0.0416      1.01 3.20e- 1  -0.0397    0.123 
+#&gt; 12 Ferti… Catho… Exam…  -0.886     0.217      -4.08 1.88e- 4  -1.31     -0.460 
+#&gt; # ... with 1 more variable: sample.size &lt;int&gt;</div><div class='input'><span class='fu'>polish_filter</span>(<span class='no'>ds</span>, <span class='st'>'Xterm'</span>, <span class='st'>'term'</span>)</div><div class='output co'>#&gt; # A tibble: 4 x 10
+#&gt;   Yterms  Xterms  term  estimate std.error statistic p.value conf.low conf.high
+#&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+#&gt; 1 Educat… Agricu… &lt;-Xt…  -0.128     0.0598     -2.14 0.0376   -0.245    -0.0110
+#&gt; 2 Educat… Cathol… &lt;-Xt…   0.0845    0.0275      3.07 0.00370   0.0305    0.138 
+#&gt; 3 Fertil… Agricu… &lt;-Xt…  -0.0940    0.0859     -1.09 0.280    -0.262     0.0744
+#&gt; 4 Fertil… Cathol… &lt;-Xt…   0.0418    0.0416      1.01 0.320    -0.0397    0.123 
+#&gt; # ... with 1 more variable: sample.size &lt;int&gt;</div><div class='input'><span class='fu'>polish_adjust_pvalue</span>(<span class='no'>ds</span>)[<span class='fu'>c</span>(<span class='st'>'p.value'</span>, <span class='st'>'adj.p.value'</span>)]</div><div class='output co'>#&gt; # A tibble: 12 x 2
+#&gt;     p.value adj.p.value
+#&gt;       &lt;dbl&gt;       &lt;dbl&gt;
+#&gt;  1 1.63e- 1    1.96e- 1
+#&gt;  2 3.76e- 2    5.01e- 2
+#&gt;  3 1.16e- 3    2.32e- 3
+#&gt;  4 2.56e- 3    4.39e- 3
+#&gt;  5 3.70e- 3    5.55e- 3
+#&gt;  6 1.52e- 9    6.06e- 9
+#&gt;  7 1.41e-15    8.48e-15
+#&gt;  8 2.80e- 1    3.05e- 1
+#&gt;  9 1.40e- 5    4.20e- 5
+#&gt; 10 1.21e-20    1.45e-19
+#&gt; 11 3.20e- 1    3.20e- 1
+#&gt; 12 1.88e- 4    4.52e- 4</div><div class='input'><span class='fu'>polish_transform_estimates</span>(<span class='no'>ds</span>, <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>exp</span>(<span class='no'>x</span>))</div><div class='output co'>#&gt; # A tibble: 12 x 10
+#&gt;    Yterms Xterms term  estimate std.error statistic  p.value conf.low conf.high
+#&gt;    &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+#&gt;  1 Educa… Agric… (Int… 2.26e+ 3    232.        1.42 1.63e- 1 5.21e- 2  9.77e+ 7
+#&gt;  2 Educa… Agric… &lt;-Xt… 8.80e- 1      1.06     -2.14 3.76e- 2 7.82e- 1  9.89e- 1
+#&gt;  3 Educa… Agric… Exam… 1.81e+ 0      1.19      3.47 1.16e- 3 1.29e+ 0  2.52e+ 0
+#&gt;  4 Educa… Catho… (Int… 2.63e- 5     27.0      -3.20 2.56e- 3 4.10e- 8  1.69e- 2
+#&gt;  5 Educa… Catho… &lt;-Xt… 1.09e+ 0      1.03      3.07 3.70e- 3 1.03e+ 0  1.15e+ 0
+#&gt;  6 Educa… Catho… Exam… 2.99e+ 0      1.15      7.60 1.52e- 9 2.25e+ 0  3.96e+ 0
+#&gt;  7 Ferti… Agric… (Int… 1.23e+41   2508.       12.1  1.41e-15 2.67e+34  5.64e+47
+#&gt;  8 Ferti… Agric… &lt;-Xt… 9.10e- 1      1.09     -1.09 2.80e- 1 7.69e- 1  1.08e+ 0
+#&gt;  9 Ferti… Agric… Exam… 3.03e- 1      1.28     -4.89 1.40e- 5 1.87e- 1  4.89e- 1
+#&gt; 10 Ferti… Catho… (Int… 1.15e+36    145.       16.7  1.21e-20 6.69e+31  1.99e+40
+#&gt; 11 Ferti… Catho… &lt;-Xt… 1.04e+ 0      1.04      1.01 3.20e- 1 9.61e- 1  1.13e+ 0
+#&gt; 12 Ferti… Catho… Exam… 4.12e- 1      1.24     -4.08 1.88e- 4 2.69e- 1  6.31e- 1
+#&gt; # ... with 1 more variable: sample.size &lt;int&gt;</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -249,11 +270,14 @@ around <code><a href='http://dplyr.tidyverse.org/reference/summarise_all.html'>m
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

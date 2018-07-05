@@ -18,13 +18,29 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Add analysis settings to the blueprint — add_settings" />
+
+<meta property="og:description" content="Most statistical techniques need to specify some settings for them to run.
+This function sets those settings in the blueprint, before the statistical
+method is used at the construction phase." />
+
+<meta property="og:image" content="http://mason.lukewjohnston.com/logo.png" />
+<meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,18 +63,22 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">mason</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">mason</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.6</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="../articles/mason.html">Get Started</a>
+  <a href="../articles/mason.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -76,7 +96,7 @@
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -88,6 +108,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -95,17 +116,21 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Add analysis settings to the blueprint</h1>
+    <small class="dont-index">Source: <a href='https://github.com/lwjohnst86/mason/blob/master/R/add_settings.R'><code>R/add_settings.R</code></a></small>
+    <div class="hidden name"><code>add_settings.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Most statistical techniques need to specify some settings for them to run.
 This function sets those settings in the blueprint, before the statistical
 method is used at the construction phase.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>add_settings</span>(<span class='no'>data</span>, <span class='no'>...</span>)
 
@@ -131,7 +156,7 @@ method is used at the construction phase.</p>
 <span class='co'># S3 method for t.test_bp</span>
 <span class='fu'>add_settings</span>(<span class='no'>data</span>, <span class='kw'>paired</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -157,7 +182,7 @@ method is used at the construction phase.</p>
     </tr>
     <tr>
       <th>corstr</th>
-      <td><p>The correlation structure. See <code><a href='http://www.rdocumentation.org/packages/geepack/topics/geeglm'>geeglm</a></code>.</p></td>
+      <td><p>The correlation structure. See <code><a href='http://www.rdocumentation.org/packages/geepack/topics/geeglm'>geepack::geeglm()</a></code>.</p></td>
     </tr>
     <tr>
       <th>conf.int</th>
@@ -190,7 +215,7 @@ method is used at the construction phase.</p>
     <tr>
       <th>hclust.order</th>
       <td><p>Whether to order the correlation data based on the
-<code><a href='http://www.rdocumentation.org/packages/stats/topics/hclust'>hclust</a></code> algorithm.</p></td>
+<code><a href='http://www.rdocumentation.org/packages/stats/topics/hclust'>stats::hclust()</a></code> algorithm.</p></td>
     </tr>
     <tr>
       <th>ncomp</th>
@@ -238,13 +263,13 @@ testing sets.</p></td>
 #&gt; # Showing data right now:
 #&gt; # A tibble: 150 x 5
 #&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
-#&gt;          &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;  &lt;fctr&gt;
-#&gt; 1          5.1         3.5          1.4         0.2  setosa
-#&gt; 2          4.9         3.0          1.4         0.2  setosa
-#&gt; 3          4.7         3.2          1.3         0.2  setosa
-#&gt; 4          4.6         3.1          1.5         0.2  setosa
-#&gt; 5          5.0         3.6          1.4         0.2  setosa
-#&gt; 6          5.4         3.9          1.7         0.4  setosa
+#&gt;          &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;  
+#&gt; 1          5.1         3.5          1.4         0.2 setosa 
+#&gt; 2          4.9         3            1.4         0.2 setosa 
+#&gt; 3          4.7         3.2          1.3         0.2 setosa 
+#&gt; 4          4.6         3.1          1.5         0.2 setosa 
+#&gt; 5          5           3.6          1.4         0.2 setosa 
+#&gt; 6          5.4         3.9          1.7         0.4 setosa 
 #&gt; # ... with 144 more rows</div><div class='input'>
 <span class='no'>ds</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='design.html'>design</a></span>(<span class='no'>iris</span>, <span class='st'>'cor'</span>)
 <span class='no'>ds</span> <span class='kw'>&lt;-</span> <span class='fu'>add_settings</span>(<span class='no'>ds</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>'spearman'</span>)
@@ -254,24 +279,24 @@ testing sets.</p></td>
 #&gt; # Showing data right now:
 #&gt; # A tibble: 150 x 5
 #&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
-#&gt;          &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;  &lt;fctr&gt;
-#&gt; 1          5.1         3.5          1.4         0.2  setosa
-#&gt; 2          4.9         3.0          1.4         0.2  setosa
-#&gt; 3          4.7         3.2          1.3         0.2  setosa
-#&gt; 4          4.6         3.1          1.5         0.2  setosa
-#&gt; 5          5.0         3.6          1.4         0.2  setosa
-#&gt; 6          5.4         3.9          1.7         0.4  setosa
+#&gt;          &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;  
+#&gt; 1          5.1         3.5          1.4         0.2 setosa 
+#&gt; 2          4.9         3            1.4         0.2 setosa 
+#&gt; 3          4.7         3.2          1.3         0.2 setosa 
+#&gt; 4          4.6         3.1          1.5         0.2 setosa 
+#&gt; 5          5           3.6          1.4         0.2 setosa 
+#&gt; 6          5.4         3.9          1.7         0.4 setosa 
 #&gt; # ... with 144 more rows</div><div class='input'><span class='fu'>add_settings</span>(<span class='no'>ds</span>)</div><div class='output co'>#&gt; # Analysis for t.test is still under construction. 
 #&gt; # Showing data right now:
 #&gt; # A tibble: 150 x 5
 #&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
-#&gt;          &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt;  &lt;fctr&gt;
-#&gt; 1          5.1         3.5          1.4         0.2  setosa
-#&gt; 2          4.9         3.0          1.4         0.2  setosa
-#&gt; 3          4.7         3.2          1.3         0.2  setosa
-#&gt; 4          4.6         3.1          1.5         0.2  setosa
-#&gt; 5          5.0         3.6          1.4         0.2  setosa
-#&gt; 6          5.4         3.9          1.7         0.4  setosa
+#&gt;          &lt;dbl&gt;       &lt;dbl&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;fct&gt;  
+#&gt; 1          5.1         3.5          1.4         0.2 setosa 
+#&gt; 2          4.9         3            1.4         0.2 setosa 
+#&gt; 3          4.7         3.2          1.3         0.2 setosa 
+#&gt; 4          4.6         3.1          1.5         0.2 setosa 
+#&gt; 5          5           3.6          1.4         0.2 setosa 
+#&gt; 6          5.4         3.9          1.7         0.4 setosa 
 #&gt; # ... with 144 more rows</div><div class='input'>
 </div></pre>
   </div>
@@ -294,11 +319,14 @@ testing sets.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

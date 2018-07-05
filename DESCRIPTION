@@ -3,7 +3,7 @@ Type: Package
 Title: Build Data Structures for Common Statistical Analysis
 Version: 0.2.6
 Authors@R: person("Luke", "Johnston", email = "lwjohnst@gmail.com",
-    role = c("aut", "cre"))
+    role = c("aut", "cre"), comment = c(ORCID = "0000-0003-4169-2616"))
 Description: Use a consistent syntax to create data structures of common
     statistical techniques that can be continued in a pipe chain.
     Design the analysis, add settings and variables, construct the results, and

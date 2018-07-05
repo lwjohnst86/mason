@@ -18,13 +18,27 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
+
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
+<meta property="og:title" content="Construct the results of the analysis — construct" />
+
+<meta property="og:description" content="Construct the results of the analysis" />
+
+<meta property="og:image" content="http://mason.lukewjohnston.com/logo.png" />
+<meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,18 +61,22 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">mason</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">mason</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.6</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="../articles/mason.html">Get Started</a>
+  <a href="../articles/mason.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -76,7 +94,7 @@
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -88,6 +106,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -95,19 +114,23 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Construct the results of the analysis</h1>
+    <small class="dont-index">Source: <a href='https://github.com/lwjohnst86/mason/blob/master/R/construct.R'><code>R/construct.R</code></a></small>
+    <div class="hidden name"><code>construct.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Construct the results of the analysis</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>construct</span>(<span class='no'>data</span>, <span class='no'>...</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -127,7 +150,7 @@
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Uses the blueprint to construct the results of the statistical
-  analysis.</p>
+analysis.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -139,10 +162,10 @@
  <span class='fu'>construct</span>()</div><div class='output co'>#&gt; # Analysis for cor constructed but has not been scrubbed. 
 #&gt; # Here is a peek at the results:
 #&gt; # A tibble: 2 x 3
-#&gt;      Variables Sepal.Length Sepal.Width
-#&gt;          &lt;chr&gt;        &lt;dbl&gt;       &lt;dbl&gt;
-#&gt; 1 Sepal.Length    1.0000000          NA
-#&gt; 2  Sepal.Width   -0.1175698           1</div><div class='input'>
+#&gt;   Variables    Sepal.Length Sepal.Width
+#&gt;   &lt;chr&gt;               &lt;dbl&gt;       &lt;dbl&gt;
+#&gt; 1 Sepal.Length        1              NA
+#&gt; 2 Sepal.Width        -0.118           1</div><div class='input'>
 <span class='fu'><a href='design.html'>design</a></span>(<span class='no'>iris</span>, <span class='st'>'t.test'</span>) <span class='kw'>%&gt;%</span>
  <span class='fu'><a href='add_settings.html'>add_settings</a></span>() <span class='kw'>%&gt;%</span>
  <span class='fu'><a href='add_variables.html'>add_variables</a></span>(<span class='st'>'yvars'</span>, <span class='fu'>c</span>(<span class='st'>'Sepal.Length'</span>, <span class='st'>'Sepal.Width'</span>)) <span class='kw'>%&gt;%</span>
@@ -150,14 +173,14 @@
  <span class='fu'>construct</span>()</div><div class='output co'>#&gt; # Analysis for t.test constructed but has not been scrubbed. 
 #&gt; # Here is a peek at the results:
 #&gt; # A tibble: 4 x 12
-#&gt;         Yterms       Xterms   estimate estimate1 estimate2 statistic
-#&gt;          &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-#&gt; 1 Sepal.Length Petal.Length  2.0853333  5.843333  3.758000 13.098353
-#&gt; 2 Sepal.Length  Petal.Width  4.6440000  5.843333  1.199333 50.536015
-#&gt; 3  Sepal.Width Petal.Length -0.7006667  3.057333  3.758000 -4.719421
-#&gt; 4  Sepal.Width  Petal.Width  1.8580000  3.057333  1.199333 25.916013
-#&gt; # ... with 6 more variables: p.value &lt;dbl&gt;, parameter &lt;dbl&gt;, conf.low &lt;dbl&gt;,
-#&gt; #   conf.high &lt;dbl&gt;, method &lt;fctr&gt;, alternative &lt;fctr&gt;</div><div class='input'>
+#&gt;   Yterms    Xterms   estimate estimate1 estimate2 statistic   p.value parameter
+#&gt;   &lt;chr&gt;     &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+#&gt; 1 Sepal.Le… Petal.L…    2.09       5.84      3.76     13.1  4.26e- 29      212.
+#&gt; 2 Sepal.Le… Petal.W…    4.64       5.84      1.20     50.5  1.36e-147      296.
+#&gt; 3 Sepal.Wi… Petal.L…   -0.701      3.06      3.76     -4.72 4.98e-  6      167.
+#&gt; 4 Sepal.Wi… Petal.W…    1.86       3.06      1.20     25.9  4.11e- 71      237.
+#&gt; # ... with 4 more variables: conf.low &lt;dbl&gt;, conf.high &lt;dbl&gt;, method &lt;chr&gt;,
+#&gt; #   alternative &lt;chr&gt;</div><div class='input'>
 <span class='fu'><a href='design.html'>design</a></span>(<span class='no'>iris</span>, <span class='st'>'glm'</span>) <span class='kw'>%&gt;%</span>
  <span class='fu'><a href='add_settings.html'>add_settings</a></span>() <span class='kw'>%&gt;%</span>
  <span class='fu'><a href='add_variables.html'>add_variables</a></span>(<span class='st'>'yvars'</span>, <span class='fu'>c</span>(<span class='st'>'Sepal.Length'</span>, <span class='st'>'Sepal.Width'</span>)) <span class='kw'>%&gt;%</span>
@@ -165,16 +188,15 @@
  <span class='fu'>construct</span>()</div><div class='output co'>#&gt; # Analysis for glm constructed but has not been scrubbed. 
 #&gt; # Here is a peek at the results:
 #&gt; # A tibble: 8 x 10
-#&gt;         Yterms       Xterms        term   estimate  std.error statistic
-#&gt;          &lt;chr&gt;        &lt;chr&gt;       &lt;chr&gt;      &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;
-#&gt; 1 Sepal.Length Petal.Length (Intercept)  4.3066034 0.07838896 54.938900
-#&gt; 2 Sepal.Length Petal.Length XtermValues  0.4089223 0.01889134 21.646019
-#&gt; 3 Sepal.Length  Petal.Width (Intercept)  4.7776294 0.07293476 65.505517
-#&gt; 4 Sepal.Length  Petal.Width XtermValues  0.8885803 0.05137355 17.296454
-#&gt; 5  Sepal.Width Petal.Length (Intercept)  3.4548745 0.07609540 45.401882
-#&gt; 6  Sepal.Width Petal.Length XtermValues -0.1057853 0.01833860 -5.768449
-#&gt; # ... with 2 more rows, and 4 more variables: p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;,
-#&gt; #   conf.high &lt;dbl&gt;, sample.size &lt;int&gt;</div><div class='input'>
+#&gt;   Yterms Xterms term  estimate std.error statistic   p.value conf.low conf.high
+#&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+#&gt; 1 Sepal… Petal… (Int…    4.31     0.0784     54.9  2.43e-100    4.15     4.46  
+#&gt; 2 Sepal… Petal… Xter…    0.409    0.0189     21.6  1.04e- 47    0.372    0.446 
+#&gt; 3 Sepal… Petal… (Int…    4.78     0.0729     65.5  3.34e-111    4.63     4.92  
+#&gt; 4 Sepal… Petal… Xter…    0.889    0.0514     17.3  2.33e- 37    0.788    0.989 
+#&gt; 5 Sepal… Petal… (Int…    3.45     0.0761     45.4  9.02e- 89    3.31     3.60  
+#&gt; 6 Sepal… Petal… Xter…   -0.106    0.0183     -5.77 4.51e-  8   -0.142   -0.0698
+#&gt; # ... with 2 more rows, and 1 more variable: sample.size &lt;int&gt;</div><div class='input'>
 <span class='fu'><a href='design.html'>design</a></span>(<span class='no'>iris</span>, <span class='st'>'gee'</span>) <span class='kw'>%&gt;%</span>
  <span class='fu'><a href='add_settings.html'>add_settings</a></span>(<span class='st'>'Species'</span>) <span class='kw'>%&gt;%</span>
  <span class='fu'><a href='add_variables.html'>add_variables</a></span>(<span class='st'>'yvars'</span>, <span class='fu'>c</span>(<span class='st'>'Sepal.Length'</span>, <span class='st'>'Sepal.Width'</span>)) <span class='kw'>%&gt;%</span>
@@ -182,32 +204,16 @@
  <span class='fu'>construct</span>()</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: geepack</span></div><div class='output co'>#&gt; # Analysis for gee constructed but has not been scrubbed. 
 #&gt; # Here is a peek at the results:
 #&gt; # A tibble: 8 x 12
-#&gt;         Yterms       Xterms        term   estimate  std.error    statistic
-#&gt;          &lt;chr&gt;        &lt;chr&gt;       &lt;chr&gt;      &lt;dbl&gt;      &lt;dbl&gt;        &lt;dbl&gt;
-#&gt; 1 Sepal.Length Petal.Length (Intercept)  4.3066034 0.15597956   762.314822
-#&gt; 2 Sepal.Length Petal.Length XtermValues  0.4089223 0.03261575   157.190652
-#&gt; 3 Sepal.Length  Petal.Width (Intercept)  4.7776294 0.02346810 41444.720308
-#&gt; 4 Sepal.Length  Petal.Width XtermValues  0.8885803 0.01279792  4820.749350
-#&gt; 5  Sepal.Width Petal.Length (Intercept)  3.4548745 0.19048750   328.951286
-#&gt; 6  Sepal.Width Petal.Length XtermValues -0.1057853 0.04353763     5.903657
-#&gt; # ... with 2 more rows, and 6 more variables: p.value &lt;dbl&gt;, conf.low &lt;dbl&gt;,
-#&gt; #   conf.high &lt;dbl&gt;, sample.total &lt;int&gt;, sample.max &lt;int&gt;, sample.min &lt;int&gt;</div><div class='input'>
-<span class='fu'><a href='design.html'>design</a></span>(<span class='no'>iris</span>, <span class='st'>'pls'</span>) <span class='kw'>%&gt;%</span>
- <span class='fu'><a href='add_settings.html'>add_settings</a></span>() <span class='kw'>%&gt;%</span>
- <span class='fu'><a href='add_variables.html'>add_variables</a></span>(<span class='st'>'yvars'</span>, <span class='fu'>c</span>(<span class='st'>'Sepal.Length'</span>, <span class='st'>'Sepal.Width'</span>)) <span class='kw'>%&gt;%</span>
- <span class='fu'><a href='add_variables.html'>add_variables</a></span>(<span class='st'>'xvars'</span>, <span class='fu'>c</span>(<span class='st'>'Petal.Length'</span>, <span class='st'>'Petal.Width'</span>)) <span class='kw'>%&gt;%</span>
- <span class='fu'>construct</span>()</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: pls</span></div><div class='output co'>#&gt; # Analysis for pls constructed but has not been scrubbed. 
-#&gt; # Here is a peek at the results:
-#&gt; Data: 	X dimension: 75 2 
-#&gt; 	Y dimension: 75 2
-#&gt; Fit method: kernelpls
-#&gt; Number of components considered: 2
-#&gt; TRAINING: % variance explained
-#&gt;               1 comps  2 comps
-#&gt; X               98.86   100.00
-#&gt; Sepal.Length    74.99    77.54
-#&gt; Sepal.Width     14.00    19.98
-#&gt; NULL</div><div class='input'>
+#&gt;   Yterms  Xterms  term  estimate std.error statistic p.value conf.low conf.high
+#&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+#&gt; 1 Sepal.… Petal.… (Int…    4.31     0.156     762.    0         4.00     4.61  
+#&gt; 2 Sepal.… Petal.… Xter…    0.409    0.0326    157.    0         0.345    0.473 
+#&gt; 3 Sepal.… Petal.… (Int…    4.78     0.0235  41445.    0         4.73     4.82  
+#&gt; 4 Sepal.… Petal.… Xter…    0.889    0.0128   4821.    0         0.863    0.914 
+#&gt; 5 Sepal.… Petal.… (Int…    3.45     0.190     329.    0         3.08     3.83  
+#&gt; 6 Sepal.… Petal.… Xter…   -0.106    0.0435      5.90  0.0151   -0.191   -0.0205
+#&gt; # ... with 2 more rows, and 3 more variables: sample.total &lt;int&gt;,
+#&gt; #   sample.max &lt;int&gt;, sample.min &lt;int&gt;</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -229,11 +235,14 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

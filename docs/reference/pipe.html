@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Build a (results from analyses) structure like a mason — mason • mason</title>
+<title>Pipe operator — %&gt;% • mason</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,18 +30,9 @@
 
 
 
-<meta property="og:title" content="Build a (results from analyses) structure like a mason — mason" />
+<meta property="og:title" content="Pipe operator — %&gt;%" />
 
-<meta property="og:description" content="Easily run common statistical analyses and build them into a form that can
-easily be plotting or made into a table. Many parts of mason use
-dplyr::dplyr() functions, which makes the analysis fast and
-allows it to be put into a magrittr::magrittr() pipe chain.
-The final, scrub()'ed version of the analysis is in a 'tidy'
-format, meaning it is already in a form to send to
-ggplot2::ggplot() or created into a table using
-pander::pander(), knitr::kable(), or
-pixiedust::dust(). It also allows further processing with
-dplyr and tidyr." />
+<meta property="og:description" content="See magrittr::%&amp;gt;% for details." />
 
 <meta property="og:image" content="http://mason.lukewjohnston.com/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -126,50 +117,25 @@ dplyr and tidyr." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Build a (results from analyses) structure like a mason</h1>
-    <small class="dont-index">Source: <a href='https://github.com/lwjohnst86/mason/blob/master/R/mason-package.R'><code>R/mason-package.R</code></a></small>
-    <div class="hidden name"><code>mason.Rd</code></div>
+    <h1>Pipe operator</h1>
+    <small class="dont-index">Source: <a href='https://github.com/lwjohnst86/mason/blob/master/R/utils-pipe.R'><code>R/utils-pipe.R</code></a></small>
+    <div class="hidden name"><code>pipe.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Easily run common statistical analyses and build them into a form that can
-easily be plotting or made into a table. Many parts of <code>mason</code> use
-<code><a href='http://dplyr.tidyverse.org/reference/dplyr-package.html'>dplyr::dplyr()</a></code> functions, which makes the analysis fast and
-allows it to be put into a <code><a href='http://www.rdocumentation.org/packages/magrittr/topics/magrittr'>magrittr::magrittr()</a></code> pipe chain.</p>
-<p>The final, <code><a href='scrub.html'>scrub()</a></code>'ed version of the analysis is in a 'tidy'
-format, meaning it is already in a form to send to
-<code><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot2::ggplot()</a></code> or created into a table using
-<code><a href='http://www.rdocumentation.org/packages/pander/topics/pander'>pander::pander()</a></code>, <code><a href='http://www.rdocumentation.org/packages/knitr/topics/kable'>knitr::kable()</a></code>, or
-<code><a href='http://www.rdocumentation.org/packages/pixiedust/topics/dust'>pixiedust::dust()</a></code>. It also allows further processing with
-<code>dplyr</code> and <code>tidyr</code>.</p>
+    <p>See <code>magrittr::%&gt;%</code> for details.</p>
     
     </div>
 
+    <pre class="usage"><span class='no'>lhs</span> <span class='kw'>%&gt;%</span> <span class='no'>rhs</span></pre>
         
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>One of the main goals of <code>mason</code> is to make it easy to implement other
-analyses in a consistent syntax and structure. Like in architecture,
-construction, and engineering, data analysis projects follow a similar
-workflow, where there is a design phase, a construction phase, and a final
-scrubbing/cleaning/polishing phase, with some back and forth as construction
-continues. <code>mason</code> tries to emulate this pattern.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>For more documentation, see <code><a href='../articles/mason.html'>vignette("mason", package = "mason")</a></code>.</p></div>
-    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>
