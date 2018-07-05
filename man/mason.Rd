@@ -16,7 +16,7 @@ format, meaning it is already in a form to send to
 \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} or created into a table using
 \code{\link[pander:pander]{pander::pander()}}, \code{\link[knitr:kable]{knitr::kable()}}, or
 \code{\link[pixiedust:dust]{pixiedust::dust()}}. It also allows further processing with
-\code{\link[dplyr:dplyr]{dplyr::dplyr()}} and \code{tidyr}.
+\code{dplyr} and \code{tidyr}.
 }
 \details{
 One of the main goals of \code{mason} is to make it easy to implement other
@@ -27,6 +27,5 @@ scrubbing/cleaning/polishing phase, with some back and forth as construction
 continues. \code{mason} tries to emulate this pattern.
 }
 \seealso{
-For more documentation, see \code{vignette("mason", package = "mason")}
-and \code{vignette("specifics", package = "mason")}.
+For more documentation, see \code{vignette("mason", package = "mason")}.
 }
