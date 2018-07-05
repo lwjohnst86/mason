@@ -30,7 +30,7 @@ polishing’ workflow.
 `mason` was designed to be best used with the `magrittr` `%>%` pipes,
 though it doesn’t need to be. It was also designed to follow the [tidy
 data
-philosophy](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html),
+philosophy](https://CRAN.R-project.org/package=tidyr/vignettes/tidy-data.html),
 specifically that everything should result in a data frame, within
 limits. This makes it easier to do further analysis, visualization, and
 inclusion into report formats. This flow was deliberately chosen so it
