@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Use masonry, build a (data) structure\!
+# Use masonry, build a (data) structure\! <img src="man/figures/logo.png" align="right" />
 
 [![Travis-CI Build
 Status](https://travis-ci.org/lwjohnst86/mason.svg?branch=master)](https://travis-ci.org/lwjohnst86/mason)
@@ -12,6 +12,8 @@ status](https://codecov.io/gh/lwjohnst86/mason/branch/master/graph/badge.svg)](h
 [![CRAN
 Status](http://www.r-pkg.org/badges/version/mason)](https://cran.r-project.org/package=mason)
 [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![CRAN RStudio mirror
+downloads](http://cranlogs.r-pkg.org/badges/mason)](http://www.r-pkg.org/pkg/mason)
 
 Using a standard interface, create common data results structures, such
 as from a linear regression or correlation. Design the analysis, add
