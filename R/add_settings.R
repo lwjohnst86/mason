@@ -29,7 +29,7 @@ add_settings <-
 
 #' @rdname add_settings
 #' @param cluster.id Variable that represents the cluster for GEE.
-#' @param corstr The correlation structure. See \code{\link[geepack]{geeglm}}.
+#' @param corstr The correlation structure. See [geepack::geeglm()].
 #' @inheritParams stats::glm
 #' @inheritParams broom::tidy.geeglm
 #' @export
@@ -65,7 +65,7 @@ add_settings.gee_bp <-
 
 #' @rdname add_settings
 #' @param hclust.order Whether to order the correlation data based on the
-#'   \code{\link[stats]{hclust}} algorithm.
+#'   [stats::hclust()] algorithm.
 #' @inheritParams stats::cor
 #' @export
 add_settings.cor_bp <-

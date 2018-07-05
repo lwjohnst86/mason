@@ -13,7 +13,7 @@ design(data, statistic = c("gee", "cor", "glm", "t.test"))
 }
 \value{
 Creates a blueprint object that will be used to construct the
-  analysis in a later phase.
+analysis in a later phase.
 }
 \description{
 Sets up the initial design (i.e. the blueprint) of a statistical analysis to

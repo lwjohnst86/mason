@@ -33,3 +33,4 @@ Suggests:
 VignetteBuilder: knitr
 BugReports: https://github.com/lwjohnst86/mason/issues
 URL: https://github.com/lwjohnst86/mason
+Roxygen: list(markdown = TRUE)
