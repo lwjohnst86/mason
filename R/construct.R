@@ -44,10 +44,6 @@ construct <- function(data, ..., na.rm = TRUE) {
     UseMethod("construct", data)
 }
 
-construct_old <- function(data, ..., na.rm = TRUE) {
-    UseMethod("construct_old", data)
-}
-
 #' @export
 construct.gee_bp <- function(data, na.rm = TRUE, ...) {
 
@@ -79,68 +75,19 @@ construct.gee_bp <- function(data, na.rm = TRUE, ...) {
         nsize <- summary(mod)$clusz
 
         data.frame(
+            Yterms = all.vars(form)[1],
+            Xterms = all.vars(form)[2],
             tidied,
             sample.total = sum(nsize),
             sample.max = max(nsize),
-            sample.min = min(nsize)
+            sample.min = min(nsize),
+            stringsAsFactors = FALSE
         )
     }
     form <- regression_formula(specs)
 
     construction_base(data = data, specs = specs, tool = f,
                        formulas = form$formulas, na.rm = na.rm)
-}
-
-
-construct_old.gee_bp <- function(data, na.rm = TRUE, ...) {
-
-    if (!requireNamespace('geepack'))
-        stop('geepack is needed for this analysis, please install it',
-             call. = FALSE)
-
-    specs <- attributes(data)$specs
-    specs_integrity(data, specs)
-
-    if (length(c(specs$vars$yvars, specs$vars$xvars)) >= 100)
-        stop(
-            'There are too many y and/or x variables to loop through, ',
-            'please split the construction up (see vignette for more details).'
-        )
-
-    f <- function(data, specs, form) {
-        # Have to add these because I think geeglm doesn't reference them
-        # explicitly inside its function
-        glm <- stats::glm
-        model.frame <- stats::model.frame
-        id <- data[['id']]
-
-        mod <- geepack::geeglm(
-            form,
-            data = data,
-            id = id,
-            corstr = specs$corstr,
-            family = specs$family
-        )
-        tidied <-
-            broom::tidy(mod,
-                        conf.int = specs$conf.int,
-                        conf.level = specs$conf.level)
-        nsize <- summary(mod)$clusz
-
-        data.frame(
-            tidied,
-            sample.total = sum(nsize),
-            sample.max = max(nsize),
-            sample.min = min(nsize)
-        )
-    }
-    form <- regression_formula_old(specs)
-    tool <- lazyeval::interp(~f(., specs = specs, form = form),
-                                          f = f,
-                                          specs = specs,
-                                          form = form)
-
-    construction_base_old(data = data, specs = specs, tool = tool, na.rm = na.rm)
 }
 
 #' @export
