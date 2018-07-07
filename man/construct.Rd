@@ -15,7 +15,7 @@ construct(data, ..., na.rm = TRUE)
 }
 \value{
 Uses the blueprint to construct the results of the statistical
-  analysis.
+analysis.
 }
 \description{
 Construct the results of the analysis
@@ -42,12 +42,6 @@ design(iris, 'glm') \%>\%
 
 design(iris, 'gee') \%>\%
  add_settings('Species') \%>\%
- add_variables('yvars', c('Sepal.Length', 'Sepal.Width')) \%>\%
- add_variables('xvars', c('Petal.Length', 'Petal.Width')) \%>\%
- construct()
-
-design(iris, 'pls') \%>\%
- add_settings() \%>\%
  add_variables('yvars', c('Sepal.Length', 'Sepal.Width')) \%>\%
  add_variables('xvars', c('Petal.Length', 'Petal.Width')) \%>\%
  construct()

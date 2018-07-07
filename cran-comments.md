@@ -1,8 +1,10 @@
 
+Hot fix for an upcoming change to the dependency package broom.
+
 ## Test environments
 
-* local ubuntu 14.04 install, R 3.4.0
-* OS X and ubuntu 14.04 (on travis-ci), R 3.4.0
+* local ubuntu 16.04 install, R 3.5.0
+* OS X (on travis-ci), R 3.5.0
 * win-builder (devel and release)
 
 ## R CMD check results

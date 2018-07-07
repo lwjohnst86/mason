@@ -3,7 +3,7 @@
 #'
 #' Sets up the initial design (i.e. the blueprint) of a statistical analysis to
 #' use on the data. As in creating a building or structure, a blueprint is first
-#' needed to guide the construction. This function \emph{only} creates that
+#' needed to guide the construction. This function *only* creates that
 #' blueprint, but does not do any construction (e.g. actually running statistics).
 #'
 #' @param data The dataset you want to analyze

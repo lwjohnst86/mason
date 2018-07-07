@@ -5,10 +5,6 @@ date: "`r Sys.Date()`"
 output: 
     rmarkdown::html_vignette:
         toc: true
-vignette: >
-  %\VignetteIndexEntry{Specific flows for each statistical method}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, echo = FALSE}
@@ -78,9 +74,10 @@ data.frame(state.x77, state.region) %>%
     scrub()
 ```
 
+<!--
 ## Partial least squares regression
 
-```{r plsr}
+```{r plsr, eval=FALSE}
 swiss %>% 
     design('pls') %>% 
     add_settings(validation = 'CV', cv.data = TRUE) %>% 
@@ -91,3 +88,4 @@ swiss %>%
     summary()
 ```
 
+-->

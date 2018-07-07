@@ -4,7 +4,7 @@
 \alias{design}
 \title{Design the blueprint for an analysis.}
 \usage{
-design(data, statistic = c("gee", "cor", "glm", "pls", "plsda", "t.test"))
+design(data, statistic = c("gee", "cor", "glm", "t.test"))
 }
 \arguments{
 \item{data}{The dataset you want to analyze}
@@ -13,7 +13,7 @@ design(data, statistic = c("gee", "cor", "glm", "pls", "plsda", "t.test"))
 }
 \value{
 Creates a blueprint object that will be used to construct the
-  analysis in a later phase.
+analysis in a later phase.
 }
 \description{
 Sets up the initial design (i.e. the blueprint) of a statistical analysis to

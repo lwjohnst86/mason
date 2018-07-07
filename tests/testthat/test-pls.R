@@ -2,6 +2,8 @@ context("pls output")
 
 testdata <- dplyr::mutate(testdata, Rich = as.factor(Rich))
 
+skip("Not completely implemented yet.")
+
 # add_settings ------------------------------------------------------------
 
 ds <- design(testdata, 'pls')

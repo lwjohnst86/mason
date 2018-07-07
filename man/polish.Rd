@@ -19,7 +19,7 @@ polish_adjust_pvalue(data, method = "BH")
 \arguments{
 \item{data}{The scrubbed object.}
 
-\item{renaming.fun}{A function, typically with \code{\link[base]{gsub}}, that
+\item{renaming.fun}{A function, typically with \code{\link[base:gsub]{base::gsub()}}, that
 searches and replaces strings.}
 
 \item{columns}{The columns to apply the renaming function to. Defaults to
@@ -32,7 +32,7 @@ columns that are a factor or character vectors.}
 \item{transform.fun}{A function to modify continuous variable columns.}
 
 \item{method}{Correction method for the p-value adjustment
-(\code{\link[stats]{p.adjust}}).}
+(\code{\link[stats:p.adjust]{stats::p.adjust()}}).}
 }
 \description{
 Do some final polishing of the scrubbed mason analysis data.
@@ -40,18 +40,18 @@ Do some final polishing of the scrubbed mason analysis data.
 \section{Functions}{
 \itemize{
 \item \code{polish_renaming}: \code{polish_renaming} simply takes a function, most
-likely one that uses \code{\link[base]{gsub}}, and uses that to search and
+likely one that uses \code{\link[base:gsub]{base::gsub()}}, and uses that to search and
 replace words, etc, in the specified columns.
 
 \item \code{polish_filter}: \code{polish_filter} is basically a thin wrapper around
-\code{\link[dplyr]{filter}}, but using \code{\link[base]{grepl}} for the
+\code{\link[dplyr:filter]{dplyr::filter()}}, but using \code{\link[base:grepl]{base::grepl()}} for the
 pattern searching.
 
 \item \code{polish_transform_estimates}: \code{polish_transform_estimates} is simply a thin wrapper
-around \code{\link[dplyr]{mutate_at}}.
+around \code{\link[dplyr:mutate_at]{dplyr::mutate_at()}}.
 
 \item \code{polish_adjust_pvalue}: \code{polish_adjust_pvalue} is a thin wrapper around
-\code{\link[dplyr]{mutate}} and \code{\link[stats]{p.adjust}}
+\code{\link[dplyr:mutate]{dplyr::mutate()}} and \code{\link[stats:p.adjust]{stats::p.adjust()}}
 }}
 
 \examples{

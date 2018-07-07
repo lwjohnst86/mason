@@ -42,7 +42,7 @@ add_settings(data, ...)
     third option is supported.  (See \code{\link{family}} for details of
     family functions.)}
 
-\item{corstr}{The correlation structure. See \code{\link[geepack]{geeglm}}.}
+\item{corstr}{The correlation structure. See \code{\link[geepack:geeglm]{geepack::geeglm()}}.}
 
 \item{conf.int}{whether to include a confidence interval}
 
@@ -67,7 +67,7 @@ add_settings(data, ...)
     \code{"na.or.complete"}, or \code{"pairwise.complete.obs"}.}
 
 \item{hclust.order}{Whether to order the correlation data based on the
-\code{\link[stats]{hclust}} algorithm.}
+\code{\link[stats:hclust]{stats::hclust()}} algorithm.}
 
 \item{ncomp}{the number of components to include in the model (see below).}
 
