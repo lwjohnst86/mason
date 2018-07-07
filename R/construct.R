@@ -10,7 +10,6 @@
 #'
 #' @examples
 #'
-#' library(magrittr)
 #' design(iris, 'cor') %>%
 #'  add_settings() %>%
 #'  add_variables('xvars', c('Sepal.Length', 'Sepal.Width')) %>%
