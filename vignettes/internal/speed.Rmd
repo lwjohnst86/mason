@@ -1,4 +1,5 @@
 ---
+title: "Speed comparisons between gather-group_by vs map-formula list"
 output: html_document
 ---
 
@@ -16,47 +17,63 @@ covars <- paste0("V", 1:8)
 interaction <- covars[1]
 columns <- c(yvars, xvars, covars)
 random_numbers <- rnorm(1000000, sd = 2)
-sample_size <- 2000
-sim_data <- 
+sample_size <- 500
+smaller_data <- 
     matrix(ncol = length(columns), dimnames = list(NULL, columns)) %>% 
     as.data.frame() %>%
-    imap_dfc(~ sample(random_numbers, sample_size, replace = TRUE)) %>% 
-    mutate(id = rep(1:(sample_size / 3), each = 3))
-    
+    imap_dfc(~ sample(random_numbers, sample_size, replace = TRUE))
 
-old_way <- function(num) {
-    design(sim_data, 'glm') %>%
+sample_size <- 2000
+larger_data <- 
+    matrix(ncol = length(columns), dimnames = list(NULL, columns)) %>% 
+    as.data.frame() %>%
+    imap_dfc(~ sample(random_numbers, sample_size, replace = TRUE))
+
+
+old_way <- function(data, num_variables) {
+    design(data, 'glm') %>%
         add_settings() %>%
         # add_settings('id') %>%
-        add_variables('yvars', yvars[1:num]) %>%
-        add_variables('xvars', xvars[1:num]) %>%
+        add_variables('yvars', yvars[1:num_variables]) %>%
+        add_variables('xvars', xvars[1:num_variables]) %>%
         add_variables('covariates', covars[1:4]) %>%
         construct_old()
 }
 
-new_way <- function(num) {
-    design(sim_data, 'glm') %>%
+new_way <- function(data, num_variables) {
+    design(data, 'glm') %>%
         add_settings() %>%
         # add_settings('id') %>%
-        add_variables('yvars', yvars[1:num]) %>%
-        add_variables('xvars', xvars[1:num]) %>%
+        add_variables('yvars', yvars[1:5]) %>%
+        add_variables('xvars', xvars[1:num_variables]) %>%
         add_variables('covariates', covars[1:4]) %>%
         construct()
 }
+```
 
+
+```{r}
 microbenchmark(
-    old_way(num = 4),
-    new_way(num = 4),
-    old_way(num = 10),
-    new_way(num = 10),
-    old_way(num = 25),
-    new_way(num = 25),
-    old_way(num = 50),
-    new_way(num = 50),
-    times = 5
+    old_way(smaller_data, 10),
+    new_way(smaller_data, 10),
+    old_way(smaller_data, 20),
+    new_way(smaller_data, 20),
+    times = 3
 )
+```
 
-# new_way(num = 15)
-# old_way(num = 15)
+```{r}
+bench::mark(
+    old_way(smaller_data, 10),
+    new_way(smaller_data, 10)
+)
+```
+
+
+```{r}
+bench::mark(
+    old_way(larger_data, 5),
+    new_way(larger_data, 5)
+)
 ```
 
