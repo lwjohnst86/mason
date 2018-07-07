@@ -56,7 +56,7 @@ test_that("(for glm bi) results are equal to real results (no covar)", {
     ) %>%
         dplyr::tbl_df()
 
-    expect_equivalent(test_results[-1:-3], real_results[-1])
+    expect_equivalent(test_results, real_results)
 })
 
 test_that("(for glm bi) results are equal to real results (with covar)", {
@@ -70,7 +70,7 @@ test_that("(for glm bi) results are equal to real results (with covar)", {
     ) %>%
         dplyr::tbl_df()
 
-    expect_equivalent(test_results[-1:-3], real_results[-1])
+    expect_equivalent(test_results, real_results)
 })
 
 test_that("(for glm) results are equal to real results (with covar + int)", {
@@ -85,7 +85,7 @@ test_that("(for glm) results are equal to real results (with covar + int)", {
     ) %>%
         dplyr::tbl_df()
 
-    expect_equivalent(test_results[-1:-3], real_results[-1])
+    expect_equivalent(test_results, real_results)
 })
 
 # scrub and polish --------------------------------------------------------

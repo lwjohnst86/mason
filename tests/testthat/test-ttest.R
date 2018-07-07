@@ -28,14 +28,17 @@ ds <- add_variables(ds, 'yvars', vars[1:2])
 ds <- add_variables(ds, 'xvars', vars[3:4])
 
 test_that("(t.test) results compare to real results", {
-    test_results <- scrub(construct(ds))[-1:-2]
+    test_results <- scrub(construct(ds))[-1:-2] %>%
+        dplyr::arrange(estimate) %>%
+        as.data.frame()
     real_results <- rbind(
-        broom::tidy(t.test(testdata$Income, testdata$Area)),
-        broom::tidy(t.test(testdata$Income, testdata$Frost)),
-        broom::tidy(t.test(testdata$Population, testdata$Area)),
-        broom::tidy(t.test(testdata$Population, testdata$Frost))
+        broom::tidy(t.test(y = testdata$Income, x = testdata$Area)),
+        broom::tidy(t.test(y = testdata$Income, x = testdata$Frost)),
+        broom::tidy(t.test(y = testdata$Population, x = testdata$Area)),
+        broom::tidy(t.test(y = testdata$Population, x = testdata$Frost))
     ) %>%
-        dplyr::tbl_df()
+        dplyr::arrange(estimate) %>%
+        as.data.frame()
     expect_equal(test_results, real_results)
 })
 

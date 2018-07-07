@@ -21,7 +21,7 @@
 #' design(iris, 't.test')
 #'
 design <- function(data,
-                   statistic = c('gee', 'cor', 'glm', 't.test')) {
+                   statistic = c('gee', 'cor', 'glm', 'pls', 't.test')) {
     stopifnot(is.data.frame(data))
     type <- match.arg(statistic)
     make_blueprint(

@@ -1,4 +1,4 @@
-construction_base <- function(data, specs, tool, na.rm = FALSE) {
+construction_base <- function(data, specs, tool, formulas, na.rm = FALSE) {
     data_prep(
         data = data,
         y = specs$vars$yvars,
@@ -8,23 +8,21 @@ construction_base <- function(data, specs, tool, na.rm = FALSE) {
         id = specs$id,
         na.rm = na.rm
     ) %>%
-        generate_results(tool, specs,
-                         type = grep('bp', class(data), value = TRUE))
+        generate_results(
+            tool = tool,
+            specs = specs,
+            formulas = formulas,
+            type = grep('bp', class(data), value = TRUE)
+        )
 }
 
 data_prep <- function(data, y, x, covars = NULL,
                       int = NULL, id = NULL, na.rm = TRUE) {
 
-    prep <- data %>%
-        dplyr::select_(.dots = c(id, y, x, covars, int)) %>%
-        tidyr::gather_('Yterms', 'YtermValues', y) %>%
-        tidyr::gather_('Xterms', 'XtermValues', x)
+    prep <- dplyr::select_at(.tbl = data, .vars = c(id, y, x, covars, int))
 
     if (!is.null(id))
         prep <- dplyr::rename_(prep, 'id' = id)
-
-    prep <- prep %>%
-        dplyr::group_by_('Yterms', 'Xterms')
 
     if (na.rm)
         prep <- stats::na.omit(prep)
@@ -34,23 +32,39 @@ data_prep <- function(data, y, x, covars = NULL,
 
 regression_formula <- function(specs) {
     vars <- specs$vars
-    if (length(vars$interaction) == 1) {
-        int <- paste0('XtermValues:', vars$interaction)
-    } else {
-        int <- NULL
-    }
 
-    stats::reformulate(c('XtermValues',
-                         vars$covariates, int),
-                       response = 'YtermValues')
+    variable_list <- expand.grid(
+        y = vars$yvars,
+        x = vars$xvars,
+        stringsAsFactors = FALSE,
+        KEEP.OUT.ATTRS = FALSE
+    )
+
+
+    formulas <-
+        purrr::map2(variable_list$x,
+                    variable_list$y,
+                    ~ {
+                        interactions <- NULL
+                        if (length(vars$interaction))
+                            interactions <- paste0(.x, ":", vars$interaction)
+
+                        stats::reformulate(c(.x, vars$covariates, interactions),
+                                           response = .y)
+                    })
+
+    list(variables = variable_list,
+         formulas = formulas)
 }
 
-generate_results <- function(data, tool, specs, type) {
 
-    results <- attr(data, 'specs')$prepared %>%
-        dplyr::do_(.dots = tool) %>%
-        dplyr::ungroup() %>%
-        dplyr::tbl_df()
+generate_results <- function(data, tool, specs, formulas, type) {
+
+    results <- purrr::map_dfr(formulas, ~ tool(
+        data = attr(data, 'specs')$prepared,
+        specs = specs,
+        form = .x
+    ))
 
     # Remove in case prepared data already existed.
     attr(data, 'specs')$prepared <- NULL

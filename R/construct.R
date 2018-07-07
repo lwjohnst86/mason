@@ -10,7 +10,6 @@
 #'
 #' @examples
 #'
-#' library(magrittr)
 #' design(iris, 'cor') %>%
 #'  add_settings() %>%
 #'  add_variables('xvars', c('Sepal.Length', 'Sepal.Width')) %>%
@@ -34,6 +33,12 @@
 #'  add_variables('xvars', c('Petal.Length', 'Petal.Width')) %>%
 #'  construct()
 #'
+#' design(iris, 'pls') %>%
+#'  add_settings() %>%
+#'  add_variables('yvars', c('Sepal.Length', 'Sepal.Width')) %>%
+#'  add_variables('xvars', c('Petal.Length', 'Petal.Width')) %>%
+#'  construct()
+#'
 construct <- function(data, ..., na.rm = TRUE) {
     UseMethod("construct", data)
 }
@@ -47,12 +52,6 @@ construct.gee_bp <- function(data, na.rm = TRUE, ...) {
 
     specs <- attributes(data)$specs
     specs_integrity(data, specs)
-
-    if (length(c(specs$vars$yvars, specs$vars$xvars)) >= 100)
-        stop(
-            'There are too many y and/or x variables to loop through, ',
-            'please split the construction up (see vignette for more details).'
-        )
 
     f <- function(data, specs, form) {
         # Have to add these because I think geeglm doesn't reference them
@@ -75,19 +74,19 @@ construct.gee_bp <- function(data, na.rm = TRUE, ...) {
         nsize <- summary(mod)$clusz
 
         data.frame(
+            Yterms = all.vars(form)[1],
+            Xterms = all.vars(form)[2],
             tidied,
             sample.total = sum(nsize),
             sample.max = max(nsize),
-            sample.min = min(nsize)
+            sample.min = min(nsize),
+            stringsAsFactors = FALSE
         )
     }
     form <- regression_formula(specs)
-    tool <- lazyeval::interp(~f(., specs = specs, form = form),
-                                          f = f,
-                                          specs = specs,
-                                          form = form)
 
-    construction_base(data = data, specs = specs, tool = tool, na.rm = na.rm)
+    construction_base(data = data, specs = specs, tool = f,
+                       formulas = form$formulas, na.rm = na.rm)
 }
 
 #' @export
@@ -95,7 +94,7 @@ construct.glm_bp <- function(data, na.rm = TRUE, ...) {
     specs <- attributes(data)$specs
     specs_integrity(data, specs)
 
-    f <- function(data, specs, form) {
+    tool <- function(data, specs, form) {
         mod <- stats::glm(form,
                           data = data,
                           family = specs$family)
@@ -107,12 +106,9 @@ construct.glm_bp <- function(data, na.rm = TRUE, ...) {
                    sample.size = nrow(mod$model))
     }
     form <- regression_formula(specs)
-    tool <- lazyeval::interp(~f(., specs = specs, form = form),
-                                          f = f,
-                                          specs = specs,
-                                          form = form)
 
-    construction_base(data = data, specs = specs, tool = tool, na.rm = na.rm)
+    construction_base(data = data, specs = specs, tool = tool,
+                      formulas = form$formulas, na.rm = na.rm)
 }
 
 #' @export
@@ -158,17 +154,29 @@ construct.t.test_bp <- function(data, na.rm = TRUE, ...) {
     specs <- attributes(data)$specs
     specs_integrity(data, specs)
 
-    f <- function(data, specs) {
-        broom::tidy(stats::t.test(data$YtermValues, data$XtermValues,
-                                  paired = specs$paired))
+    tool <- function(data, specs, form) {
+        y <- form[1]
+        x <- form[2]
+        results <- stats::t.test(x = data[[x]],
+                                 y = data[[y]],
+                                 paired = specs$paired)
+        results <- broom::tidy(results)
+        data.frame(
+            Yterms = y,
+            Xterms = x,
+            results,
+            stringsAsFactors = FALSE
+        )
     }
-    tool <- lazyeval::interp(~f(., specs = specs),
-                             f = f,
-                             specs = specs)
 
-    construction_base(data = data, specs = specs, tool = tool, na.rm = na.rm)
+    form <- regression_formula(specs)
+    # convert so that each x-y pair is a column
+    form <- dplyr::as_tibble(t(form$variables))
+    construction_base(data = data, specs = specs, tool = tool,
+                      formula = form, na.rm = na.rm)
 }
 
+#' @export
 construct.pls_bp <- function(data, ...) {
 
     if (!requireNamespace('pls'))

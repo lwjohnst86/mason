@@ -113,6 +113,7 @@ add_settings.glm_bp <-
 #' @param cv.data Whether to cross-validate the dataset into training and
 #'   testing sets.
 #' @param cv.seed Seed to set for cv.data.
+#' @export
 add_settings.pls_bp <-
     function(data,
              ncomp = NULL,

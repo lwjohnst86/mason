@@ -50,6 +50,7 @@ scrub.cor_bp <- function(data) {
         dplyr::tbl_df()
 }
 
+#' @export
 scrub.pls_bp <- function(data, ...) {
     attr(data, 'specs')$results
 }

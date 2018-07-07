@@ -4,16 +4,20 @@ specs_integrity <- function(data, specs, stat = NULL) {
     if (is.null(stat))
         stat <- ''
 
-    if (any(vars$xvars %in% vars$yvars))
-        stop('Oops, you have one or more variables that are the same in',
-             ' both xvars and yvars. Please have the xvars and yvars be completely',
-             ' unique.', call. = FALSE)
+    if (any(vars$xvars %in% vars$yvars)) {
+        stop("Oops, you have one or more variables that are the same in",
+             " both xvars and yvars. Please don't include the same variable",
+             " in both xvars and yvars.", call. = FALSE)
+    }
 
-    if (is.null(vars$xvars)) {
-        if (is.null(vars$yvars) & stat == 'cor')
-            stop('Please include at least x variables.', call. = FALSE)
-        if (is.null(vars$xvars) | is.null(vars$yvars))
-            stop('Please include y and x variables.', call. = FALSE)
+    if (any(is.null(vars$yvars), is.null(vars$xvars))) {
+        if (any(is.null(vars$yvars), is.null(vars$xvars)) &
+            stat != "cor") {
+            stop('Please include a variable in both yvars and xvars.', call. = FALSE)
+        }
+        if (all(is.null(vars$xvars), stat == "cor")) {
+            stop("Please include a variable for the xvars.", call. = FALSE)
+        }
     }
 
     if (!is.null(vars$covariates)) {

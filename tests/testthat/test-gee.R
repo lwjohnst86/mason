@@ -9,10 +9,10 @@ ds <- design(testdata, 'gee')
 ds <- add_settings(ds, cluster.id = 'state.region')
 test_that("(for gee) construct needs yvar or xvar", {
     ds_wrong <- add_variables(ds, 'xvars', c('Population', 'Murder'))
-    expect_error(contruct_analysis(ds_wrong))
+    expect_error(construct(ds_wrong))
 
     ds_wrong <- add_variables(ds, 'yvars', c('Population', 'Murder'))
-    expect_error(contruct_analysis(ds_wrong))
+    expect_error(construct(ds_wrong))
 })
 
 test_that("(for gee) construct same var in both yvar and xvar", {
@@ -62,13 +62,13 @@ gee_function <- function(formula, data = testdata) {
 ds <- add_settings(ds, cluster.id = 'state.region', corstr = 'ar1')
 
 test_that("(for gee) construct creates the right results (no covars)", {
-    ds_lone <- scrub(construct(ds))[-1:-3]
+    ds_lone <- scrub(construct(ds))[-1:-2]
     real_results <- rbind(
         gee_function(Income ~ Murder),
         gee_function(Income ~ Population),
         gee_function(Life.Exp ~ Murder),
         gee_function(Life.Exp ~ Population)
-    )[-1] %>%
+    ) %>%
         dplyr::tbl_df()
 
     expect_equivalent(ds_lone, real_results)
@@ -76,13 +76,13 @@ test_that("(for gee) construct creates the right results (no covars)", {
 
 ds <- add_variables(ds, 'covariates', c('Frost', 'Area'))
 test_that("(for gee) construct creates the right results (with covars)", {
-    ds_lone <- scrub(construct(ds))[-1:-3]
+    ds_lone <- scrub(construct(ds))[-1:-2]
     real_results <- rbind(
         gee_function(Income ~ Murder + Frost + Area),
         gee_function(Income ~ Population + Frost + Area),
         gee_function(Life.Exp ~ Murder + Frost + Area),
         gee_function(Life.Exp ~ Population + Frost + Area)
-    )[-1] %>%
+    ) %>%
         dplyr::tbl_df()
 
     expect_equivalent(ds_lone, real_results)
@@ -90,13 +90,13 @@ test_that("(for gee) construct creates the right results (with covars)", {
 
 test_that("(for gee) construct creates the right results (with covars + int)", {
     ds <- add_variables(ds, 'interaction', c('Frost'))
-    ds_lone <- scrub(construct(ds))[-1:-3]
+    ds_lone <- scrub(construct(ds))[-1:-2]
     real_results <- rbind(
         gee_function(Income ~ Murder + Frost + Area + Murder:Frost),
         gee_function(Income ~ Population + Frost + Area + Population:Frost),
         gee_function(Life.Exp ~ Murder + Frost + Area + Murder:Frost),
         gee_function(Life.Exp ~ Population + Frost + Area + Population:Frost)
-    )[-1] %>%
+    ) %>%
         dplyr::tbl_df()
 
     expect_equivalent(ds_lone, real_results)
