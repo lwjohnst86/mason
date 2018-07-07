@@ -155,24 +155,25 @@ construct.t.test_bp <- function(data, na.rm = TRUE, ...) {
     specs_integrity(data, specs)
 
     tool <- function(data, specs, form) {
-        broom::tidy(
-            stats::t.test(
-                x = form$x,
-                y = form$y,
-                data = data,
-                paired = specs$paired
-            )
+        y <- form[1]
+        x <- form[2]
+        results <- stats::t.test(x = data[[x]],
+                                 y = data[[y]],
+                                 paired = specs$paired)
+        results <- broom::tidy(results)
+        data.frame(
+            Yterms = y,
+            Xterms = x,
+            results,
+            stringsAsFactors = FALSE
         )
     }
 
-
-    # tool <- lazyeval::interp(~f(., specs = specs),
-    #                          f = f,
-    #                          specs = specs)
-
     form <- regression_formula(specs)
+    # convert so that each x-y pair is a column
+    form <- dplyr::as_tibble(t(form$variables))
     construction_base(data = data, specs = specs, tool = tool,
-                      formula = form$variables, na.rm = na.rm)
+                      formula = form, na.rm = na.rm)
 }
 
 #' @export
