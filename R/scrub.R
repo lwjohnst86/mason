@@ -1,11 +1,13 @@
-# Scrub -------------------------------------------------------------------
 
-#' Scrub down and polish up the constructed analysis results.
+#' Scrub down and tidy up the constructed analysis results.
 #'
 #' @param data The blueprint data object.
+#' @param output Selecting what to output from model.
+#' @param ... Other arguments passed to methods.
 #'
 #' @return Outputs a cleaned up version of the constructed analysis.
 #' @export
+#' @seealso See also [`tidy_up()`] for pls tidying.
 #'
 #' @examples
 #'
@@ -15,17 +17,17 @@
 #' ds <- construct(ds)
 #' scrub(ds)
 #'
-scrub <- function(data) {
+scrub <- function(data, ...) {
     UseMethod('scrub', data)
 }
 
 #' @export
-scrub.default <- function(data) {
+scrub.default <- function(data, ...) {
     dplyr::tbl_df(attr(data, 'specs')$results)
 }
 
 #' @export
-scrub.gee_bp <- function(data) {
+scrub.gee_bp <- function(data, ...) {
     results <- attr(data, 'specs')$results
     mutate_tool <- lazyeval::interp("gsub('XtermValues', '<-Xterm', term)")
     results %>%
@@ -37,7 +39,7 @@ scrub.gee_bp <- function(data) {
 scrub.glm_bp <- scrub.gee_bp
 
 #' @export
-scrub.cor_bp <- function(data) {
+scrub.cor_bp <- function(data, ...) {
     results <- attr(data, 'specs')$results %>%
         dplyr::rename_('Vars1' = 'Variables')
     vars <- names(results)
