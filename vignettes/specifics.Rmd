@@ -74,18 +74,46 @@ data.frame(state.x77, state.region) %>%
     scrub()
 ```
 
-<!--
-## Partial least squares regression
+## Partial least squares (PLS) regression
+
+PLS is implemented through several different algorithm, which are often fairly
+similar in their results. The default for mason is the default [`pls::plsr()`]
+kernel algorithm. Eventually mason will allow using other algorithms (like
+SIMPLS)... but baby steps. The kernel algorithm is good for "tall matrices",
+i.e. many observations and few variables (the type of data I often use).
+
+Resources include this [CrossValidated post](https://stats.stackexchange.com/questions/284737/partial-least-squares-regression-plsr-regression-coefficients-vs-correlation)
+and this [website](https://learnche.org/pid/latent-variable-modelling/projection-to-latent-structures/interpreting-pls-scores-and-loadings),
+both of which provide a lot of detail on interpreting the results of PLS. And of
+course there is the vignette from the pls package itself: `vignette("pls-manual", package = "pls")`.
+
+There are several outputs/results from PLS models:
+
+- Scores: Calculated value from each component from the PLS model for each
+observation. Use these to look for patterns between components.
+- Loadings: Very similar to principal component analysis loadings, including in
+their interpretation. Strongly correlated variables will have similar loadings.
+Loadings also include relationship with Y.
+- Coefficients: Are calculated by regressing the T scores on X. They are only
+useful for understanding the model, but not really for interpretation.
+- Y scores are used for mainly interpretation purposes, but the X scores are
+more important.
+<!-- - Both X and Y loadings are obtained by regressing against the t scores (from the -->
+<!-- X times w weight) -->
+
+For more detail of what outputs are "`scrub`bed", see the [`tidy_up()`] function
+documentation. Below is an example usage:
 
 ```{r plsr, eval=FALSE}
-swiss %>% 
+pls_model <- swiss %>% 
     design('pls') %>% 
     add_settings(validation = 'CV', cv.data = TRUE) %>% 
     add_variables('yvars', c('Agriculture')) %>% 
     add_variables('xvars', c('Examination', 'Education', 'Fertility')) %>% 
-    construct() %>% 
-    scrub() %>% 
-    summary()
-```
+    construct() 
 
--->
+scrub(pls_model) 
+scrub(pls_model, "default") 
+scrub(pls_model, "scores") 
+scrub(pls_model, "loadings") 
+```
