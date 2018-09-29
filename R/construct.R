@@ -197,6 +197,7 @@ construct.pls_bp <- function(data, ...) {
     if (is.null(specs$ncomp))
         specs$ncomp <- length(specs$vars$xvars)
 
+    # TODO: This or use data in the pls instead?
     Y <- as.matrix(d[, specs$vars$yvars])
     X <- as.matrix(d[, specs$vars$xvars])
     results <- pls::plsr(Y ~ X, scale = specs$scale, ncomp = specs$ncomp)
