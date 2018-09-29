@@ -2,7 +2,8 @@
 
 ## New features
 
-- Added a Partial Least Squares design with settings and construction.
+- Added a Partial Least Squares design with settings and construction
+- Added tidying/scrubbing for PLS analysis (#31)
 
 ## Improvements
 
