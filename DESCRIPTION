@@ -22,7 +22,8 @@ Imports:
     utils,
     lazyeval,
     tibble,
-    rlang (>= 0.1.2)
+    rlang (>= 0.1.2),
+    purrr
 RoxygenNote: 6.1.0
 Suggests: 
     knitr,
