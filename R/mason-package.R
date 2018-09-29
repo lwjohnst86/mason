@@ -7,12 +7,10 @@
 #' [dplyr::dplyr()] functions, which makes the analysis fast and
 #' allows it to be put into a [magrittr::magrittr()] pipe chain.
 #'
-#' The final, [scrub()]'ed version of the analysis is in a 'tidy'
-#' format, meaning it is already in a form to send to
-#' [ggplot2::ggplot()] or created into a table using
-#' [pander::pander()], [knitr::kable()], or
-#' [pixiedust::dust()]. It also allows further processing with
-#' `dplyr` and `tidyr`.
+#' The final, [scrub()]'ed version of the analysis is in a 'tidy' format,
+#' meaning it is already in a form to send to [ggplot2::ggplot()] or created
+#' into a table using [pander::pander()], [knitr::kable()]. It also allows
+#' further processing with `dplyr` and `tidyr`.
 #'
 #' @details
 #' One of the main goals of `mason` is to make it easy to implement other
