@@ -179,9 +179,9 @@ construct.t.test_bp <- function(data, na.rm = TRUE, ...) {
 #' @export
 construct.pls_bp <- function(data, ...) {
 
-    if (!requireNamespace('pls'))
-        stop('pls is needed for this analysis, please install it',
-             call. = FALSE)
+    if (!requireNamespace('pls', quietly = TRUE)) {
+        stop('Please install the pls package to run this analysis.')
+    }
 
     specs <- attributes(data)$specs
     specs_integrity(data, specs, stat = 'pls')
