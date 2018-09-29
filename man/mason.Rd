@@ -11,12 +11,10 @@ easily be plotting or made into a table. Many parts of \code{mason} use
 \code{\link[dplyr:dplyr]{dplyr::dplyr()}} functions, which makes the analysis fast and
 allows it to be put into a \code{\link[magrittr:magrittr]{magrittr::magrittr()}} pipe chain.
 
-The final, \code{\link[=scrub]{scrub()}}'ed version of the analysis is in a 'tidy'
-format, meaning it is already in a form to send to
-\code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} or created into a table using
-\code{\link[pander:pander]{pander::pander()}}, \code{\link[knitr:kable]{knitr::kable()}}, or
-\code{\link[pixiedust:dust]{pixiedust::dust()}}. It also allows further processing with
-\code{dplyr} and \code{tidyr}.
+The final, \code{\link[=scrub]{scrub()}}'ed version of the analysis is in a 'tidy' format,
+meaning it is already in a form to send to \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} or created
+into a table using \code{\link[pander:pander]{pander::pander()}}, \code{\link[knitr:kable]{knitr::kable()}}. It also allows
+further processing with \code{dplyr} and \code{tidyr}.
 }
 \details{
 One of the main goals of \code{mason} is to make it easy to implement other

@@ -4,8 +4,8 @@
 \alias{add_variables}
 \title{Add variables to the analysis}
 \usage{
-add_variables(data, type = c("yvars", "xvars", "covariates", "interaction"),
-  variables)
+add_variables(data, type = c("yvars", "xvars", "covariates",
+  "interaction"), variables)
 }
 \arguments{
 \item{data}{The blueprint data object.}

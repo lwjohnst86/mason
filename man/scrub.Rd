@@ -2,18 +2,26 @@
 % Please edit documentation in R/scrub.R
 \name{scrub}
 \alias{scrub}
-\title{Scrub down and polish up the constructed analysis results.}
+\alias{scrub.pls_bp}
+\title{Scrub down and tidy up the constructed analysis results.}
 \usage{
-scrub(data)
+scrub(data, ...)
+
+\method{scrub}{pls_bp}(data, output = c("mvr_object", "default",
+  "scores", "loadings", "score_corr", "explained_var"), ...)
 }
 \arguments{
 \item{data}{The blueprint data object.}
+
+\item{...}{Other arguments passed to methods.}
+
+\item{output}{Selecting what to output from model.}
 }
 \value{
 Outputs a cleaned up version of the constructed analysis.
 }
 \description{
-Scrub down and polish up the constructed analysis results.
+Scrub down and tidy up the constructed analysis results.
 }
 \examples{
 
@@ -23,4 +31,7 @@ ds <- add_variables(ds, 'xvars', c('Sepal.Length', 'Sepal.Width'))
 ds <- construct(ds)
 scrub(ds)
 
+}
+\seealso{
+See also \code{\link[=tidy_up]{tidy_up()}} for pls tidying.
 }
