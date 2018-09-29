@@ -20,8 +20,11 @@ Imports:
     magrittr,
     stats,
     utils,
-    lazyeval
-RoxygenNote: 6.0.1
+    lazyeval,
+    tibble,
+    rlang (>= 0.1.2),
+    purrr
+RoxygenNote: 6.1.0
 Suggests: 
     knitr,
     geepack,
@@ -29,8 +32,10 @@ Suggests:
     rmarkdown,
     testthat,
     MASS,
-    covr
+    covr,
+    roxygen2
 VignetteBuilder: knitr
 BugReports: https://github.com/lwjohnst86/mason/issues
 URL: https://github.com/lwjohnst86/mason
 Roxygen: list(markdown = TRUE)
+Encoding: UTF-8

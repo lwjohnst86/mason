@@ -2,8 +2,6 @@ context("pls output")
 
 testdata <- dplyr::mutate(testdata, Rich = as.factor(Rich))
 
-skip("Not completely implemented yet.")
-
 # add_settings ------------------------------------------------------------
 
 ds <- design(testdata, 'pls')
@@ -36,7 +34,45 @@ test_that("only numeric variables", {
 
 # Scrub -------------------------------------------------------------------
 
-test_that("scrubbing returns a list", {
-    ds <- construct(ds)
+ds <- construct(ds)
+test_that("standard scrubbing returns a list and mvr object", {
     expect_type(scrub(ds), 'list')
+    expect_is(scrub(ds), 'mvr')
+})
+
+test_that("default, loadings, corr, explained var output gives tibble with relevant results", {
+    expect_is(scrub(ds, "default"), 'tbl_df')
+    expect_equal(dim(scrub(ds, "default")), c(9, 5))
+    expect_equivalent(
+        names(scrub(ds, "default")),
+        c(
+            "xvariables",
+            "components",
+            "loadings",
+            "scores.to.var.corr",
+            "explained.variance"
+        )
+    )
+    expect_is(scrub(ds, "explained_var"), 'tbl_df')
+    expect_equal(dim(scrub(ds, "explained_var")), c(3, 2))
+    expect_equivalent(
+        names(scrub(ds, "explained_var")),
+        c(
+            "components",
+            "explained.variance"
+        )
+    )
+})
+
+test_that("scores output gives tibble and the proper scores", {
+    expect_is(scrub(ds, "scores"), 'tbl_df')
+    expect_equal(dim(scrub(ds, "scores")), c(nrow(testdata)/2, 3))
+    expect_equivalent(
+        names(scrub(ds, "scores")),
+        c(
+            "scores.component.1",
+            "scores.component.2",
+            "scores.component.3"
+        )
+    )
 })

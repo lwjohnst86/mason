@@ -4,7 +4,7 @@
 \alias{design}
 \title{Design the blueprint for an analysis.}
 \usage{
-design(data, statistic = c("gee", "cor", "glm", "t.test"))
+design(data, statistic = c("gee", "cor", "glm", "pls", "t.test"))
 }
 \arguments{
 \item{data}{The dataset you want to analyze}

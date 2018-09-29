@@ -173,15 +173,15 @@ construct.t.test_bp <- function(data, na.rm = TRUE, ...) {
     # convert so that each x-y pair is a column
     form <- dplyr::as_tibble(t(form$variables))
     construction_base(data = data, specs = specs, tool = tool,
-                      formula = form, na.rm = na.rm)
+                      formulas = form, na.rm = na.rm)
 }
 
 #' @export
 construct.pls_bp <- function(data, ...) {
 
-    if (!requireNamespace('pls'))
-        stop('pls is needed for this analysis, please install it',
-             call. = FALSE)
+    if (!requireNamespace('pls', quietly = TRUE)) {
+        stop('Please install the pls package to run this analysis.')
+    }
 
     specs <- attributes(data)$specs
     specs_integrity(data, specs, stat = 'pls')
@@ -197,6 +197,7 @@ construct.pls_bp <- function(data, ...) {
     if (is.null(specs$ncomp))
         specs$ncomp <- length(specs$vars$xvars)
 
+    # TODO: This or use data in the pls instead?
     Y <- as.matrix(d[, specs$vars$yvars])
     X <- as.matrix(d[, specs$vars$xvars])
     results <- pls::plsr(Y ~ X, scale = specs$scale, ncomp = specs$ncomp)
