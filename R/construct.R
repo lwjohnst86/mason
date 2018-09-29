@@ -173,7 +173,7 @@ construct.t.test_bp <- function(data, na.rm = TRUE, ...) {
     # convert so that each x-y pair is a column
     form <- dplyr::as_tibble(t(form$variables))
     construction_base(data = data, specs = specs, tool = tool,
-                      formula = form, na.rm = na.rm)
+                      formulas = form, na.rm = na.rm)
 }
 
 #' @export
