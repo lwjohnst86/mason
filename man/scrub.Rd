@@ -7,8 +7,12 @@
 \usage{
 scrub(data, ...)
 
-\method{scrub}{pls_bp}(data, output = c("mvr_object", "default",
-  "scores", "loadings", "score_corr", "explained_var"), ...)
+\method{scrub}{pls_bp}(
+  data,
+  output = c("mvr_object", "default", "scores", "loadings", "score_corr",
+    "explained_var"),
+  ...
+)
 }
 \arguments{
 \item{data}{The blueprint data object.}

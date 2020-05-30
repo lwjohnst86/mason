@@ -23,7 +23,7 @@ test_that("(cor) results compare to real results", {
                         method = 'pearson')
         if (is.null(y))
             cor_data[upper.tri(cor_data)] <- NA
-        dplyr::tbl_df(as.data.frame(cor_data))
+        tibble::as_tibble(as.data.frame(cor_data))
     }
 
     test_results <- attr(construct(ds), 'specs')$results

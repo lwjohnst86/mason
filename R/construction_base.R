@@ -22,7 +22,7 @@ data_prep <- function(data, y, x, covars = NULL,
     prep <- dplyr::select_at(.tbl = data, .vars = c(id, y, x, covars, int))
 
     if (!is.null(id))
-        prep <- dplyr::rename_(prep, 'id' = id)
+        prep <- dplyr::rename(prep, 'id' = "id")
 
     if (na.rm)
         prep <- stats::na.omit(prep)

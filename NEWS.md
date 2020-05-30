@@ -10,6 +10,7 @@
 - Re-factored the underlying `gather-group_by-do` method of running models on each
 combination of x and y. Now uses `purrr::map()` over a list of all possible formulas.
 Computing time and memory usage is much much lower now (#22).
+- 
 
 # mason 0.2.6
 
@@ -28,7 +29,3 @@ Computing time and memory usage is much much lower now (#22).
 ## Additions
 
 * Added a `NEWS.md` file to track changes to the package.
-
-
-
-

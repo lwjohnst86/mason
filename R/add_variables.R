@@ -59,3 +59,10 @@ add_variables.default <-
         make_blueprint(data, vars = stats::setNames(list(variables), type))
     }
 
+
+add_yvars <- function(data, ...) {
+    variables <- rlang::quos(...)
+    print(variables)
+    print(!!variables)
+    names(dplyr::select(data, !! variables))
+}

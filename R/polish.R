@@ -42,7 +42,7 @@ polish_renaming <- function(data, renaming.fun, columns = NULL) {
         stopifnot(is.character(columns))
     }
 
-    dplyr::mutate_at(data, dplyr::vars(columns), dplyr::funs(renaming.fun))
+    dplyr::mutate(data, dplyr::across(columns, list(renaming.fun)))
 }
 
 #' @describeIn polish `polish_filter` is basically a thin wrapper around
@@ -57,17 +57,17 @@ polish_filter <- function(data, keep.pattern, column) {
 }
 
 #' @describeIn polish `polish_transform_estimates` is simply a thin wrapper
-#'   around [dplyr::mutate_at()].
+#'   around [dplyr::mutate()].
 #'
 #' @param transform.fun A function to modify continuous variable columns.
 #' @export
 polish_transform_estimates <- function(data, transform.fun) {
     stopifnot(is.function(transform.fun))
-    dplyr::mutate_at(
-        data,
-        dplyr::vars(dplyr::matches('estimate|std\\.error|conf\\.low|conf\\.high')),
-        dplyr::funs(transform.fun)
-    )
+    dplyr::mutate(data,
+                  dplyr::across(
+                      dplyr::matches('estimate|std\\.error|conf\\.low|conf\\.high'),
+                      transform.fun
+                  ))
 }
 
 #' @describeIn polish `polish_adjust_pvalue` is a thin wrapper around
@@ -77,7 +77,5 @@ polish_transform_estimates <- function(data, transform.fun) {
 #'   ([stats::p.adjust()]).
 #' @export
 polish_adjust_pvalue <- function(data, method = 'BH') {
-    mutate_tool <- lazyeval::interp('stats::p.adjust(p.value, method)',
-                                    method = method)
-    dplyr::mutate_(data, .dots = stats::setNames(mutate_tool, 'adj.p.value'))
+    dplyr::mutate(data, adj.p.value = stats::p.adjust(p.value, method = method))
 }

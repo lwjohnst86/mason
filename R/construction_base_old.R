@@ -21,7 +21,7 @@ data_prep_old <- function(data, y, x, covars = NULL,
         tidyr::gather_('Xterms', 'XtermValues', x)
 
     if (!is.null(id))
-        prep <- dplyr::rename_(prep, 'id' = id)
+        prep <- dplyr::rename(prep, 'id' = "id")
 
     prep <- prep %>%
         dplyr::group_by_('Yterms', 'Xterms')
@@ -49,8 +49,7 @@ generate_results_old <- function(data, tool, specs, type) {
 
     results <- attr(data, 'specs')$prepared %>%
         dplyr::do_(.dots = tool) %>%
-        dplyr::ungroup() %>%
-        dplyr::tbl_df()
+        dplyr::ungroup()
 
     # Remove in case prepared data already existed.
     attr(data, 'specs')$prepared <- NULL

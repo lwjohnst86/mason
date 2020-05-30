@@ -11,21 +11,36 @@
 \usage{
 add_settings(data, ...)
 
-\method{add_settings}{gee_bp}(data, cluster.id, family,
-  corstr = c("independence", "exchangeable", "ar1"), conf.int = TRUE,
-  conf.level = 0.95, ...)
+\method{add_settings}{gee_bp}(
+  data,
+  cluster.id,
+  family,
+  corstr = c("independence", "exchangeable", "ar1"),
+  conf.int = TRUE,
+  conf.level = 0.95,
+  ...
+)
 
-\method{add_settings}{cor_bp}(data, method = c("pearson", "kendall",
-  "spearman"), use = c("complete.obs", "all.obs",
-  "pairwise.complete.obs", "everything", "na.or.complete"),
-  hclust.order = FALSE, ...)
+\method{add_settings}{cor_bp}(
+  data,
+  method = c("pearson", "kendall", "spearman"),
+  use = c("complete.obs", "all.obs", "pairwise.complete.obs", "everything",
+    "na.or.complete"),
+  hclust.order = FALSE,
+  ...
+)
 
-\method{add_settings}{glm_bp}(data, family, conf.int = TRUE,
-  conf.level = 0.95, ...)
+\method{add_settings}{glm_bp}(data, family, conf.int = TRUE, conf.level = 0.95, ...)
 
-\method{add_settings}{pls_bp}(data, ncomp = NULL, scale = TRUE,
-  validation = c("none", "CV", "LOO"), cv.data = TRUE,
-  cv.seed = 1234, ...)
+\method{add_settings}{pls_bp}(
+  data,
+  ncomp = NULL,
+  scale = TRUE,
+  validation = c("none", "CV", "LOO"),
+  cv.data = TRUE,
+  cv.seed = 1234,
+  ...
+)
 
 \method{add_settings}{t.test_bp}(data, paired = FALSE, ...)
 }
@@ -40,7 +55,7 @@ add_settings(data, ...)
     function to be used in the model.  For \code{glm} this can be a
     character string naming a family function, a family function or the
     result of a call to a family function.  For \code{glm.fit} only the
-    third option is supported.  (See \code{\link{family}} for details of
+    third option is supported.  (See \code{\link[stats]{family}} for details of
     family functions.)}
 
 \item{corstr}{The correlation structure. See \code{\link[geepack:geeglm]{geepack::geeglm()}}.}
@@ -71,18 +86,6 @@ Defaults to 0.95, which corresponds to a 95 percent confidence interval.}
 
 \item{hclust.order}{Whether to order the correlation data based on the
 \code{\link[stats:hclust]{stats::hclust()}} algorithm.}
-
-\item{ncomp}{the number of components to include in the model (see below).}
-
-\item{scale}{numeric vector, or logical.  If numeric vector, \eqn{X}
-    is scaled by dividing each variable with the corresponding element
-    of \code{scale}.  If \code{scale} is \code{TRUE}, \eqn{X} is scaled
-    by dividing each variable by its sample standard deviation.  If
-    cross-validation is selected, scaling by the standard deviation is
-    done for every segment.}
-
-\item{validation}{character.  What kind of (internal) validation to
-    use.  See below.}
 
 \item{cv.data}{Whether to cross-validate the dataset into training and
 testing sets.}

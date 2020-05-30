@@ -3,7 +3,6 @@
 \docType{package}
 \name{mason}
 \alias{mason}
-\alias{mason-package}
 \title{Build a (results from analyses) structure like a mason}
 \description{
 Easily run common statistical analyses and build them into a form that can

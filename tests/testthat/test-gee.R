@@ -68,8 +68,7 @@ test_that("(for gee) construct creates the right results (no covars)", {
         gee_function(Income ~ Population),
         gee_function(Life.Exp ~ Murder),
         gee_function(Life.Exp ~ Population)
-    ) %>%
-        dplyr::tbl_df()
+    )
 
     expect_equivalent(ds_lone, real_results)
 })

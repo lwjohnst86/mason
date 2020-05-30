@@ -106,7 +106,7 @@ pls_scores_as_dataframe <- function(model) {
         unclass() %>%
         as.matrix() %>%
         tibble::as_tibble() %>%
-        dplyr::rename_all(rename_component_columns)
+        dplyr::rename_with(rename_component_columns)
 
     .as_dataframe
 }

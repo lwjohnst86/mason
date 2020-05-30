@@ -53,8 +53,7 @@ test_that("(for glm) results are equal to real results (no covar)", {
         glm_function(Income ~ Frost),
         glm_function(Population ~ Area),
         glm_function(Population ~ Frost)
-    ) %>%
-        dplyr::tbl_df()
+    )
 
     expect_equivalent(test_results, real_results)
 })
@@ -67,8 +66,7 @@ test_that("(for glm) results are equal to real results (with covar)", {
         glm_function(Income ~ Frost + Murder),
         glm_function(Population ~ Area + Murder),
         glm_function(Population ~ Frost + Murder)
-    ) %>%
-        dplyr::tbl_df()
+    )
 
     expect_equivalent(test_results, real_results)
 })
@@ -82,8 +80,7 @@ test_that("(for glm) results are equal to real results (with covar + int)", {
         glm_function(Income ~ Frost + Murder + Frost:Murder),
         glm_function(Population ~ Area + Murder + Area:Murder),
         glm_function(Population ~ Frost + Murder + Frost:Murder)
-    ) %>%
-        dplyr::tbl_df()
+    )
 
     expect_equivalent(test_results, real_results)
 })
