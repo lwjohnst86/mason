@@ -11,7 +11,7 @@ easily be plotting or made into a table. Many parts of \code{mason} use
 allows it to be put into a \code{\link[magrittr:magrittr]{magrittr::magrittr()}} pipe chain.
 
 The final, \code{\link[=scrub]{scrub()}}'ed version of the analysis is in a 'tidy' format,
-meaning it is already in a form to send to \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} or created
+meaning it is already in a form to send to ggplot2 or created
 into a table using the pander package or with \code{\link[knitr:kable]{knitr::kable()}}. It also allows
 further processing with \code{dplyr} and \code{tidyr}.
 }
