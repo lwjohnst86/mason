@@ -1,5 +1,7 @@
 context("pls output")
 
+skip_if_not_installed("pls")
+
 testdata <- dplyr::mutate(testdata, Rich = as.factor(Rich))
 
 # add_settings ------------------------------------------------------------

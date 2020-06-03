@@ -47,28 +47,30 @@ ds <- add_variables(ds, 'yvars', c('Income', 'Population'))
 ds <- add_variables(ds, 'xvars', c('Frost', 'Area'))
 
 test_that("(for glm) results are equal to real results (no covar)", {
-    test_results <- scrub(construct(ds))
+    test_results <- scrub(construct(ds)) %>% fix_order()
     real_results <- rbind(
         glm_function(Income ~ Area),
         glm_function(Income ~ Frost),
         glm_function(Population ~ Area),
         glm_function(Population ~ Frost)
     ) %>%
-        dplyr::tbl_df()
+        tibble::as_tibble() %>%
+        fix_order()
 
     expect_equivalent(test_results, real_results)
 })
 
 test_that("(for glm) results are equal to real results (with covar)", {
     ds <- add_variables(ds, 'covariates', 'Murder')
-    test_results <- scrub(construct(ds))
+    test_results <- scrub(construct(ds)) %>% fix_order()
     real_results <- rbind(
         glm_function(Income ~ Area + Murder),
         glm_function(Income ~ Frost + Murder),
         glm_function(Population ~ Area + Murder),
         glm_function(Population ~ Frost + Murder)
     ) %>%
-        dplyr::tbl_df()
+        tibble::as_tibble() %>%
+        fix_order()
 
     expect_equivalent(test_results, real_results)
 })
@@ -76,14 +78,15 @@ test_that("(for glm) results are equal to real results (with covar)", {
 test_that("(for glm) results are equal to real results (with covar + int)", {
     ds <- add_variables(ds, 'covariates', 'Murder')
     ds <- add_variables(ds, 'interaction', 'Murder')
-    test_results <- scrub(construct(ds))
+    test_results <- scrub(construct(ds)) %>% fix_order()
     real_results <- rbind(
         glm_function(Income ~ Area + Murder + Area:Murder),
         glm_function(Income ~ Frost + Murder + Frost:Murder),
         glm_function(Population ~ Area + Murder + Area:Murder),
         glm_function(Population ~ Frost + Murder + Frost:Murder)
     ) %>%
-        dplyr::tbl_df()
+        tibble::as_tibble() %>%
+        fix_order()
 
     expect_equivalent(test_results, real_results)
 })

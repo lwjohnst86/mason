@@ -47,28 +47,30 @@ ds <- add_variables(ds, 'yvars', c('Rich', 'Populated'))
 ds <- add_variables(ds, 'xvars', c('Frost', 'Area'))
 
 test_that("(for glm bi) results are equal to real results (no covar)", {
-    test_results <- scrub(construct(ds))
+    test_results <- scrub(construct(ds)) %>% fix_order()
     real_results <- rbind(
         glm_function(Rich ~ Area),
         glm_function(Rich ~ Frost),
         glm_function(Populated ~ Area),
         glm_function(Populated ~ Frost)
     ) %>%
-        dplyr::tbl_df()
+        tibble::as_tibble() %>%
+        fix_order()
 
     expect_equivalent(test_results, real_results)
 })
 
 test_that("(for glm bi) results are equal to real results (with covar)", {
     ds <- add_variables(ds, 'covariates', 'Murder')
-    test_results <- scrub(construct(ds))
+    test_results <- scrub(construct(ds)) %>% fix_order()
     real_results <- rbind(
         glm_function(Rich ~ Area + Murder),
         glm_function(Rich ~ Frost + Murder),
         glm_function(Populated ~ Area + Murder),
         glm_function(Populated ~ Frost + Murder)
     ) %>%
-        dplyr::tbl_df()
+        tibble::as_tibble() %>%
+        fix_order()
 
     expect_equivalent(test_results, real_results)
 })
@@ -76,14 +78,15 @@ test_that("(for glm bi) results are equal to real results (with covar)", {
 test_that("(for glm) results are equal to real results (with covar + int)", {
     ds <- add_variables(ds, 'covariates', 'Murder')
     ds <- add_variables(ds, 'interaction', 'Murder')
-    test_results <- scrub(construct(ds))
+    test_results <- scrub(construct(ds)) %>% fix_order()
     real_results <- rbind(
         glm_function(Rich ~ Area + Murder + Area:Murder),
         glm_function(Rich ~ Frost + Murder + Frost:Murder),
         glm_function(Populated ~ Area + Murder + Area:Murder),
         glm_function(Populated ~ Frost + Murder + Frost:Murder)
     ) %>%
-        dplyr::tbl_df()
+        tibble::as_tibble() %>%
+        fix_order()
 
     expect_equivalent(test_results, real_results)
 })

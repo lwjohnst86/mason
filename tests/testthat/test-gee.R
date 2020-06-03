@@ -3,6 +3,8 @@ context("GEE output")
 ## TODO: Tests to maintain class after doing something else to it outside of mason (?)
 ## TODO: Use multiple datasets (state, dietox + respiratory + sitka89 (geepack))
 
+skip_if_not_installed("geepack")
+
 # construct ---------------------------------------------------------------
 
 ds <- design(testdata, 'gee')
@@ -62,42 +64,45 @@ gee_function <- function(formula, data = testdata) {
 ds <- add_settings(ds, cluster.id = 'state.region', corstr = 'ar1')
 
 test_that("(for gee) construct creates the right results (no covars)", {
-    ds_lone <- scrub(construct(ds))[-1:-2]
+    ds_lone <- scrub(construct(ds))[-1:-2] %>% fix_order()
     real_results <- rbind(
         gee_function(Income ~ Murder),
         gee_function(Income ~ Population),
         gee_function(Life.Exp ~ Murder),
         gee_function(Life.Exp ~ Population)
     ) %>%
-        dplyr::tbl_df()
+        tibble::as_tibble() %>%
+        fix_order()
 
     expect_equivalent(ds_lone, real_results)
 })
 
 ds <- add_variables(ds, 'covariates', c('Frost', 'Area'))
 test_that("(for gee) construct creates the right results (with covars)", {
-    ds_lone <- scrub(construct(ds))[-1:-2]
+    ds_lone <- scrub(construct(ds))[-1:-2] %>% fix_order()
     real_results <- rbind(
         gee_function(Income ~ Murder + Frost + Area),
         gee_function(Income ~ Population + Frost + Area),
         gee_function(Life.Exp ~ Murder + Frost + Area),
         gee_function(Life.Exp ~ Population + Frost + Area)
     ) %>%
-        dplyr::tbl_df()
+        tibble::as_tibble() %>%
+        fix_order()
 
     expect_equivalent(ds_lone, real_results)
 })
 
 test_that("(for gee) construct creates the right results (with covars + int)", {
     ds <- add_variables(ds, 'interaction', c('Frost'))
-    ds_lone <- scrub(construct(ds))[-1:-2]
+    ds_lone <- scrub(construct(ds))[-1:-2] %>% fix_order()
     real_results <- rbind(
         gee_function(Income ~ Murder + Frost + Area + Murder:Frost),
         gee_function(Income ~ Population + Frost + Area + Population:Frost),
         gee_function(Life.Exp ~ Murder + Frost + Area + Murder:Frost),
         gee_function(Life.Exp ~ Population + Frost + Area + Population:Frost)
     ) %>%
-        dplyr::tbl_df()
+        tibble::as_tibble() %>%
+        fix_order()
 
     expect_equivalent(ds_lone, real_results)
 })
