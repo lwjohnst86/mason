@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette goes over typical 'constuction' projects for each of the analysis
+This vignette goes over typical 'construction' projects for each of the analysis
 designs. First, let's load up mason!
 
 ```{r}
