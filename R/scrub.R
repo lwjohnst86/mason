@@ -29,10 +29,9 @@ scrub.default <- function(data, ...) {
 #' @export
 scrub.gee_bp <- function(data, ...) {
     results <- attr(data, 'specs')$results
-    mutate_tool <- lazyeval::interp("gsub('XtermValues', '<-Xterm', term)")
     results %>%
-        dplyr::mutate_(.dots = stats::setNames(mutate_tool, 'term')) %>%
         dplyr::tbl_df()
+        dplyr::mutate(term = gsub("XtermValues", "<-Xterm", .data$term)) %>%
 }
 
 #' @export
@@ -41,13 +40,13 @@ scrub.glm_bp <- scrub.gee_bp
 #' @export
 scrub.cor_bp <- function(data, ...) {
     results <- attr(data, 'specs')$results %>%
-        dplyr::rename_('Vars1' = 'Variables')
+        dplyr::rename('Vars1' = 'Variables')
     vars <- names(results)
     vars <- setdiff(vars, 'Vars1')
 
     results %>%
         tidyr::gather_('Vars2', 'Correlations', vars) %>%
-        dplyr::filter_(.dots = lazyeval::interp("Vars1 != Vars2")) %>%
+        dplyr::filter(.data$Vars1 != .data$Vars2) %>%
         stats::na.omit() %>%
         dplyr::tbl_df()
 }

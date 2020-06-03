@@ -19,10 +19,10 @@ construction_base <- function(data, specs, tool, formulas, na.rm = FALSE) {
 data_prep <- function(data, y, x, covars = NULL,
                       int = NULL, id = NULL, na.rm = TRUE) {
 
-    prep <- dplyr::select_at(.tbl = data, .vars = c(id, y, x, covars, int))
+    prep <- dplyr::select(data, tidyselect::all_of(c(id, y, x, covars, int)))
 
     if (!is.null(id))
-        prep <- dplyr::rename_(prep, 'id' = id)
+        prep <- dplyr::rename(prep, 'id' = id)
 
     if (na.rm)
         prep <- stats::na.omit(prep)
