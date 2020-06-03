@@ -67,7 +67,7 @@ print.bp <- function(x, ...) {
     if (is.null(specs$results)) {
         cat("# Analysis for", specs$stat, "is still under construction.",
             "\n# Showing data right now:\n")
-        obj <- dplyr::tbl_df(unclass(x))
+        obj <- tibble::as_tibble(unclass(x))
         print(obj, n = 6)
     } else if (!is.null(specs$results)) {
         cat(
@@ -77,7 +77,7 @@ print.bp <- function(x, ...) {
         if ('pls_bp' %in% class(x)) {
             print(summary(attr(x, 'specs')$results))
         } else {
-            obj <- dplyr::tbl_df(attr(x, 'specs')$results)
+            obj <- tibble::as_tibble(attr(x, 'specs')$results)
             print(obj, n = 6)
         }
     } else {

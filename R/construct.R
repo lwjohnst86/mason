@@ -5,7 +5,7 @@
 #' @param ... Additional args.
 #'
 #' @return Uses the blueprint to construct the results of the statistical
-#'   analysis.
+#'   analysis. Outputs a [tibble][tibble::tibble-package].
 #' @export
 #'
 #' @examples

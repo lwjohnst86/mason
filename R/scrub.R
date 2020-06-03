@@ -23,15 +23,15 @@ scrub <- function(data, ...) {
 
 #' @export
 scrub.default <- function(data, ...) {
-    dplyr::tbl_df(attr(data, 'specs')$results)
+    tibble::as_tibble(attr(data, 'specs')$results, .name_repair = "universal")
 }
 
 #' @export
 scrub.gee_bp <- function(data, ...) {
     results <- attr(data, 'specs')$results
     results %>%
-        dplyr::tbl_df()
         dplyr::mutate(term = gsub("XtermValues", "<-Xterm", .data$term)) %>%
+        tibble::as_tibble()
 }
 
 #' @export
@@ -48,7 +48,7 @@ scrub.cor_bp <- function(data, ...) {
         tidyr::gather_('Vars2', 'Correlations', vars) %>%
         dplyr::filter(.data$Vars1 != .data$Vars2) %>%
         stats::na.omit() %>%
-        dplyr::tbl_df()
+        tibble::as_tibble()
 }
 
 #' @export

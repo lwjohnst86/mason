@@ -25,3 +25,8 @@
 #' @name mason
 #' @docType package
 NULL
+
+## usethis namespace: start
+#' @importFrom tibble tibble
+## usethis namespace: end
+NULL
