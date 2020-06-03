@@ -12,7 +12,7 @@
 #'
 #' @examples
 #'
-#' /dontrun{
+#' \dontrun{
 #' design(iris, 'gee') %>%
 #'  add_settings('Species', family = binomial('logit'), conf.int = FALSE)
 #' }
