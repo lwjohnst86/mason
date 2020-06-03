@@ -12,8 +12,10 @@
 #'
 #' @examples
 #'
+#' /dontrun{
 #' design(iris, 'gee') %>%
 #'  add_settings('Species', family = binomial('logit'), conf.int = FALSE)
+#' }
 #'
 #' ds <- design(iris, 'cor')
 #' ds <- add_settings(ds, method = 'spearman')
