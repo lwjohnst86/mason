@@ -15,7 +15,7 @@ construct(data, ..., na.rm = TRUE)
 }
 \value{
 Uses the blueprint to construct the results of the statistical
-analysis.
+analysis. Outputs a \link[tibble:tibble-package]{tibble}.
 }
 \description{
 Construct the results of the analysis

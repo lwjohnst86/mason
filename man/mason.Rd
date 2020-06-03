@@ -3,7 +3,6 @@
 \docType{package}
 \name{mason}
 \alias{mason}
-\alias{mason-package}
 \title{Build a (results from analyses) structure like a mason}
 \description{
 Easily run common statistical analyses and build them into a form that can
@@ -13,7 +12,7 @@ allows it to be put into a \code{\link[magrittr:magrittr]{magrittr::magrittr()}}
 
 The final, \code{\link[=scrub]{scrub()}}'ed version of the analysis is in a 'tidy' format,
 meaning it is already in a form to send to \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} or created
-into a table using \code{\link[pander:pander]{pander::pander()}}, \code{\link[knitr:kable]{knitr::kable()}}. It also allows
+into a table using the pander package or with \code{\link[knitr:kable]{knitr::kable()}}. It also allows
 further processing with \code{dplyr} and \code{tidyr}.
 }
 \details{

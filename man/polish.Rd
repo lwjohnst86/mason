@@ -48,7 +48,7 @@ replace words, etc, in the specified columns.
 pattern searching.
 
 \item \code{polish_transform_estimates}: \code{polish_transform_estimates} is simply a thin wrapper
-around \code{\link[dplyr:mutate_at]{dplyr::mutate_at()}}.
+around \code{\link[dplyr:mutate]{dplyr::mutate()}}.
 
 \item \code{polish_adjust_pvalue}: \code{polish_adjust_pvalue} is a thin wrapper around
 \code{\link[dplyr:mutate]{dplyr::mutate()}} and \code{\link[stats:p.adjust]{stats::p.adjust()}}
