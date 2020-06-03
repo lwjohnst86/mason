@@ -9,7 +9,7 @@
 #'
 #' The final, [scrub()]'ed version of the analysis is in a 'tidy' format,
 #' meaning it is already in a form to send to [ggplot2::ggplot()] or created
-#' into a table using [pander::pander()], [knitr::kable()]. It also allows
+#' into a table using the pander package or with [knitr::kable()]. It also allows
 #' further processing with `dplyr` and `tidyr`.
 #'
 #' @details
