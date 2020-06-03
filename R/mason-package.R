@@ -8,7 +8,7 @@
 #' allows it to be put into a [magrittr::magrittr()] pipe chain.
 #'
 #' The final, [scrub()]'ed version of the analysis is in a 'tidy' format,
-#' meaning it is already in a form to send to [ggplot2::ggplot()] or created
+#' meaning it is already in a form to send to ggplot2 or created
 #' into a table using the pander package or with [knitr::kable()]. It also allows
 #' further processing with `dplyr` and `tidyr`.
 #'
