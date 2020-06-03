@@ -171,7 +171,7 @@ construct.t.test_bp <- function(data, na.rm = TRUE, ...) {
 
     form <- regression_formula(specs)
     # convert so that each x-y pair is a column
-    form <- dplyr::as_tibble(t(form$variables))
+    form <- dplyr::as_tibble(t(form$variables), .name_repair = make.names)
     construction_base(data = data, specs = specs, tool = tool,
                       formulas = form, na.rm = na.rm)
 }
