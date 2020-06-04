@@ -62,18 +62,17 @@ design(iris, 'glm') %>%
     scrub() %>%
     polish_adjust_pvalue()
 #> # A tibble: 8 x 11
-#>   Yterms   Xterms   term   estimate std.error statistic   p.value conf.low
-#>   <chr>    <chr>    <chr>     <dbl>     <dbl>     <dbl>     <dbl>    <dbl>
-#> 1 Sepal.L… Petal.L… (Inte…    4.31     0.0784     54.9  2.43e-100    4.15 
-#> 2 Sepal.L… Petal.L… <-Xte…    0.409    0.0189     21.6  1.04e- 47    0.372
-#> 3 Sepal.L… Petal.W… (Inte…    4.78     0.0729     65.5  3.34e-111    4.63 
-#> 4 Sepal.L… Petal.W… <-Xte…    0.889    0.0514     17.3  2.33e- 37    0.788
-#> 5 Sepal.W… Petal.L… (Inte…    3.45     0.0761     45.4  9.02e- 89    3.31 
-#> 6 Sepal.W… Petal.L… <-Xte…   -0.106    0.0183     -5.77 4.51e-  8   -0.142
-#> 7 Sepal.W… Petal.W… (Inte…    3.31     0.0621     53.3  1.84e- 98    3.19 
-#> 8 Sepal.W… Petal.W… <-Xte…   -0.209    0.0437     -4.79 4.07e-  6   -0.295
-#> # ... with 3 more variables: conf.high <dbl>, sample.size <int>,
-#> #   adj.p.value <dbl>
+#>   Yterms Xterms term  estimate std.error statistic   p.value conf.low conf.high
+#>   <chr>  <chr>  <chr>    <dbl>     <dbl>     <dbl>     <dbl>    <dbl>     <dbl>
+#> 1 Sepal… Petal… (Int…    4.31     0.0784     54.9  2.43e-100    4.15     4.46  
+#> 2 Sepal… Petal… Peta…    0.409    0.0189     21.6  1.04e- 47    0.372    0.446 
+#> 3 Sepal… Petal… (Int…    3.45     0.0761     45.4  9.02e- 89    3.31     3.60  
+#> 4 Sepal… Petal… Peta…   -0.106    0.0183     -5.77 4.51e-  8   -0.142   -0.0698
+#> 5 Sepal… Petal… (Int…    4.78     0.0729     65.5  3.34e-111    4.63     4.92  
+#> 6 Sepal… Petal… Peta…    0.889    0.0514     17.3  2.33e- 37    0.788    0.989 
+#> 7 Sepal… Petal… (Int…    3.31     0.0621     53.3  1.84e- 98    3.19     3.43  
+#> 8 Sepal… Petal… Peta…   -0.209    0.0437     -4.79 4.07e-  6   -0.295   -0.124 
+#> # … with 2 more variables: sample.size <int>, adj.p.value <dbl>
 ```
 
 Depending on the statistical method being used, each function may have
@@ -98,5 +97,5 @@ the problem is\!
 5.  If needed, add another `polish_` type function.
 
 Please note that this project is released with a [Contributor Code of
-Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree
-to abide by its terms.
+Conduct](https://github.com/lwjohnst86/mason/blob/master/CODE_OF_CONDUCT.md).
+By participating in this project you agree to abide by its terms.
