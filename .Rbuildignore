@@ -13,3 +13,4 @@
 ^CODE_OF_CONDUCT\.md$
 ^vignettes/specifics\.Rmd$
 ^vignettes/internal/speed\.Rmd$
+^CRAN-RELEASE$
