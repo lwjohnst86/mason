@@ -1,9 +1,10 @@
-pandoc: 2.1.1
-pkgdown: 1.1.0.9000
-pkgdown_sha: 98bfe0fdfd59b33ef1a88ef6896cd60f805f0e81
+pandoc: 2.7.3
+pkgdown: 1.5.1
+pkgdown_sha: ~
 articles:
   mason: mason.html
   specifics: specifics.html
+last_built: 2020-06-04T14:38Z
 urls:
   reference: http://mason.lukewjohnston.com/reference
   article: http://mason.lukewjohnston.com/articles
