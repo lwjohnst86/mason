@@ -1,16 +1,15 @@
 
-Hot fix for an upcoming change to the dependency package broom.
+## General comments
+
+This version is in general to fix the CRAN errors.
 
 ## Test environments
 
-* local ubuntu 16.04 install, R 3.5.0
-* OS X (on travis-ci), R 3.5.0
-* win-builder (devel and release)
+* local Ubuntu 18.04 R installation, R 4.0.0
+* MacOSX (on travis-ci), R 4.0.0
+* win-builder (devel) and AppVeyor build
+* rhub builder (Linux)
 
 ## R CMD check results
 
 0 errors | 0 warnings | 0 note
-
-## Reverse dependencies
-
-There are no reverse dependencies.
