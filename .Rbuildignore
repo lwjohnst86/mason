@@ -14,3 +14,4 @@
 ^vignettes/specifics\.Rmd$
 ^vignettes/internal/speed\.Rmd$
 ^CRAN-RELEASE$
+^pkgdown$
