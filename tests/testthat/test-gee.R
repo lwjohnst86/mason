@@ -64,7 +64,7 @@ gee_function <- function(formula, data = testdata) {
 ds <- add_settings(ds, cluster.id = 'state.region', corstr = 'ar1')
 
 test_that("(for gee) construct creates the right results (no covars)", {
-    ds_lone <- scrub(construct(ds))[-1:-2] %>% fix_order()
+    ds_lone <- scrub(construct(ds)) %>% fix_order()
     real_results <- rbind(
         gee_function(Income ~ Murder),
         gee_function(Income ~ Population),
@@ -74,12 +74,12 @@ test_that("(for gee) construct creates the right results (no covars)", {
         tibble::as_tibble() %>%
         fix_order()
 
-    expect_equivalent(ds_lone, real_results)
+    expect_equivalent(ds_lone[-1:-2], real_results)
 })
 
 ds <- add_variables(ds, 'covariates', c('Frost', 'Area'))
 test_that("(for gee) construct creates the right results (with covars)", {
-    ds_lone <- scrub(construct(ds))[-1:-2] %>% fix_order()
+    ds_lone <- scrub(construct(ds)) %>% fix_order()
     real_results <- rbind(
         gee_function(Income ~ Murder + Frost + Area),
         gee_function(Income ~ Population + Frost + Area),
@@ -89,12 +89,12 @@ test_that("(for gee) construct creates the right results (with covars)", {
         tibble::as_tibble() %>%
         fix_order()
 
-    expect_equivalent(ds_lone, real_results)
+    expect_equivalent(ds_lone[-1:-2], real_results)
 })
 
 test_that("(for gee) construct creates the right results (with covars + int)", {
     ds <- add_variables(ds, 'interaction', c('Frost'))
-    ds_lone <- scrub(construct(ds))[-1:-2] %>% fix_order()
+    ds_lone <- scrub(construct(ds)) %>% fix_order()
     real_results <- rbind(
         gee_function(Income ~ Murder + Frost + Area + Murder:Frost),
         gee_function(Income ~ Population + Frost + Area + Population:Frost),
@@ -104,7 +104,7 @@ test_that("(for gee) construct creates the right results (with covars + int)", {
         tibble::as_tibble() %>%
         fix_order()
 
-    expect_equivalent(ds_lone, real_results)
+    expect_equivalent(ds_lone[-1:-2], real_results)
 })
 
 # scrub and polish --------------------------------------------------------

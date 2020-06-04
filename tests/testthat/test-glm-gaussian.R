@@ -57,7 +57,7 @@ test_that("(for glm) results are equal to real results (no covar)", {
         tibble::as_tibble() %>%
         fix_order()
 
-    expect_equivalent(test_results, real_results)
+    expect_equivalent(test_results[-1:-2], real_results)
 })
 
 test_that("(for glm) results are equal to real results (with covar)", {
@@ -72,7 +72,7 @@ test_that("(for glm) results are equal to real results (with covar)", {
         tibble::as_tibble() %>%
         fix_order()
 
-    expect_equivalent(test_results, real_results)
+    expect_equivalent(test_results[-1:-2], real_results)
 })
 
 test_that("(for glm) results are equal to real results (with covar + int)", {
@@ -88,7 +88,7 @@ test_that("(for glm) results are equal to real results (with covar + int)", {
         tibble::as_tibble() %>%
         fix_order()
 
-    expect_equivalent(test_results, real_results)
+    expect_equivalent(test_results[-1:-2], real_results)
 })
 
 # scrub and polish --------------------------------------------------------
