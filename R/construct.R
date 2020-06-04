@@ -102,8 +102,13 @@ construct.glm_bp <- function(data, na.rm = TRUE, ...) {
             broom::tidy(mod,
                         conf.int = specs$conf.int,
                         conf.level = specs$conf.level)
-        data.frame(tidied,
-                   sample.size = nrow(mod$model))
+        data.frame(
+            Yterms = all.vars(form)[1],
+            Xterms = all.vars(form)[2],
+            tidied,
+            sample.size = nrow(mod$model),
+            stringsAsFactors = FALSE
+        )
     }
     form <- regression_formula(specs)
 
