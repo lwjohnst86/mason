@@ -120,7 +120,6 @@ method is used at the construction phase.
 \dontrun{
 design(iris, 'gee') \%>\%
  add_settings('Species', family = binomial('logit'), conf.int = FALSE)
-}
 
 ds <- design(iris, 'cor')
 ds <- add_settings(ds, method = 'spearman')
@@ -128,5 +127,6 @@ ds <- add_settings(ds, method = 'spearman')
 ds <- design(iris, 't.test')
 add_settings(ds, paired = TRUE)
 add_settings(ds)
+}
 
 }

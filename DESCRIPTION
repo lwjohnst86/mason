@@ -1,41 +1,46 @@
-Package: mason
 Type: Package
+Package: mason
 Title: Build Data Structures for Common Statistical Analysis
 Version: 0.3.0
-Authors@R: person("Luke", "Johnston", email = "lwjohnst@gmail.com",
-    role = c("aut", "cre"), comment = c(ORCID = "0000-0003-4169-2616"))
-Description: Use a consistent syntax to create data structures of common
-    statistical techniques that can be continued in a pipe chain.
-    Design the analysis, add settings and variables, construct the results, and
-    polish the final structure. Rinse and repeat for any number of statistical
-    techniques.
+Authors@R: 
+    person(given = "Luke",
+           family = "Johnston",
+           role = c("aut", "cre"),
+           email = "lwjohnst@gmail.com",
+           comment = c(ORCID = "0000-0003-4169-2616"))
+Description: Use a consistent syntax to create data structures
+    of common statistical techniques that can be continued in a pipe
+    chain.  Design the analysis, add settings and variables, construct the
+    results, and polish the final structure. Rinse and repeat for any
+    number of statistical techniques.
 License: MIT + file LICENSE
-LazyData: TRUE
+URL: https://github.com/lwjohnst86/mason
+BugReports: https://github.com/lwjohnst86/mason/issues
 Depends:
-    R (>= 3.4.0)
+    R (>= 3.6.0)
 Imports:
-    dplyr,
-    tidyr,
     broom,
+    dplyr,
     magrittr,
-    stats,
-    utils,
-    tibble,
-    rlang (>= 0.1.2),
     purrr,
-    tidyselect
-RoxygenNote: 7.1.0
+    rlang,
+    stats,
+    tibble,
+    tidyr,
+    tidyselect,
+    utils
 Suggests: 
-    knitr,
+    covr,
     geepack,
+    knitr,
+    MASS,
     pls,
     rmarkdown,
-    testthat,
-    MASS,
-    covr,
-    roxygen2
-VignetteBuilder: knitr
-BugReports: https://github.com/lwjohnst86/mason/issues
-URL: https://github.com/lwjohnst86/mason
-Roxygen: list(markdown = TRUE)
+    roxygen2,
+    testthat
+VignetteBuilder: 
+    knitr
 Encoding: UTF-8
+LazyData: TRUE
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.0
